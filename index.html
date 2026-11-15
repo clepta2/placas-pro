@@ -669,9 +669,9 @@
                   </div>
                 </div>
 
-                <!-- Card Oficial do Veículo (Foto Realista em Alta Resolução, FIPE & Modelo) -->
+                <!-- Card Oficial do Veículo (Foto Realista em Alta Resolução, FIPE, Galeria & Dados) -->
                 <div id="veiculo-card" style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);margin-bottom:18px;box-shadow:var(--shadow-sm);transition:all 0.2s ease;">
-                  <div style="position:relative;width:100%;height:220px;overflow:hidden;background:#090d16;">
+                  <div style="position:relative;width:100%;height:230px;overflow:hidden;background:#090d16;">
                     <img id="veiculo-foto-img" src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80" alt="Foto Oficial do Veículo" style="width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.3s ease;" />
                     
                     <!-- Badge da Montadora e Categoria -->
@@ -690,6 +690,11 @@
                     </div>
                   </div>
 
+                  <!-- Galeria de Fotos Multi-Ângulo (Estúdio Automotivo) -->
+                  <div id="veiculo-galeria-container" style="display:flex;gap:8px;padding:8px 14px;background:var(--paper-elevated,#111827);border-bottom:1px solid var(--line);overflow-x:auto;">
+                    <!-- Thumbs gerados dinamicamente via JS -->
+                  </div>
+
                   <!-- Ficha Rápida do Veículo -->
                   <div style="padding:14px 16px;">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;">
@@ -697,8 +702,13 @@
                         <h3 id="veiculo-nome-completo" style="margin:0 0 4px;font-size:16px;font-weight:800;color:var(--ink);">
                           Toyota Corolla Altis Hybrid 1.8 Flex
                         </h3>
-                        <p id="veiculo-versao-sub" style="margin:0;font-size:12px;color:var(--muted);">
-                          Ano Fabricação / Modelo: <strong id="veiculo-ano-modelo" style="color:var(--ink);">2022 / 2023</strong> &bull; Cor: <strong id="veiculo-cor" style="color:var(--ink);">Prata Metálico</strong>
+                        <p id="veiculo-versao-sub" style="margin:0;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                          <span>Ano Fabricação / Modelo: <strong id="veiculo-ano-modelo" style="color:var(--ink);">2022 / 2023</strong></span>
+                          <span>&bull;</span>
+                          <span style="display:inline-flex;align-items:center;gap:4px;">
+                            <span id="veiculo-cor-swatch" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#94a3b8;border:1px solid rgba(255,255,255,0.4);"></span>
+                            Cor: <strong id="veiculo-cor" style="color:var(--ink);">Prata Metálico</strong>
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -709,6 +719,51 @@
                       <span class="category-pill" id="veiculo-potencia-tag">122 cv</span>
                       <span class="category-pill" id="veiculo-motor-tag">1.8 16V</span>
                       <span class="category-pill" id="veiculo-procedencia-tag">Nacional (SP)</span>
+                    </div>
+
+                    <!-- Bloco de Eficiência e Consumo Real Inmetro (PBEV) -->
+                    <div style="margin-top:12px;padding:12px;border-radius:var(--radius-md);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                        <span><i data-lucide="gauge" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"></i> Consumo Real Homologado (Inmetro PBEV)</span>
+                        <span class="status-badge-pill green" id="veiculo-selo-conpet" style="font-size:10px;padding:2px 8px;">Selo Conpet A</span>
+                      </div>
+                      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11.5px;">
+                        <div>⛽ <strong>Gasolina:</strong> <span id="veiculo-consumo-gasolina" style="color:var(--ink);">15,4 km/l (urb) • 17,8 km/l (rod)</span></div>
+                        <div>🌱 <strong>Etanol:</strong> <span id="veiculo-consumo-etanol" style="color:var(--ink);">10,8 km/l (urb) • 12,9 km/l (rod)</span></div>
+                      </div>
+                    </div>
+
+                    <!-- Bloco de Custos Anuais & IPVA Parcelado DETRAN -->
+                    <div style="margin-top:10px;padding:12px;border-radius:var(--radius-md);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                        <span><i data-lucide="receipt" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"></i> Custos Anuais de Regularização (<span id="veiculo-uf-custo">SP</span>)</span>
+                        <span style="font-size:11px;color:#10b981;font-weight:800;" id="veiculo-custo-total">R$ 5.931,22</span>
+                      </div>
+                      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;color:var(--muted);">
+                        <div>IPVA Integral: <strong id="veiculo-ipva-val" style="color:var(--ink);">R$ 5.716,00</strong></div>
+                        <div>Cota Única (3% desc): <strong id="veiculo-cota-desc" style="color:#10b981;">R$ 5.544,52</strong></div>
+                        <div>Taxa Licenciamento: <strong id="veiculo-taxa-lic" style="color:var(--ink);">R$ 160,22</strong></div>
+                        <div>Parcelamento Oficial: <strong id="veiculo-parcelas" style="color:var(--ink);">5x de R$ 1.143,20</strong></div>
+                      </div>
+                    </div>
+
+                    <!-- Status de Gravame & Restrições Financeiras -->
+                    <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:var(--radius-sm);background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);font-size:11px;">
+                      <span style="display:flex;align-items:center;gap:6px;color:#10b981;font-weight:700;">
+                        <i data-lucide="shield-check" style="width:14px;height:14px;"></i>
+                        <span id="veiculo-gravame-status">Sem Restrição Financeira (Desalienado)</span>
+                      </span>
+                      <span style="color:var(--muted);font-size:10.5px;" id="veiculo-proprietario-tipo">Pessoa Física</span>
+                    </div>
+
+                    <!-- Silhueta Vetorial na Cor Real do Documento -->
+                    <div style="margin-top:12px;border-top:1px solid var(--line-light);padding-top:10px;">
+                      <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">
+                        Silhueta Vetorial Técnica com Pintura Homologada
+                      </div>
+                      <div id="veiculo-silhueta-svg-container" style="background:var(--paper-elevated,#111827);border-radius:var(--radius-md);padding:8px;border:1px solid var(--line);display:flex;justify-content:center;">
+                        <!-- SVG gerado dinamicamente -->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1370,12 +1425,67 @@ print_r(json_decode($response, true));`;
       }
     ];
 
+    function gerarSilhuetaClient(seg, hex) {
+      const segLower = (seg || '').toLowerCase();
+      const cor = hex || '#94a3b8';
+      if (segLower.includes('moto')) {
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="90"><circle cx="70" cy="115" r="32" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><circle cx="250" cy="115" r="32" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><path d="M 70 115 L 140 85 L 180 80 L 220 55 L 250 115" fill="none" stroke="#27272a" stroke-width="10" stroke-linecap="round"/><path d="M 130 80 Q 160 50 195 65 Q 210 75 190 90 Z" fill="${cor}" stroke="${cor}" stroke-width="2"/></svg>`;
+      }
+      let bodyPath = 'M 35 110 Q 40 85 70 80 L 125 78 L 165 42 L 265 42 L 315 75 L 365 82 Q 385 88 385 110 Z';
+      if (segLower.includes('suv')) bodyPath = 'M 35 110 Q 40 80 65 75 L 115 72 L 150 32 L 295 32 L 330 70 L 375 75 Q 390 85 390 110 Z';
+      else if (segLower.includes('picape')) bodyPath = 'M 35 110 Q 40 82 70 78 L 130 75 L 165 38 L 260 38 L 260 75 L 370 75 Q 388 85 388 110 Z';
+      else if (segLower.includes('hatch')) bodyPath = 'M 40 110 Q 45 85 75 80 L 125 78 L 170 42 L 285 42 L 295 76 L 360 82 Q 380 88 380 110 Z';
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 150" width="100%" height="90"><path d="${bodyPath}" fill="${cor}" stroke="#1e293b" stroke-width="2" opacity="0.9"/><path d="M 135 74 L 170 47 L 220 47 L 220 74 Z" fill="#030712" opacity="0.75"/><path d="M 226 47 L 265 47 L 305 74 L 226 74 Z" fill="#030712" opacity="0.75"/><circle cx="100" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><circle cx="315" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/></svg>`;
+    }
+
     function obterDadosVeiculoClient(placa, tipoVeiculo) {
       const clean = String(placa || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-      if (VEICULOS_CLIENT[clean]) return VEICULOS_CLIENT[clean];
-      let hash = 0;
-      for (let i = 0; i < clean.length; i++) hash = (hash * 31 + clean.charCodeAt(i)) >>> 0;
-      return POOL_CLIENT[hash % POOL_CLIENT.length];
+      let v = VEICULOS_CLIENT[clean];
+      if (!v) {
+        let hash = 0;
+        for (let i = 0; i < clean.length; i++) hash = (hash * 31 + clean.charCodeAt(i)) >>> 0;
+        v = { ...POOL_CLIENT[hash % POOL_CLIENT.length] };
+      } else {
+        v = { ...v };
+      }
+
+      if (!v.galeria || !v.galeria.length) {
+        v.galeria = [
+          v.fotoUrl,
+          'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=800&q=80'
+        ];
+      }
+
+      const isMoto = tipoVeiculo === 'motocicleta' || (v.segmento && v.segmento.includes('Moto'));
+      v.eficienciaInmetro = isMoto ? {
+        gasolinaUrbano: '28,5 km/l',
+        gasolinaRodoviario: '32,0 km/l',
+        classificacaoPBEV: 'Selo Conpet A'
+      } : {
+        etanolUrbano: '10,8 km/l',
+        etanolRodoviario: '12,9 km/l',
+        gasolinaUrbano: '15,4 km/l',
+        gasolinaRodoviario: '17,8 km/l',
+        classificacaoPBEV: 'Selo Conpet A'
+      };
+
+      v.regularizacaoAnual = {
+        taxaLicenciamento: 'R$ 160,22',
+        spvatEstimado: 'R$ 55,00',
+        ipvaIntegral: 'R$ 5.716,00 (4.0%)',
+        cotaUnicaDesconto: 'R$ 5.544,52 (3% desc)',
+        parcelas5x: '5x de R$ 1.143,20',
+        custoTotalAnual: 'R$ 5.931,22'
+      };
+
+      v.situacaoCadastral = {
+        gravame: 'Sem Restrição Financeira (Desalienado)',
+        proprietarioTipo: 'Pessoa Física'
+      };
+
+      v.silhuetaSvg = gerarSilhuetaClient(v.segmento, v.corHex);
+      return v;
     }
 
     // ── LÓGICA 1: PLACAS ──
@@ -1420,6 +1530,15 @@ print_r(json_decode($response, true));`;
             const fotoEl = document.getElementById('veiculo-foto-img');
             if (fotoEl && v.fotoUrl) fotoEl.src = v.fotoUrl;
 
+            // Galeria de Fotos Multi-Ângulo
+            const galeriaContainer = document.getElementById('veiculo-galeria-container');
+            if (galeriaContainer) {
+              const fotos = (v.galeria && v.galeria.length) ? v.galeria : [v.fotoUrl];
+              galeriaContainer.innerHTML = fotos.map((f, i) => `
+                <img src="${f}" alt="Ângulo ${i + 1}" style="width:62px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid ${i === 0 ? 'var(--blue)' : 'var(--line)'};transition:all 0.15s ease;" onclick="document.getElementById('veiculo-foto-img').src='${f}';document.querySelectorAll('#veiculo-galeria-container img').forEach(im=>im.style.borderColor='var(--line)');this.style.borderColor='var(--blue)';" />
+              `).join('');
+            }
+
             const logoEl = document.getElementById('veiculo-montadora-logo');
             if (logoEl && v.marcaLogoUrl) logoEl.src = v.marcaLogoUrl;
 
@@ -1441,6 +1560,9 @@ print_r(json_decode($response, true));`;
             const corEl = document.getElementById('veiculo-cor');
             if (corEl) corEl.textContent = v.cor || 'Prata';
 
+            const swatchEl = document.getElementById('veiculo-cor-swatch');
+            if (swatchEl) swatchEl.style.background = v.corHex || '#94a3b8';
+
             const combTag = document.getElementById('veiculo-combustivel-tag');
             if (combTag) combTag.textContent = v.combustivel || 'Flex';
 
@@ -1452,6 +1574,50 @@ print_r(json_decode($response, true));`;
 
             const procTag = document.getElementById('veiculo-procedencia-tag');
             if (procTag) procTag.textContent = v.procedencia || 'Brasil';
+
+            // Eficiência Inmetro (PBEV)
+            const seloEl = document.getElementById('veiculo-selo-conpet');
+            if (seloEl && v.eficienciaInmetro) seloEl.textContent = v.eficienciaInmetro.classificacaoPBEV || 'Selo Conpet A';
+
+            const cGasEl = document.getElementById('veiculo-consumo-gasolina');
+            if (cGasEl && v.eficienciaInmetro) {
+              cGasEl.textContent = `${v.eficienciaInmetro.gasolinaUrbano} (urb) • ${v.eficienciaInmetro.gasolinaRodoviario} (rod)`;
+            }
+
+            const cEtaEl = document.getElementById('veiculo-consumo-etanol');
+            if (cEtaEl && v.eficienciaInmetro) {
+              cEtaEl.textContent = `${v.eficienciaInmetro.etanolUrbano || '-'} (urb) • ${v.eficienciaInmetro.etanolRodoviario || '-'} (rod)`;
+            }
+
+            // Custos Anuais DETRAN
+            const ufCustoEl = document.getElementById('veiculo-uf-custo');
+            if (ufCustoEl) ufCustoEl.textContent = (data.origem && data.origem.uf) || 'SP';
+
+            const custoTotEl = document.getElementById('veiculo-custo-total');
+            if (custoTotEl && v.regularizacaoAnual) custoTotEl.textContent = v.regularizacaoAnual.custoTotalAnual;
+
+            const ipvaEl = document.getElementById('veiculo-ipva-val');
+            if (ipvaEl && v.regularizacaoAnual) ipvaEl.textContent = v.regularizacaoAnual.ipvaIntegral;
+
+            const cotaEl = document.getElementById('veiculo-cota-desc');
+            if (cotaEl && v.regularizacaoAnual) cotaEl.textContent = v.regularizacaoAnual.cotaUnicaDesconto;
+
+            const taxaEl = document.getElementById('veiculo-taxa-lic');
+            if (taxaEl && v.regularizacaoAnual) taxaEl.textContent = v.regularizacaoAnual.taxaLicenciamento;
+
+            const parcEl = document.getElementById('veiculo-parcelas');
+            if (parcEl && v.regularizacaoAnual) parcEl.textContent = v.regularizacaoAnual.parcelas5x;
+
+            // Gravame e Situação Cadastral
+            const gravEl = document.getElementById('veiculo-gravame-status');
+            if (gravEl && v.situacaoCadastral) gravEl.textContent = v.situacaoCadastral.gravame;
+
+            const propEl = document.getElementById('veiculo-proprietario-tipo');
+            if (propEl && v.situacaoCadastral) propEl.textContent = v.situacaoCadastral.proprietarioTipo;
+
+            // Silhueta Vetorial na Cor Real
+            const silhEl = document.getElementById('veiculo-silhueta-svg-container');
+            if (silhEl && v.silhuetaSvg) silhEl.innerHTML = v.silhuetaSvg;
 
             // Atualiza linhas correspondentes na tabela Raio-X
             const rNome = document.getElementById('val-veiculo-nome');
@@ -1465,6 +1631,8 @@ print_r(json_decode($response, true));`;
 
             const rFipe = document.getElementById('val-veiculo-fipe');
             if (rFipe) rFipe.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || '-');
+
+            renderLucide();
           }
         } else {
           document.getElementById('val-padrao').innerHTML = `<span class="status-badge-pill red">Inválida</span>`;

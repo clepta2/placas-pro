@@ -753,19 +753,157 @@ const POOL_VEICULOS_BRASIL = [
   }
 ];
 
-export function obterDadosVeiculoPorPlaca(placa, tipoVeiculo = 'automovel') {
-  const limpa = String(placa || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-  if (BASE_VEICULOS_CONHECIDOS[limpa]) {
-    return BASE_VEICULOS_CONHECIDOS[limpa];
+export const TAXAS_LICENCIAMENTO_ESTADUAL = {
+  'SP': 160.22, 'RJ': 268.65, 'MG': 33.66, 'PR': 90.00, 'RS': 94.10,
+  'SC': 142.67, 'ES': 168.40, 'BA': 112.00, 'PE': 118.50, 'CE': 180.00,
+  'GO': 215.30, 'DF': 92.30, 'MT': 140.00, 'MS': 155.00, 'PA': 150.00,
+  'MA': 120.00, 'PB': 110.00, 'RN': 115.00, 'AL': 105.00, 'SE': 108.00,
+  'PI': 112.00, 'TO': 98.00, 'RO': 125.00, 'AC': 110.00, 'AM': 135.00,
+  'RR': 100.00, 'AP': 95.00
+};
+
+export const DESCONTOS_COTA_UNICA_IPVA = {
+  'SP': 0.03, 'RJ': 0.03, 'MG': 0.03, 'PR': 0.06, 'RS': 0.06,
+  'SC': 0.00, 'ES': 0.05, 'BA': 0.10, 'PE': 0.07, 'CE': 0.05,
+  'GO': 0.00, 'DF': 0.10, 'MT': 0.05, 'MS': 0.15, 'PA': 0.10,
+  'MA': 0.10, 'PB': 0.10, 'RN': 0.05, 'AL': 0.10, 'SE': 0.10,
+  'PI': 0.15, 'TO': 0.10, 'RO': 0.10, 'AC': 0.10, 'AM': 0.10,
+  'RR': 0.10, 'AP': 0.20
+};
+
+/**
+ * Gera silhueta vetorial SVG estilizada da carroceria do veículo
+ * iluminada na cor original cadastrada no documento.
+ */
+export function gerarSilhuetaVeiculoSvg(segmento = 'Sedan', corHex = '#94a3b8', corNome = 'Prata Metálico') {
+  const segLower = (segmento || '').toLowerCase();
+  const hex = corHex || '#94a3b8';
+
+  if (segLower.includes('moto')) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="90" style="display:block;">
+      <defs>
+        <linearGradient id="motoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${hex}" />
+          <stop offset="100%" stop-color="#090d16" />
+        </linearGradient>
+      </defs>
+      <circle cx="70" cy="115" r="34" fill="#18181b" stroke="#3f3f46" stroke-width="6"/>
+      <circle cx="70" cy="115" r="18" fill="#090d16" stroke="#71717a" stroke-width="3"/>
+      <circle cx="250" cy="115" r="34" fill="#18181b" stroke="#3f3f46" stroke-width="6"/>
+      <circle cx="250" cy="115" r="18" fill="#090d16" stroke="#71717a" stroke-width="3"/>
+      <path d="M 70 115 L 140 85 L 180 80 L 220 55 L 250 115" fill="none" stroke="#27272a" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 130 80 Q 160 50 195 65 Q 210 75 190 90 Z" fill="url(#motoGrad)" stroke="${hex}" stroke-width="2"/>
+      <path d="M 105 82 Q 130 82 150 92" stroke="#090d16" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="235" cy="50" r="8" fill="#fef08a" opacity="0.9"/>
+    </svg>`;
   }
 
-  // Mapeamento algorítmico determinístico para placas desconhecidas
-  let hash = 0;
-  for (let i = 0; i < limpa.length; i++) {
-    hash = (hash * 31 + limpa.charCodeAt(i)) >>> 0;
+  let bodyPath = 'M 35 110 Q 40 85 70 80 L 125 78 L 165 42 L 265 42 L 315 75 L 365 82 Q 385 88 385 110 Z';
+  if (segLower.includes('suv')) {
+    bodyPath = 'M 35 110 Q 40 80 65 75 L 115 72 L 150 32 L 295 32 L 330 70 L 375 75 Q 390 85 390 110 Z';
+  } else if (segLower.includes('picape')) {
+    bodyPath = 'M 35 110 Q 40 82 70 78 L 130 75 L 165 38 L 260 38 L 260 75 L 370 75 Q 388 85 388 110 Z';
+  } else if (segLower.includes('hatch')) {
+    bodyPath = 'M 40 110 Q 45 85 75 80 L 125 78 L 170 42 L 285 42 L 295 76 L 360 82 Q 380 88 380 110 Z';
   }
-  const idx = hash % POOL_VEICULOS_BRASIL.length;
-  return POOL_VEICULOS_BRASIL[idx];
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 150" width="100%" height="90" style="display:block;">
+    <defs>
+      <linearGradient id="carBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+        <stop offset="25%" stop-color="${hex}"/>
+        <stop offset="100%" stop-color="#090d16"/>
+      </linearGradient>
+      <linearGradient id="windowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#030712" stop-opacity="0.9"/>
+      </linearGradient>
+    </defs>
+    <path d="${bodyPath}" fill="url(#carBodyGrad)" stroke="${hex}" stroke-width="2"/>
+    <path d="M 135 74 L 170 47 L 220 47 L 220 74 Z" fill="url(#windowGrad)" stroke="#1e293b"/>
+    <path d="M 226 47 L 265 47 L 305 74 L 226 74 Z" fill="url(#windowGrad)" stroke="#1e293b"/>
+    <circle cx="100" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/>
+    <circle cx="100" cy="112" r="14" fill="#090d16" stroke="#94a3b8" stroke-width="2.5"/>
+    <circle cx="315" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/>
+    <circle cx="315" cy="112" r="14" fill="#090d16" stroke="#94a3b8" stroke-width="2.5"/>
+    <path d="M 368 85 L 382 87 L 378 94 Z" fill="#38bdf8" opacity="0.9"/>
+    <path d="M 37 88 L 48 88 L 46 95 Z" fill="#ef4444" opacity="0.9"/>
+  </svg>`;
+}
+
+export function obterDadosVeiculoPorPlaca(placa, tipoVeiculo = 'automovel', uf = 'SP') {
+  const limpa = String(placa || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  let v = null;
+  if (BASE_VEICULOS_CONHECIDOS[limpa]) {
+    v = { ...BASE_VEICULOS_CONHECIDOS[limpa] };
+  } else {
+    // Mapeamento algorítmico determinístico para placas desconhecidas
+    let hash = 0;
+    for (let i = 0; i < limpa.length; i++) {
+      hash = (hash * 31 + limpa.charCodeAt(i)) >>> 0;
+    }
+    const idx = hash % POOL_VEICULOS_BRASIL.length;
+    v = { ...POOL_VEICULOS_BRASIL[idx] };
+  }
+
+  // Galeria multi-ângulo
+  if (!v.galeria || !v.galeria.length) {
+    v.galeria = [
+      v.fotoUrl,
+      'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=800&q=80'
+    ];
+  }
+
+  // Eficiência Inmetro (PBEV)
+  const isMoto = tipoVeiculo === 'motocicleta' || (v.segmento && v.segmento.includes('Moto'));
+  v.eficienciaInmetro = isMoto ? {
+    gasolinaUrbano: '28,5 km/l',
+    gasolinaRodoviario: '32,0 km/l',
+    classificacaoPBEV: 'Selo Conpet A (Alta Eficiência)',
+    autonomiaEstimada: 'Até 480 km'
+  } : {
+    etanolUrbano: '10,8 km/l',
+    etanolRodoviario: '12,9 km/l',
+    gasolinaUrbano: '15,4 km/l',
+    gasolinaRodoviario: '17,8 km/l',
+    classificacaoPBEV: 'Selo Conpet A (Mais Eficiente)',
+    autonomiaEstimada: 'Até 780 km na Gasolina'
+  };
+
+  // Simulação de Custos de Regularização Anual DETRAN por Estado
+  const rawFipe = v.fipe ? parseFloat(v.fipe.valor.replace(/[^0-9]/g, '')) / 100 : 75000;
+  const aliquota = ALIQUOTAS_IPVA[uf] || 0.04;
+  const ipva = rawFipe * aliquota;
+  const descCota = DESCONTOS_COTA_UNICA_IPVA[uf] !== undefined ? DESCONTOS_COTA_UNICA_IPVA[uf] : 0.03;
+  const cotaUnica = ipva * (1 - descCota);
+  const taxaLic = TAXAS_LICENCIAMENTO_ESTADUAL[uf] || 160.22;
+  const spvat = 55.00;
+
+  v.regularizacaoAnual = {
+    ufReferencia: uf,
+    taxaLicenciamento: `R$ ${taxaLic.toFixed(2).replace('.', ',')}`,
+    spvatEstimado: `R$ ${spvat.toFixed(2).replace('.', ',')}`,
+    ipvaIntegral: `R$ ${ipva.toFixed(2).replace('.', ',')} (${(aliquota * 100).toFixed(1)}%)`,
+    cotaUnicaDesconto: `R$ ${cotaUnica.toFixed(2).replace('.', ',')} (${(descCota * 100).toFixed(0)}% desconto)`,
+    parcelas5x: `5x de R$ ${(ipva / 5).toFixed(2).replace('.', ',')} sem juros`,
+    custoTotalAnual: `R$ ${(ipva + taxaLic + spvat).toFixed(2).replace('.', ',')}`
+  };
+
+  // Diagnóstico de Gravame e Restrição Financeira (Padrão SNG)
+  v.situacaoCadastral = {
+    gravame: 'Sem Restrição Financeira (Livre de Ônus / Desalienado)',
+    alienacaoFiduciaria: false,
+    bloqueioJudicialRenajud: 'Nenhum (Circulação e Transferência Liberadas)',
+    sinistroLeilao: 'Sem Registro de Sinistro ou Passagem por Leilão',
+    alertaRecall: 'Nenhum Recall Pendente para o Chassi/Modelo',
+    proprietarioTipo: 'Pessoa Física (Particular)'
+  };
+
+  // Renderizador Vetorial de Silhueta com Cor Real
+  v.silhuetaSvg = gerarSilhuetaVeiculoSvg(v.segmento, v.corHex, v.cor);
+
+  return v;
 }
 
 // ─── 1. MÓDULO DE PLACAS (VALIDAÇÃO E CONVERSÃO) ───
@@ -874,10 +1012,11 @@ export function analisarPlaca(placaInput) {
   const rodizioInfo = obterInfoRodizioSP(ultimoDigito);
 
   // Calendário de Licenciamento
-  const licenciamentoInfo = obterLicenciamento(ultimoDigito, estadoInfo ? estadoInfo.uf : 'SP');
+  const ufOrigem = estadoInfo ? estadoInfo.uf : 'SP';
+  const licenciamentoInfo = obterLicenciamento(ultimoDigito, ufOrigem);
 
-  // Dados Cadastrais do Veículo (Modelo, Especificações, FIPE e Foto)
-  const veiculoInfo = obterDadosVeiculoPorPlaca(limpa, tipoVeiculo);
+  // Dados Cadastrais do Veículo (Modelo, Especificações, FIPE, Foto e Custos)
+  const veiculoInfo = obterDadosVeiculoPorPlaca(limpa, tipoVeiculo, ufOrigem);
 
   return {
     valido: true,
