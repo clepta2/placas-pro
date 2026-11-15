@@ -18,6 +18,10 @@
  * @license MIT
  */
 
+import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL, buscarVeiculosCatalogo, listarMontadorasComMetadados } from './catalogo-veiculos-brasil.js';
+
+export { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL, buscarVeiculosCatalogo, listarMontadorasComMetadados };
+
 // ─── TABELAS DE CONVERSÃO E NORMAS OFICIAIS ───
 
 // Tabela oficial CONTRAN de conversão do 2º dígito numérico (4º caractere) para letra no Mercosul

@@ -19,6 +19,7 @@
  */
 
 import { STYLES_CSS, HTML_INDEX, CLIENT_JS, OZPRO_MARK_SVG } from './site-assets.js';
+import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL, buscarVeiculosCatalogo, listarMontadorasComMetadados } from './catalogo-veiculos-brasil.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -1696,7 +1697,7 @@ export default {
         headers: {
           ...CORS_HEADERS,
           'Content-Type': 'text/css; charset=utf-8',
-          'Cache-Control': 'public, max-age=604800, s-maxage=2592000'
+          'Cache-Control': 'public, max-age=60, s-maxage=120'
         }
       });
     }
@@ -2020,6 +2021,55 @@ export default {
           'Cache-Control': 'public, max-age=86400, s-maxage=604800'
         }
       });
+    }
+
+    // ── ROTA: CATÁLOGO GERAL DE VEÍCULOS & FIPE NACIONAL ──
+    if (pathname === '/api/veiculos/catalogo' || pathname === '/api/veiculos') {
+      const q = url.searchParams.get('q') || '';
+      const marca = url.searchParams.get('marca') || '';
+      const categoria = url.searchParams.get('categoria') || '';
+      const filtrados = buscarVeiculosCatalogo(q, { marca, categoria });
+      return jsonResponse({
+        ok: true,
+        total: filtrados.length,
+        veiculos: filtrados
+      });
+    }
+
+    if (pathname === '/api/veiculos/marcas' || pathname === '/api/montadoras') {
+      const marcas = listarMontadorasComMetadados();
+      return jsonResponse({
+        ok: true,
+        total: marcas.length,
+        marcas
+      });
+    }
+
+    if (pathname.startsWith('/api/veiculos/') && pathname.endsWith('/silhueta')) {
+      const id = pathname.replace('/api/veiculos/', '').replace('/silhueta', '');
+      const veiculo = FAMILIAS_VEICULOS_BRASIL.find(v => v.id === id);
+      const svg = gerarSilhuetaVeiculoSvg(veiculo ? veiculo.segmento : 'Sedan', veiculo ? veiculo.corHex : '#94a3b8');
+      return new Response(svg, {
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'image/svg+xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=86400, s-maxage=604800'
+        }
+      });
+    }
+
+    if (pathname.startsWith('/api/veiculos/')) {
+      const id = pathname.replace('/api/veiculos/', '');
+      const veiculo = FAMILIAS_VEICULOS_BRASIL.find(v => v.id === id);
+      if (veiculo) {
+        return jsonResponse({
+          ok: true,
+          veiculo: {
+            ...veiculo,
+            silhuetaSvg: gerarSilhuetaVeiculoSvg(veiculo.segmento, veiculo.corHex, veiculo.corPadrao)
+          }
+        });
+      }
     }
 
     // ── ROTA: CONSULTA E VALIDAÇÃO DE PLACAS ──

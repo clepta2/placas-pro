@@ -14,7 +14,12 @@ import {
   verificarIsencaoIpva,
   consultarFipe,
   renderizarPlacaMercosulSvg,
-  renderizarPlacaAntigaSvg
+  renderizarPlacaAntigaSvg,
+  MONTADORAS_BRASIL,
+  FAMILIAS_VEICULOS_BRASIL,
+  buscarVeiculosCatalogo,
+  listarMontadorasComMetadados,
+  gerarSilhuetaVeiculoSvg
 } from './placas-pro.js';
 
 let passed = 0;
@@ -222,6 +227,31 @@ assert(pCorolla.veiculo.fipe.valor === 'R$ 142.900,00', 'Deve conter valor FIPE 
 const pMoto = analisarPlaca('ABC12C4');
 assert(pMoto.veiculo.marca === 'Honda', 'ABC12C4 deve mapear para Honda');
 assert(pMoto.veiculo.segmento.includes('Motocicleta'), 'Segmento de ABC12C4 deve ser Motocicleta');
+assert(pCorolla.veiculo.eficienciaInmetro !== undefined, 'Deve conter eficiência Inmetro');
+assert(pCorolla.veiculo.regularizacaoAnual !== undefined, 'Deve conter regularização anual');
+assert(pCorolla.veiculo.situacaoCadastral !== undefined, 'Deve conter situação cadastral / gravame');
+
+// ── 12. CATÁLOGO COMPLETO DE VEÍCULOS & MONTADORAS ──
+console.log('\n12. Catálogo Completo de Veículos & Montadoras:');
+assert(MONTADORAS_BRASIL.length >= 20, 'Deve listar pelo menos 20 montadoras');
+assert(FAMILIAS_VEICULOS_BRASIL.length >= 15, 'Deve listar pelo menos 15 famílias de veículos');
+
+const buscaCorolla = buscarVeiculosCatalogo('Corolla');
+assert(buscaCorolla.length >= 2, 'Deve encontrar Corolla Sedan e Corolla Cross');
+
+const buscaVw = buscarVeiculosCatalogo('', { marca: 'volkswagen' });
+assert(buscaVw.length >= 3, 'Deve encontrar modelos da Volkswagen');
+
+const marcasMeta = listarMontadorasComMetadados();
+assert(marcasMeta[0].logoUrl.startsWith('https://'), 'Montadora deve conter logoUrl oficial SVG');
+
+const silhuetaSedan = gerarSilhuetaVeiculoSvg('Sedan Médio', '#94a3b8');
+assert(silhuetaSedan.includes('<svg'), 'Deve gerar SVG de silhueta para sedan');
+assert(silhuetaSedan.includes('#94a3b8'), 'Silhueta deve conter cor do documento');
+
+const silhuetaMoto = gerarSilhuetaVeiculoSvg('Motocicleta', '#ef4444');
+assert(silhuetaMoto.includes('<svg'), 'Deve gerar SVG de silhueta para moto');
+assert(silhuetaMoto.includes('#ef4444'), 'Silhueta da moto deve conter cor do documento');
 
 console.log(`\n========================================`);
 console.log(`RESULTADO FINAL: ${passed} PASSOU | ${failed} FALHOU`);

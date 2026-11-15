@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL } from './catalogo-veiculos-brasil.js';
 
 const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -10,7 +11,7 @@ const html = `<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3.1.0" />
+  <link rel="stylesheet" href="styles.css?v=4.0.0" />
   <script>
     (function() {
       const savedTheme = localStorage.getItem('ponte.theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -505,6 +506,9 @@ const html = `<!DOCTYPE html>
         <button class="nav-link" data-view="graficos">
           <i data-lucide="pie-chart"></i> <span>Gráficos & Telemetria</span>
         </button>
+        <button class="nav-link" data-view="catalogo">
+          <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
+        </button>
 
         <div class="nav-section-label">ECOSSISTEMA PONTE</div>
         <a class="nav-link" href="https://ponte-marketplace.maputo2.workers.dev" target="_blank" rel="noopener">
@@ -615,6 +619,9 @@ const html = `<!DOCTYPE html>
           </button>
           <button class="tab-nav-btn" data-tab="graficos">
             <i data-lucide="pie-chart"></i> <span>Gráficos & Telemetria</span>
+          </button>
+          <button class="tab-nav-btn" data-tab="catalogo">
+            <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
           </button>
         </div>
 
@@ -1032,10 +1039,58 @@ const html = `<!DOCTYPE html>
 
                 <!-- Gráfico Donut de Paridade Flex Anycast -->
                 <div style="background:#090d16;border:1px solid #1e293b;border-radius:var(--radius-lg);padding:18px;">
-                  <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:8px;">
+                  <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#cbd5e1;margin-bottom:8px;">
                     Distribuição Calórica & Paridade de Custo
                   </div>
                   <div id="donut-chart-container" style="max-width:320px;margin:0 auto;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAINEL 6: CATÁLOGO INTEGRAL DE VEÍCULOS & FIPE BRASIL -->
+            <div id="section-catalogo" class="tab-pane" style="display:none;">
+              <div class="card-dashboard">
+                <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                  <span style="display:flex;align-items:center;gap:8px;">
+                    <i data-lucide="layers" style="color:var(--blue);"></i>
+                    <span>Catálogo Nacional de Veículos & Base FIPE (Zero Unsplash)</span>
+                  </span>
+                  <span class="status-badge-pill green">100% Cobertura Brasil</span>
+                </div>
+                <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.5;">
+                  Explore modelos homologados no Brasil, dados Inmetro, avaliação FIPE e simulação de custos DETRAN:
+                </p>
+
+                <!-- Barra de Busca Rápida de Carros -->
+                <div style="display:flex;gap:8px;margin-bottom:12px;">
+                  <input type="text" id="catalogo-search-input" placeholder="Buscar por marca, modelo ou código FIPE (ex: Corolla, Onix, Gol)..." style="flex:1;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-md);font-size:12.5px;background:var(--paper);color:var(--ink);outline:none;" />
+                  <button class="primary-button accent" id="btn-catalogo-buscar" style="height:38px;padding:0 14px;font-size:12px;font-weight:700;">
+                    <i data-lucide="search"></i> <span>Buscar</span>
+                  </button>
+                </div>
+
+                <!-- Seletor de Categorias -->
+                <div class="category-row" style="margin-bottom:12px;display:flex;gap:6px;overflow-x:auto;">
+                  <button class="secondary-button cat-filter-btn is-selected" data-cat="todos" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Todos</button>
+                  <button class="secondary-button cat-filter-btn" data-cat="hatch" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Hatches</button>
+                  <button class="secondary-button cat-filter-btn" data-cat="sedan" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Sedans</button>
+                  <button class="secondary-button cat-filter-btn" data-cat="suv" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">SUVs</button>
+                  <button class="secondary-button cat-filter-btn" data-cat="picape" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Picapes</button>
+                  <button class="secondary-button cat-filter-btn" data-cat="motocicleta" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Motos</button>
+                  <button class="secondary-button cat-filter-btn" data-cat="eletrico" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Elétricos</button>
+                </div>
+
+                <!-- Grade de Montadoras / Marcas -->
+                <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">
+                  Montadoras Homologadas (Filtro por Marca):
+                </div>
+                <div id="marcas-grid-container" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;">
+                  <!-- Marcas com logos carregados dinamicamente via Icons Pro -->
+                </div>
+
+                <!-- Lista de Modelos Encontrados -->
+                <div id="catalogo-modelos-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));gap:12px;">
+                  <!-- Cards de veículos gerados dinamicamente -->
                 </div>
               </div>
             </div>
@@ -1096,6 +1151,51 @@ const html = `<!DOCTYPE html>
 
   <!-- Script da Aplicação e Integração -->
   <script type="module">
+
+    // Controle do Menu Lateral Mobile (Drawer)
+    function setupMobileNav() {
+      const drawerBtn = document.getElementById('mobile-hamburger-btn');
+      const drawerClose = document.getElementById('sidebar-drawer-close');
+      const drawerBackdrop = document.getElementById('sidebar-drawer-backdrop');
+      const sidebarEl = document.querySelector('.sidebar');
+
+      function openDrawer() {
+        if (sidebarEl) sidebarEl.classList.add('is-open');
+        if (drawerBackdrop) drawerBackdrop.hidden = false;
+      }
+      function closeDrawer() {
+        if (sidebarEl) sidebarEl.classList.remove('is-open');
+        if (drawerBackdrop) drawerBackdrop.hidden = true;
+      }
+
+      drawerBtn?.addEventListener('click', openDrawer);
+      drawerClose?.addEventListener('click', closeDrawer);
+      drawerBackdrop?.addEventListener('click', closeDrawer);
+
+      // Sincronização de Abas (Desktop, Sidebar e Mobile Bottom Nav)
+      const allTabBtns = document.querySelectorAll('.tab-nav-btn, .primary-nav .nav-link[data-view], .mobile-bottom-nav .mobile-nav-item[data-tab]');
+      allTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabKey = btn.dataset.tab || btn.dataset.view;
+          if (!tabKey) return;
+          document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabKey));
+          document.querySelectorAll('.primary-nav .nav-link[data-view]').forEach(b => b.classList.toggle('is-active', b.dataset.view === tabKey));
+          document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item[data-tab]').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabKey));
+          document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+          const target = document.getElementById('section-' + tabKey);
+          if (target) target.style.display = 'block';
+          closeDrawer();
+          if (typeof updateSnippet === 'function') updateSnippet();
+          if (window.lucide) window.lucide.createIcons();
+        });
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupMobileNav);
+    } else {
+      setupMobileNav();
+    }
+
     // Tema Claro / Escuro
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
@@ -1197,7 +1297,8 @@ const html = `<!DOCTYPE html>
           chassi: 'Chassi / VIN (ISO 3779)',
           renavam: 'RENAVAM (Módulo 11)',
           flex: 'Calculadora Flex ANP',
-          graficos: 'Gráficos & Telemetria'
+          graficos: 'Gráficos & Telemetria',
+          catalogo: 'Catálogo Nacional FIPE'
         };
         if (bread && titles[tabKey]) bread.textContent = titles[tabKey];
         updateSnippet();
@@ -1205,6 +1306,8 @@ const html = `<!DOCTYPE html>
 
         if (tabKey === 'graficos') {
           carregarGraficosAnycast();
+        } else if (tabKey === 'catalogo') {
+          carregarCatalogoVeiculos();
         }
       });
     });
@@ -1905,6 +2008,116 @@ const html = `<!DOCTYPE html>
       }
     }
 
+    // ── LÓGICA 6: CATÁLOGO NACIONAL DE VEÍCULOS & FIPE (100% OFICIAL) ──
+    const MARCAS_CLIENT = ${JSON.stringify(MONTADORAS_BRASIL)};
+    const FAMILIAS_CLIENT = ${JSON.stringify(FAMILIAS_VEICULOS_BRASIL)};
+    let catalogoAtivoCategoria = 'todos';
+    let catalogoAtivoMarca = '';
+
+    async function carregarCatalogoVeiculos() {
+      const q = (document.getElementById('catalogo-search-input')?.value || '').toLowerCase().trim();
+      const grid = document.getElementById('catalogo-modelos-grid');
+      const marcasContainer = document.getElementById('marcas-grid-container');
+      if (!grid) return;
+
+      // 1. Renderiza Marcas com Logos do Icons Pro
+      if (marcasContainer && marcasContainer.children.length === 0) {
+        const marcas = MARCAS_CLIENT;
+        marcasContainer.innerHTML = marcas.map(m => \`
+          <button class="secondary-button marca-chip-btn" data-marca="\${m.id}" style="height:32px;padding:0 10px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:var(--radius-full);">
+            <img src="https://icons-pro-api.maputo2.workers.dev/api/icons/\${m.logoSlug}.svg" alt="\${m.nome}" style="width:14px;height:14px;object-fit:contain;" />
+            <span>\${m.nome}</span>
+          </button>
+        \`).join('');
+
+        marcasContainer.querySelectorAll('.marca-chip-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const isSelected = btn.classList.contains('is-selected');
+            marcasContainer.querySelectorAll('.marca-chip-btn').forEach(b => {
+              b.classList.remove('is-selected');
+              b.style.borderColor = 'var(--line)';
+              b.style.color = 'var(--muted)';
+            });
+            if (!isSelected) {
+              btn.classList.add('is-selected');
+              btn.style.borderColor = 'var(--blue)';
+              btn.style.color = 'var(--blue)';
+              catalogoAtivoMarca = btn.dataset.marca;
+            } else {
+              catalogoAtivoMarca = '';
+            }
+            carregarCatalogoVeiculos();
+          });
+        });
+      }
+
+      // 2. Busca e Renderiza Veículos do Catálogo
+      let lista = FAMILIAS_CLIENT;
+      if (q) {
+        lista = lista.filter(v => v.nomeCompleto.toLowerCase().includes(q) || v.marca.toLowerCase().includes(q) || v.modelo.toLowerCase().includes(q) || (v.fipe && v.fipe.codigo.includes(q)));
+      }
+      if (catalogoAtivoMarca) {
+        lista = lista.filter(v => v.marca.toLowerCase().includes(catalogoAtivoMarca));
+      }
+      if (catalogoAtivoCategoria && catalogoAtivoCategoria !== 'todos') {
+        lista = lista.filter(v => v.categoriaGeral === catalogoAtivoCategoria);
+      }
+
+      if (lista.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--muted);font-size:13px;">Nenhum veículo encontrado com os filtros selecionados.</div>';
+        return;
+      }
+
+      grid.innerHTML = lista.map(v => {
+        const silhueta = gerarSilhuetaClient(v.segmento, v.corHex);
+        return \`
+          <div class="api-card" style="padding:14px;border-radius:var(--radius-lg);background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;gap:8px;">
+            <div style="background:#090d16;border-radius:var(--radius-md);padding:6px;overflow:hidden;border:1px solid var(--line-light);">
+              \${silhueta}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">\${v.marca} • \${v.segmento}</div>
+                <strong style="font-size:13.5px;color:var(--ink);">\${v.modelo}</strong>
+              </div>
+              <span class="status-badge-pill green" style="font-size:10.5px;padding:2px 8px;">\${v.fipe ? v.fipe.valor : 'Consulte'}</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.4;">
+              \${v.versaoPrincipal || v.nomeCompleto}
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;font-size:9.5px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line-light);">
+              <span class="category-pill">\${v.potenciaCv} cv</span>
+              <span class="category-pill blue">\${v.combustivelPadrao.split(' ')[0]}</span>
+              <span class="category-pill">\${v.inmetro ? v.inmetro.selo : 'PBEV A'}</span>
+            </div>
+          </div>
+        \`;
+      }).join('');
+    }
+
+    // Filtros de Categoria do Catálogo
+    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-filter-btn').forEach(b => {
+          b.classList.remove('is-selected');
+          b.style.borderColor = 'var(--line)';
+          b.style.color = 'var(--muted)';
+        });
+        btn.classList.add('is-selected');
+        btn.style.borderColor = 'var(--blue)';
+        btn.style.color = 'var(--blue)';
+        catalogoAtivoCategoria = btn.dataset.cat || 'todos';
+        carregarCatalogoVeiculos();
+      });
+    });
+
+    document.getElementById('catalogo-search-input')?.addEventListener('input', () => {
+      carregarCatalogoVeiculos();
+    });
+    document.getElementById('btn-catalogo-buscar')?.addEventListener('click', () => {
+      carregarCatalogoVeiculos();
+    });
+
     // Botão Executar Sandbox
     document.getElementById('btn-run-sandbox').addEventListener('click', () => {
       const tab = getActiveTab();
@@ -1913,6 +2126,7 @@ const html = `<!DOCTYPE html>
       else if (tab === 'renavam') executarValidacaoRenavam(document.getElementById('renavam-input').value);
       else if (tab === 'flex') executarCalculoFlex();
       else if (tab === 'graficos') carregarGraficosAnycast();
+      else if (tab === 'catalogo') carregarCatalogoVeiculos();
     });
 
     // Inicialização
@@ -1939,6 +2153,9 @@ const html = `<!DOCTYPE html>
       </button>
       <button class="mobile-nav-item " data-tab="graficos">
         <i data-lucide="pie-chart"></i><span>Gráficos</span>
+      </button>
+      <button class="mobile-nav-item " data-tab="catalogo">
+        <i data-lucide="layers"></i><span>Catálogo</span>
       </button>
     </nav>
 
