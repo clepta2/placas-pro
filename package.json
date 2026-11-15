@@ -1,0 +1,34 @@
+{
+  "name": "placas-pro",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API Veicular e Placas Pro: Validação de Placas Mercosul/Cinza, Conversor Oficial CONTRAN, UF de Origem (27 UFs), RENAVAM Módulo 11, Chassi VIN ISO 3779, Licenciamento DETRAN, Rodízio SP CET, Calculadora Flex e Renderizador Gráfico SVG Anycast.",
+  "main": "placas-pro.js",
+  "module": "placas-pro.js",
+  "scripts": {
+    "test": "node test.js",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [
+    "placas",
+    "placa-mercosul",
+    "veiculos",
+    "renavam",
+    "chassi",
+    "vin",
+    "detran",
+    "contran",
+    "senatran",
+    "rodizio-sp",
+    "licenciamento",
+    "ipva",
+    "flex",
+    "cloudflare-worker"
+  ],
+  "author": "clepta2 <clepta2@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clepta2/placas-pro.git"
+  }
+}
