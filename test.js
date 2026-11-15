@@ -11,7 +11,10 @@ import {
   obterLicenciamento,
   calcularParidadeFlex,
   estimarIpva,
-  renderizarPlacaMercosulSvg
+  verificarIsencaoIpva,
+  consultarFipe,
+  renderizarPlacaMercosulSvg,
+  renderizarPlacaAntigaSvg
 } from './placas-pro.js';
 
 let passed = 0;
@@ -162,7 +165,7 @@ const ipvaSc = estimarIpva(80000, 'SC');
 assert(ipvaSc.aliquotaIpva === 0.02, 'Alíquota de SC deve ser 2% (0.02)');
 assert(ipvaSc.ipvaAnualEstimado === 1600, 'IPVA de R$ 80.000 em SC deve ser R$ 1.600');
 
-// ── 8. RENDERIZADOR SVG DA PLACA MERCOSUL ──
+// ── 8. RENDERIZADOR SVG DA PLACA MERCOSUL & ANTIGA ──
 console.log('\n8. Renderizador Gráfico Vetorial SVG:');
 const svg = renderizarPlacaMercosulSvg('BRA2E19');
 assert(svg.includes('<svg'), 'Deve conter abertura de tag <svg');
@@ -170,6 +173,42 @@ assert(svg.includes('BRA2E19'), 'Deve conter o texto da placa BRA2E19');
 assert(svg.includes('MERCOSUL'), 'Deve conter o emblema oficial MERCOSUL');
 assert(svg.includes('BRASIL'), 'Deve conter o nome do país BRASIL');
 assert(svg.includes('SP'), 'Deve conter a marca d\'água da UF (SP)');
+
+const svgAntiga = renderizarPlacaAntigaSvg('ABC-1234', { cidade: 'CURITIBA', uf: 'PR' });
+assert(svgAntiga.includes('<svg'), 'Placa antiga deve conter tag <svg');
+assert(svgAntiga.includes('ABC-1234'), 'Placa antiga deve conter caracteres ABC-1234');
+assert(svgAntiga.includes('CURITIBA - PR'), 'Placa antiga deve conter tarjeta CURITIBA - PR');
+assert(svgAntiga.includes('DETRAN'), 'Placa antiga deve conter lacre do DETRAN');
+
+// ── 9. DIAGNÓSTICO DE ISENÇÃO DE IPVA POR IDADE ──
+console.log('\n9. Diagnóstico de Isenção de IPVA por UF:');
+// Carro 2004 em SP (22 anos de idade -> Isento, regra SP é 20 anos)
+const isencaoSp2004 = verificarIsencaoIpva(2004, 'SP');
+assert(isencaoSp2004.isentoPorIdade === true, 'Carro de 2004 em SP deve estar isento de IPVA (>= 20 anos)');
+assert(isencaoSp2004.anosParaIsencao === 20, 'SP exige 20 anos para isenção');
+
+// Carro 2020 em SP (6 anos de idade -> Tributável)
+const isencaoSp2020 = verificarIsencaoIpva(2020, 'SP');
+assert(isencaoSp2020.isentoPorIdade === false, 'Carro de 2020 em SP deve ser tributável');
+assert(isencaoSp2020.anosRestantes === 14, 'Faltam 14 anos para isenção em SP');
+
+// Carro 2009 no RJ (17 anos -> Isento, regra RJ é 15 anos)
+const isencaoRj = verificarIsencaoIpva(2009, 'RJ');
+assert(isencaoRj.isentoPorIdade === true, 'Carro de 2009 no RJ deve estar isento (>= 15 anos)');
+
+// Carro em MG (não isenta automaticamente)
+const isencaoMg = verificarIsencaoIpva(1995, 'MG');
+assert(isencaoMg.isentoPorIdade === false, 'MG não isenta por idade pura');
+
+// ── 10. CONSULTA INTEGRADA À TABELA FIPE ──
+console.log('\n10. Consulta Tabela FIPE Integrada:');
+const fipeTodos = consultarFipe();
+assert(fipeTodos.total >= 6, 'Deve listar modelos catalogados');
+
+const fipeCorolla = consultarFipe('Corolla');
+assert(fipeCorolla.totalEncontrados >= 1, 'Deve localizar Corolla na FIPE');
+assert(fipeCorolla.modelos[0].marca === 'Toyota', 'Corolla deve ser marca Toyota');
+assert(fipeCorolla.modelos[0].historicoAnos.length >= 4, 'Deve conter histórico de desvalorização');
 
 console.log(`\n========================================`);
 console.log(`RESULTADO FINAL: ${passed} PASSOU | ${failed} FALHOU`);

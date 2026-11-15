@@ -106,6 +106,109 @@ const ALIQUOTAS_IPVA = {
   'RR': 0.020, 'AP': 0.025
 };
 
+// Regras de Anos de Fabricação para Isenção Automática de IPVA por UF
+export const REGRAS_ISENCAO_IPVA_ANOS = {
+  // 10 Anos
+  'GO': 10, 'RN': 10, 'RR': 10,
+  // 15 Anos
+  'RJ': 15, 'BA': 15, 'CE': 15, 'ES': 15, 'PB': 15, 'PA': 15, 'PI': 15,
+  'MA': 15, 'AM': 15, 'SE': 15, 'TO': 15, 'DF': 15, 'RO': 15, 'AP': 15,
+  // 18 Anos
+  'MT': 18,
+  // 20 Anos
+  'SP': 20, 'PR': 20, 'RS': 20, 'MS': 20, 'AC': 20, 'AL': 20,
+  // 30 Anos
+  'SC': 30,
+  // Não Isenta automaticamente (Apenas Veículos de Coleção com Placa Preta)
+  'MG': null, 'PE': null
+};
+
+// Tabela de Referência FIPE Integrada com Histórico de Depreciação
+export const TABELA_FIPE_REFERENCIA = [
+  {
+    codigoFipe: '004123-8',
+    marca: 'Volkswagen',
+    modelo: 'Gol 1.0 Flex 12V 5p',
+    combustivel: 'Flex',
+    categoria: 'Hatch Compacto',
+    historicoAnos: [
+      { ano: 2024, precoMedio: 58500.00, ipvaMedioSp: 2340.00 },
+      { ano: 2023, precoMedio: 54200.00, ipvaMedioSp: 2168.00 },
+      { ano: 2022, precoMedio: 50800.00, ipvaMedioSp: 2032.00 },
+      { ano: 2021, precoMedio: 46900.00, ipvaMedioSp: 1876.00 },
+      { ano: 2020, precoMedio: 42500.00, ipvaMedioSp: 1700.00 }
+    ]
+  },
+  {
+    codigoFipe: '005432-1',
+    marca: 'Chevrolet',
+    modelo: 'Onix Hatch 1.0 Turbo Flex Aut.',
+    combustivel: 'Flex',
+    categoria: 'Hatch Compacto',
+    historicoAnos: [
+      { ano: 2024, precoMedio: 84500.00, ipvaMedioSp: 3380.00 },
+      { ano: 2023, precoMedio: 79200.00, ipvaMedioSp: 3168.00 },
+      { ano: 2022, precoMedio: 74500.00, ipvaMedioSp: 2980.00 },
+      { ano: 2021, precoMedio: 68900.00, ipvaMedioSp: 2756.00 },
+      { ano: 2020, precoMedio: 62000.00, ipvaMedioSp: 2480.00 }
+    ]
+  },
+  {
+    codigoFipe: '001234-5',
+    marca: 'Fiat',
+    modelo: 'Strada Freedom 1.3 Flex 8V CD',
+    combustivel: 'Flex',
+    categoria: 'Picape Compacta',
+    historicoAnos: [
+      { ano: 2024, precoMedio: 99800.00, ipvaMedioSp: 3992.00 },
+      { ano: 2023, precoMedio: 93500.00, ipvaMedioSp: 3740.00 },
+      { ano: 2022, precoMedio: 87900.00, ipvaMedioSp: 3516.00 },
+      { ano: 2021, precoMedio: 82000.00, ipvaMedioSp: 3280.00 }
+    ]
+  },
+  {
+    codigoFipe: '002567-9',
+    marca: 'Toyota',
+    modelo: 'Corolla XEi 2.0 Flex 16V Aut.',
+    combustivel: 'Flex',
+    categoria: 'Sedan Médio',
+    historicoAnos: [
+      { ano: 2024, precoMedio: 148500.00, ipvaMedioSp: 5940.00 },
+      { ano: 2023, precoMedio: 139200.00, ipvaMedioSp: 5568.00 },
+      { ano: 2022, precoMedio: 131000.00, ipvaMedioSp: 5240.00 },
+      { ano: 2021, precoMedio: 122500.00, ipvaMedioSp: 4900.00 },
+      { ano: 2020, precoMedio: 115000.00, ipvaMedioSp: 4600.00 }
+    ]
+  },
+  {
+    codigoFipe: '003789-0',
+    marca: 'Hyundai',
+    modelo: 'HB20 Sense 1.0 Flex 12V Mec.',
+    combustivel: 'Flex',
+    categoria: 'Hatch Compacto',
+    historicoAnos: [
+      { ano: 2024, precoMedio: 76500.00, ipvaMedioSp: 3060.00 },
+      { ano: 2023, precoMedio: 71200.00, ipvaMedioSp: 2848.00 },
+      { ano: 2022, precoMedio: 66800.00, ipvaMedioSp: 2672.00 },
+      { ano: 2021, precoMedio: 60500.00, ipvaMedioSp: 2420.00 },
+      { ano: 2020, precoMedio: 53900.00, ipvaMedioSp: 2156.00 }
+    ]
+  },
+  {
+    codigoFipe: '008901-2',
+    marca: 'Tesla',
+    modelo: 'Model 3 Long Range Dual Motor AWD',
+    combustivel: 'Elétrico',
+    categoria: 'Sedan Premium Elétrico',
+    historicoAnos: [
+      { ano: 2024, precoMedio: 315000.00, ipvaMedioSp: 12600.00 },
+      { ano: 2023, precoMedio: 295000.00, ipvaMedioSp: 11800.00 },
+      { ano: 2022, precoMedio: 320000.00, ipvaMedioSp: 12800.00 },
+      { ano: 2021, precoMedio: 345000.00, ipvaMedioSp: 13800.00 }
+    ]
+  }
+];
+
 // Faixas Oficiais CONTRAN de Emplacamento Inicial por Estado (UF)
 // Mapeamento das 3 letras iniciais
 const FAIXAS_CONTRAN = [
@@ -954,4 +1057,68 @@ export function renderizarPlacaAntigaSvg(placa, options = {}) {
     ${textoSanitizado}
   </text>
 </svg>`;
+}
+
+// ─── 9. DIAGNÓSTICO DE ISENÇÃO DE IPVA POR IDADE E LEGISLAÇÃO ESTADUAL ───
+
+export function verificarIsencaoIpva(anoFabricacao, uf = 'SP') {
+  const ano = parseInt(anoFabricacao, 10);
+  if (isNaN(ano) || ano < 1900 || ano > new Date().getFullYear() + 1) {
+    return { erro: 'ANO_INVALIDO', mensagem: 'Informe um ano de fabricação válido.' };
+  }
+
+  const ufUpper = (uf || 'SP').toUpperCase().trim();
+  const anoAtual = new Date().getFullYear();
+  const idadeVeiculo = Math.max(0, anoAtual - ano);
+  const anosExigidos = REGRAS_ISENCAO_IPVA_ANOS[ufUpper];
+
+  if (anosExigidos === null) {
+    return {
+      uf: ufUpper,
+      anoFabricacao: ano,
+      idadeVeiculoAnos: idadeVeiculo,
+      isentoPorIdade: false,
+      regraEstado: `${ufUpper} não concede isenção automática por tempo de fabricação (apenas veículos de coleção certificados com Placa Preta e laudo de originalidade).`,
+      anosRestantes: null
+    };
+  }
+
+  const isento = idadeVeiculo >= anosExigidos;
+  const anosRestantes = isento ? 0 : (anosExigidos - idadeVeiculo);
+
+  return {
+    uf: ufUpper,
+    anoFabricacao: ano,
+    idadeVeiculoAnos: idadeVeiculo,
+    anosParaIsencao: anosExigidos,
+    isentoPorIdade: isento,
+    anosRestantes: anosRestantes,
+    statusIsencao: isento
+      ? `ISENTO DE IPVA EM ${ufUpper} (Veículo com ${idadeVeiculo} anos; isenção ativada a partir de ${anosExigidos} anos)`
+      : `TRIBUTÁVEL EM ${ufUpper} (Faltam ${anosRestantes} ano(s) para isenção automática aos ${anosExigidos} anos)`,
+    anoPrevistoIsencao: ano + anosExigidos
+  };
+}
+
+// ─── 10. CONSULTA INTEGRADA À TABELA FIPE E DEPRECIAÇÃO ───
+
+export function consultarFipe(termoOuCodigo) {
+  if (!termoOuCodigo) {
+    return { ok: true, total: TABELA_FIPE_REFERENCIA.length, modelos: TABELA_FIPE_REFERENCIA };
+  }
+
+  const q = String(termoOuCodigo).toLowerCase().trim();
+  const filtrados = TABELA_FIPE_REFERENCIA.filter(item => 
+    item.codigoFipe.toLowerCase().includes(q) ||
+    item.modelo.toLowerCase().includes(q) ||
+    item.marca.toLowerCase().includes(q) ||
+    item.categoria.toLowerCase().includes(q)
+  );
+
+  return {
+    ok: true,
+    termoBuscado: termoOuCodigo,
+    totalEncontrados: filtrados.length,
+    modelos: filtrados
+  };
 }
