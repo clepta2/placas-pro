@@ -259,8 +259,21 @@
       .app-shell {
         grid-template-columns: 1fr !important;
       }
+      /* Sidebar mobile drawer */
       .sidebar {
-        display: none !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 285px !important;
+        max-width: 85vw !important;
+        z-index: 100 !important;
+        transform: translateX(-100%);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        display: flex !important;
+      }
+      .sidebar.is-open {
+        transform: translateX(0) !important;
       }
       .topbar {
         height: auto !important;
@@ -463,9 +476,11 @@
   </style>
 </head>
 <body>
+  <div class="sidebar-drawer-backdrop" id="sidebar-drawer-backdrop" hidden></div>
   <div class="app-shell">
     <!-- Sidebar Oficial do Ecossistema Ponte / OZPro -->
     <aside class="sidebar" aria-label="Navegação principal">
+      <button class="sidebar-drawer-close" id="sidebar-drawer-close" aria-label="Fechar menu lateral"><i data-lucide="x"></i></button>
       <a class="brand" href="#playground" aria-label="Ponte API, Placas Pro">
         <img src="brand/ozpro-mark.svg" alt="Ponte API Logo" style="width:38px;height:38px;border-radius:10px;object-fit:contain;background:var(--mint);padding:4px;box-shadow:0 4px 12px rgba(163,230,53,0.35);" />
         <span><strong>ponte</strong><small>PLACAS PRO · OZPRO</small></span>
@@ -521,6 +536,7 @@
     <main class="main-area">
       <!-- Topbar Oficial -->
       <header class="topbar">
+        <button class="mobile-hamburger-btn" id="mobile-hamburger-btn" aria-label="Abrir menu lateral"><i data-lucide="menu"></i></button>
         <div class="breadcrumb">
           <span>Workspace</span>
           <i data-lucide="chevron-right"></i>
@@ -1084,7 +1100,45 @@
         const next = cur === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('ponte.theme', next);
-        renderLucide();
+        
+    // Controle do Menu Lateral Mobile (Drawer)
+    const drawerBtn = document.getElementById('mobile-hamburger-btn');
+    const drawerClose = document.getElementById('sidebar-drawer-close');
+    const drawerBackdrop = document.getElementById('sidebar-drawer-backdrop');
+    const sidebarEl = document.querySelector('.sidebar');
+
+    function openDrawer() {
+      if (sidebarEl) sidebarEl.classList.add('is-open');
+      if (drawerBackdrop) drawerBackdrop.hidden = false;
+    }
+    function closeDrawer() {
+      if (sidebarEl) sidebarEl.classList.remove('is-open');
+      if (drawerBackdrop) drawerBackdrop.hidden = true;
+    }
+
+    drawerBtn?.addEventListener('click', openDrawer);
+    drawerClose?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+
+    // Sincronização de Abas (Desktop, Sidebar e Mobile Bottom Nav)
+    const allTabBtns = document.querySelectorAll('.tab-nav-btn, .primary-nav .nav-link[data-view], .mobile-bottom-nav .mobile-nav-item[data-tab]');
+    allTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabKey = btn.dataset.tab || btn.dataset.view;
+        if (!tabKey) return;
+        document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabKey));
+        document.querySelectorAll('.primary-nav .nav-link[data-view]').forEach(b => b.classList.toggle('is-active', b.dataset.view === tabKey));
+        document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item[data-tab]').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabKey));
+        document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+        const target = document.getElementById('section-' + tabKey);
+        if (target) target.style.display = 'block';
+        closeDrawer();
+        if (typeof updateSnippet === 'function') updateSnippet();
+        if (window.lucide) window.lucide.createIcons();
+      });
+    });
+
+    renderLucide();
       });
     }
 
@@ -1876,5 +1930,25 @@ print_r(json_decode($response, true));`;
       executarConsultaPlaca('BRA2E19');
     }, 100);
   </script>
+
+    <!-- Barra de Navegação Inferior Mobile Oficial -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navegação mobile">
+      <button class="mobile-nav-item is-active" data-tab="placas">
+        <i data-lucide="car"></i><span>Placas</span>
+      </button>
+      <button class="mobile-nav-item " data-tab="chassi">
+        <i data-lucide="scan"></i><span>Chassi</span>
+      </button>
+      <button class="mobile-nav-item " data-tab="renavam">
+        <i data-lucide="file-check-2"></i><span>RENAVAM</span>
+      </button>
+      <button class="mobile-nav-item " data-tab="flex">
+        <i data-lucide="fuel"></i><span>Flex</span>
+      </button>
+      <button class="mobile-nav-item " data-tab="graficos">
+        <i data-lucide="pie-chart"></i><span>Gráficos</span>
+      </button>
+    </nav>
+
 </body>
 </html>
