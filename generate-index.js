@@ -1135,6 +1135,39 @@ const html = `<!DOCTYPE html>
       navigator.clipboard.writeText(txt).then(() => alert('Snippet copiado com sucesso!'));
     });
 
+    // Base de conexão Anycast inteligente (suporta tanto rodando no Worker quanto no GitHub Pages/Localhost)
+    const API_BASE = window.location.hostname.includes('workers.dev') ? '' : 'https://placas-pro-api.clepta2.workers.dev';
+
+    // Formatador JSON de Alto Contraste com Destaque de Sintaxe para Terminal
+    function renderJsonToConsole(data, statusText, isOk, latencyMs) {
+      const consoleOutput = document.getElementById('console-output');
+      const consoleStatus = document.getElementById('console-status');
+      const consoleLat = document.getElementById('console-latency');
+
+      consoleStatus.textContent = statusText;
+      consoleStatus.className = isOk ? 'badge-200' : 'badge-500';
+      consoleLat.textContent = \`Latência: \${latencyMs}ms\`;
+
+      const jsonStr = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+      const escaped = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const highlighted = escaped.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            return \`<span style="color:#38bdf8;font-weight:600;">\${match}</span>\`;
+          } else {
+            return \`<span style="color:#86efac;">\${match}</span>\`;
+          }
+        } else if (/true|false/.test(match)) {
+          return \`<span style="color:#c084fc;font-weight:700;">\${match}</span>\`;
+        } else if (/null/.test(match)) {
+          return \`<span style="color:#94a3b8;font-style:italic;">\${match}</span>\`;
+        } else {
+          return \`<span style="color:#fde047;font-weight:600;">\${match}</span>\`;
+        }
+      });
+      consoleOutput.innerHTML = highlighted;
+    }
+
     // ── LÓGICA 1: PLACAS ──
     async function executarConsultaPlaca(placaInput) {
       const clean = placaInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -1142,20 +1175,15 @@ const html = `<!DOCTYPE html>
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
       consoleOutput.textContent = 'Enviando requisição para a Cloudflare Edge...';
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`/api/placas/\${clean}\`);
+        const res = await fetch(\`\${API_BASE}/api/placas/\${clean}\`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : \`\${res.status} ERRO\`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = \`Latência: \${lat}ms\`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
 
         // Atualiza campos visuais
         if (data.valido) {
@@ -1178,9 +1206,9 @@ const html = `<!DOCTYPE html>
         }
 
         // Renderiza SVG com categoria e estilo selecionados
-        let svgUrl = \`/api/placas/\${clean}/svg?categoria=\${currentCategoria}\`;
+        let svgUrl = \`\${API_BASE}/api/placas/\${clean}/svg?categoria=\${currentCategoria}\`;
         if (currentPlateMode === 'antiga') {
-          svgUrl = \`/api/placas/\${clean}/antiga-svg\`;
+          svgUrl = \`\${API_BASE}/api/placas/\${clean}/antiga-svg\`;
         }
         const resSvg = await fetch(svgUrl);
         if (resSvg.ok) {
@@ -1188,7 +1216,7 @@ const html = `<!DOCTYPE html>
           document.getElementById('plate-svg-box').innerHTML = svgTxt;
         }
       } catch (err) {
-        consoleOutput.textContent = \`Erro: \${err.message}\`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1206,7 +1234,7 @@ const html = `<!DOCTYPE html>
     });
 
     document.getElementById('btn-gerar-placa').addEventListener('click', async () => {
-      const res = await fetch('/api/placas/gerador');
+      const res = await fetch(\`\${API_BASE}/api/placas/gerador\`);
       const data = await res.json();
       if (data.placaGerada) {
         executarConsultaPlaca(data.placaGerada);
@@ -1220,20 +1248,15 @@ const html = `<!DOCTYPE html>
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
       consoleOutput.textContent = 'Decodificando chassi na borda...';
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`/api/placas/chassi/\${clean}\`);
+        const res = await fetch(\`\${API_BASE}/api/placas/chassi/\${clean}\`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : \`\${res.status} ERRO\`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = \`Latência: \${lat}ms\`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
 
         if (data.valido) {
           document.getElementById('val-chassi-wmi').textContent = \`\${data.fabricante} (\${data.wmi})\`;
@@ -1258,7 +1281,7 @@ const html = `<!DOCTYPE html>
           document.getElementById('val-chassi-serie').textContent = '-';
         }
       } catch (err) {
-        consoleOutput.textContent = \`Erro: \${err.message}\`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1278,20 +1301,15 @@ const html = `<!DOCTYPE html>
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
       consoleOutput.textContent = 'Validando RENAVAM...';
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`/api/placas/renavam/\${clean}\`);
+        const res = await fetch(\`\${API_BASE}/api/placas/renavam/\${clean}\`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : \`\${res.status} ERRO\`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = \`Latência: \${lat}ms\`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
 
         const badge = document.getElementById('renavam-status-badge');
         const disp = document.getElementById('renavam-display-val');
@@ -1308,7 +1326,7 @@ const html = `<!DOCTYPE html>
           badge.textContent = 'RENAVAM INVÁLIDO';
         }
       } catch (err) {
-        consoleOutput.textContent = \`Erro: \${err.message}\`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1317,7 +1335,7 @@ const html = `<!DOCTYPE html>
     });
 
     document.getElementById('btn-gerar-renavam').addEventListener('click', async () => {
-      const res = await fetch('/api/placas/gerador');
+      const res = await fetch(\`\${API_BASE}/api/placas/gerador\`);
       const data = await res.json();
       if (data.renavamGerado) {
         executarValidacaoRenavam(data.renavamGerado);
@@ -1331,19 +1349,14 @@ const html = `<!DOCTYPE html>
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`/api/placas/flex?etanol=\${e}&gasolina=\${g}\`);
+        const res = await fetch(\`\${API_BASE}/api/placas/flex?etanol=\${e}&gasolina=\${g}\`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : \`\${res.status} ERRO\`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = \`Latência: \${lat}ms\`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
 
         const box = document.getElementById('flex-box-result');
         const best = document.getElementById('flex-best');
@@ -1361,7 +1374,7 @@ const html = `<!DOCTYPE html>
         desc.textContent = data.parecerTecnico;
         renderLucide();
       } catch (err) {
-        consoleOutput.textContent = \`Erro: \${err.message}\`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 

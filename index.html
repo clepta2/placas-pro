@@ -228,6 +228,21 @@
       object-fit: contain;
     }
 
+    /* Terminal Console: contraste garantido em qualquer tema */
+    .console-json, #console-output {
+      color: #f8fafc !important;
+      font-family: 'JetBrains Mono', monospace !important;
+    }
+
+    /* Compactação de Pílulas e Chips para evitar botões gigantes */
+    .sample-placa, .sample-chassi, .sample-renavam, .sample-boleto, .cat-btn, #btn-mode-mercosul, #btn-mode-antiga {
+      min-height: 28px !important;
+      height: 28px !important;
+      padding: 0 10px !important;
+      font-size: 11px !important;
+      border-radius: 6px !important;
+    }
+
     html, body {
       overflow-x: hidden !important;
       max-width: 100vw !important;
@@ -249,8 +264,8 @@
       }
       .topbar {
         height: auto !important;
-        min-height: 52px !important;
-        padding: 8px 12px !important;
+        min-height: 48px !important;
+        padding: 6px 12px !important;
         gap: 6px !important;
       }
       .breadcrumb {
@@ -268,6 +283,7 @@
       }
       .primary-button.accent {
         height: 32px !important;
+        min-height: 32px !important;
         padding: 0 10px !important;
         font-size: 11px !important;
       }
@@ -276,7 +292,7 @@
         height: 32px !important;
       }
       .content-wrap {
-        padding: 12px 14px 40px !important;
+        padding: 12px 12px 36px !important;
       }
       .page-heading {
         margin-bottom: 12px !important;
@@ -293,48 +309,66 @@
       .page-subtitle {
         font-size: 11.5px !important;
         line-height: 1.4 !important;
+        margin-bottom: 10px !important;
       }
       .billing-models-grid {
-        grid-template-columns: 1fr 1fr 1fr !important;
+        display: flex !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
         gap: 6px !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 2px !important;
+      }
+      .billing-models-grid::-webkit-scrollbar {
+        display: none !important;
       }
       .model-card {
-        padding: 8px 10px !important;
+        flex: 1 0 auto !important;
+        padding: 6px 10px !important;
         border-radius: var(--radius-md) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
       }
       .model-card .model-badge {
         font-size: 9px !important;
-        padding: 2px 6px !important;
-        margin-bottom: 4px !important;
+        padding: 2px 5px !important;
+        margin-bottom: 0 !important;
+        white-space: nowrap !important;
       }
       .model-card div[style*="font-size:20px"] {
-        font-size: 12px !important;
-        margin-bottom: 2px !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        margin-bottom: 0 !important;
+        white-space: nowrap !important;
       }
       .model-card p {
         display: none !important;
       }
       .tab-nav-bar {
         display: flex !important;
-        flex-wrap: wrap !important;
-        padding: 4px !important;
-        gap: 4px !important;
-        margin-bottom: 14px !important;
-        overflow-x: visible !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
         scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 6px !important;
+        padding: 4px !important;
+        margin-bottom: 14px !important;
+        border-radius: var(--radius-lg) !important;
       }
       .tab-nav-bar::-webkit-scrollbar {
         display: none !important;
       }
       .tab-nav-btn {
-        flex: 1 1 calc(50% - 6px) !important;
-        min-height: 30px !important;
-        padding: 4px 6px !important;
-        font-size: 10.5px !important;
+        flex: 0 0 auto !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        padding: 0 12px !important;
+        font-size: 11.5px !important;
+        white-space: nowrap !important;
+        border-radius: var(--radius-md) !important;
         gap: 5px !important;
-        white-space: normal !important;
         text-align: center !important;
       }
       .tab-nav-btn svg, .tab-nav-btn .lucide {
@@ -342,7 +376,7 @@
         height: 14px !important;
       }
       .card-dashboard {
-        padding: 14px !important;
+        padding: 12px !important;
         border-radius: var(--radius-lg) !important;
       }
       .card-dashboard div[style*="font-size:14px"] {
@@ -353,17 +387,26 @@
         margin-bottom: 10px !important;
       }
       input[type="text"], input[type="number"], select {
-        height: 38px !important;
-        font-size: 12px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        font-size: 12.5px !important;
+        padding: 0 10px !important;
       }
-      .primary-button.accent[style*="height:44px"], #btn-exec-placa {
-        height: 38px !important;
+      .primary-button, .secondary-button, #btn-exec-placa, #btn-gerar-placa, #btn-exec-chassi, #btn-exec-renavam {
+        height: 36px !important;
+        min-height: 36px !important;
         padding: 0 12px !important;
-        font-size: 12px !important;
+        font-size: 11.5px !important;
+      }
+      .sample-placa, .sample-chassi, .sample-renavam, .sample-boleto, .cat-btn, #btn-mode-mercosul, #btn-mode-antiga {
+        min-height: 26px !important;
+        height: 26px !important;
+        padding: 0 7px !important;
+        font-size: 10.5px !important;
       }
       .plate-render-frame {
         padding: 10px 6px !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 12px !important;
         width: 100% !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
@@ -373,8 +416,8 @@
         width: 100% !important;
       }
       .playground-split {
-        margin-top: 14px !important;
-        gap: 14px !important;
+        margin-top: 12px !important;
+        gap: 12px !important;
         width: 100% !important;
         box-sizing: border-box !important;
       }
@@ -385,24 +428,35 @@
         overflow-x: hidden !important;
       }
       .specs-table td {
-        padding: 8px 10px !important;
-        font-size: 11.5px !important;
+        padding: 7px 9px !important;
+        font-size: 11px !important;
       }
       .specs-table td.label-col {
-        font-size: 10.5px !important;
+        font-size: 10px !important;
+        width: 38% !important;
       }
       .terminal-window {
         border-radius: var(--radius-lg) !important;
+        background: #091311 !important;
       }
       .terminal-topbar {
-        padding: 8px 12px !important;
+        padding: 7px 10px !important;
       }
       .snippet-tab {
-        padding: 3px 6px !important;
+        padding: 2px 6px !important;
         font-size: 10px !important;
       }
       .terminal-body {
-        padding: 10px 12px !important;
+        padding: 8px 10px !important;
+        font-size: 11px !important;
+      }
+      .playground-console {
+        padding: 12px !important;
+        min-height: 200px !important;
+        max-height: 380px !important;
+      }
+      .console-json, #console-output {
+        color: #f8fafc !important;
         font-size: 11px !important;
       }
     }
@@ -896,7 +950,7 @@
                   <span id="console-latency">Latência: 1.2ms</span>
                   <span>Cloudflare Anycast</span>
                 </div>
-                <pre class="console-json" id="console-output" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#162032;line-height:1.5;"></pre>
+                <pre class="console-json" id="console-output" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#f8fafc;line-height:1.5;"></pre>
               </div>
             </div>
           </div>
@@ -1089,6 +1143,39 @@ print_r(json_decode($response, true));`;
       navigator.clipboard.writeText(txt).then(() => alert('Snippet copiado com sucesso!'));
     });
 
+    // Base de conexão Anycast inteligente (suporta tanto rodando no Worker quanto no GitHub Pages/Localhost)
+    const API_BASE = window.location.hostname.includes('workers.dev') ? '' : 'https://placas-pro-api.clepta2.workers.dev';
+
+    // Formatador JSON de Alto Contraste com Destaque de Sintaxe para Terminal
+    function renderJsonToConsole(data, statusText, isOk, latencyMs) {
+      const consoleOutput = document.getElementById('console-output');
+      const consoleStatus = document.getElementById('console-status');
+      const consoleLat = document.getElementById('console-latency');
+
+      consoleStatus.textContent = statusText;
+      consoleStatus.className = isOk ? 'badge-200' : 'badge-500';
+      consoleLat.textContent = `Latência: ${latencyMs}ms`;
+
+      const jsonStr = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+      const escaped = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const highlighted = escaped.replace(/("(\u[a-zA-Z0-9]{4}|\[^u]|[^\"])*"(s*:)?|(true|false|null)|-?d+(?:.d*)?(?:[eE][+-]?d+)?)/g, function (match) {
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            return `<span style="color:#38bdf8;font-weight:600;">${match}</span>`;
+          } else {
+            return `<span style="color:#86efac;">${match}</span>`;
+          }
+        } else if (/true|false/.test(match)) {
+          return `<span style="color:#c084fc;font-weight:700;">${match}</span>`;
+        } else if (/null/.test(match)) {
+          return `<span style="color:#94a3b8;font-style:italic;">${match}</span>`;
+        } else {
+          return `<span style="color:#fde047;font-weight:600;">${match}</span>`;
+        }
+      });
+      consoleOutput.innerHTML = highlighted;
+    }
+
     // ── LÓGICA 1: PLACAS ──
     async function executarConsultaPlaca(placaInput) {
       const clean = placaInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -1096,20 +1183,15 @@ print_r(json_decode($response, true));`;
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
       consoleOutput.textContent = 'Enviando requisição para a Cloudflare Edge...';
 
       const t0 = performance.now();
       try {
-        const res = await fetch(`/api/placas/${clean}`);
+        const res = await fetch(`${API_BASE}/api/placas/${clean}`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : `${res.status} ERRO`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = `Latência: ${lat}ms`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
 
         // Atualiza campos visuais
         if (data.valido) {
@@ -1132,9 +1214,9 @@ print_r(json_decode($response, true));`;
         }
 
         // Renderiza SVG com categoria e estilo selecionados
-        let svgUrl = `/api/placas/${clean}/svg?categoria=${currentCategoria}`;
+        let svgUrl = `${API_BASE}/api/placas/${clean}/svg?categoria=${currentCategoria}`;
         if (currentPlateMode === 'antiga') {
-          svgUrl = `/api/placas/${clean}/antiga-svg`;
+          svgUrl = `${API_BASE}/api/placas/${clean}/antiga-svg`;
         }
         const resSvg = await fetch(svgUrl);
         if (resSvg.ok) {
@@ -1142,7 +1224,7 @@ print_r(json_decode($response, true));`;
           document.getElementById('plate-svg-box').innerHTML = svgTxt;
         }
       } catch (err) {
-        consoleOutput.textContent = `Erro: ${err.message}`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1160,7 +1242,7 @@ print_r(json_decode($response, true));`;
     });
 
     document.getElementById('btn-gerar-placa').addEventListener('click', async () => {
-      const res = await fetch('/api/placas/gerador');
+      const res = await fetch(`${API_BASE}/api/placas/gerador`);
       const data = await res.json();
       if (data.placaGerada) {
         executarConsultaPlaca(data.placaGerada);
@@ -1174,20 +1256,15 @@ print_r(json_decode($response, true));`;
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
       consoleOutput.textContent = 'Decodificando chassi na borda...';
 
       const t0 = performance.now();
       try {
-        const res = await fetch(`/api/placas/chassi/${clean}`);
+        const res = await fetch(`${API_BASE}/api/placas/chassi/${clean}`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : `${res.status} ERRO`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = `Latência: ${lat}ms`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
 
         if (data.valido) {
           document.getElementById('val-chassi-wmi').textContent = `${data.fabricante} (${data.wmi})`;
@@ -1212,7 +1289,7 @@ print_r(json_decode($response, true));`;
           document.getElementById('val-chassi-serie').textContent = '-';
         }
       } catch (err) {
-        consoleOutput.textContent = `Erro: ${err.message}`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1232,20 +1309,15 @@ print_r(json_decode($response, true));`;
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
       consoleOutput.textContent = 'Validando RENAVAM...';
 
       const t0 = performance.now();
       try {
-        const res = await fetch(`/api/placas/renavam/${clean}`);
+        const res = await fetch(`${API_BASE}/api/placas/renavam/${clean}`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : `${res.status} ERRO`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = `Latência: ${lat}ms`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
 
         const badge = document.getElementById('renavam-status-badge');
         const disp = document.getElementById('renavam-display-val');
@@ -1262,7 +1334,7 @@ print_r(json_decode($response, true));`;
           badge.textContent = 'RENAVAM INVÁLIDO';
         }
       } catch (err) {
-        consoleOutput.textContent = `Erro: ${err.message}`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1271,7 +1343,7 @@ print_r(json_decode($response, true));`;
     });
 
     document.getElementById('btn-gerar-renavam').addEventListener('click', async () => {
-      const res = await fetch('/api/placas/gerador');
+      const res = await fetch(`${API_BASE}/api/placas/gerador`);
       const data = await res.json();
       if (data.renavamGerado) {
         executarValidacaoRenavam(data.renavamGerado);
@@ -1285,19 +1357,14 @@ print_r(json_decode($response, true));`;
       updateSnippet();
 
       const consoleOutput = document.getElementById('console-output');
-      const consoleStatus = document.getElementById('console-status');
-      const consoleLat = document.getElementById('console-latency');
 
       const t0 = performance.now();
       try {
-        const res = await fetch(`/api/placas/flex?etanol=${e}&gasolina=${g}`);
+        const res = await fetch(`${API_BASE}/api/placas/flex?etanol=${e}&gasolina=${g}`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        consoleStatus.textContent = res.ok ? '200 OK' : `${res.status} ERRO`;
-        consoleStatus.className = res.ok ? 'badge-200' : 'badge-500';
-        consoleLat.textContent = `Latência: ${lat}ms`;
-        consoleOutput.textContent = JSON.stringify(data, null, 2);
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
 
         const box = document.getElementById('flex-box-result');
         const best = document.getElementById('flex-best');
@@ -1315,7 +1382,7 @@ print_r(json_decode($response, true));`;
         desc.textContent = data.parecerTecnico;
         renderLucide();
       } catch (err) {
-        consoleOutput.textContent = `Erro: ${err.message}`;
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
