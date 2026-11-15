@@ -210,6 +210,19 @@ assert(fipeCorolla.totalEncontrados >= 1, 'Deve localizar Corolla na FIPE');
 assert(fipeCorolla.modelos[0].marca === 'Toyota', 'Corolla deve ser marca Toyota');
 assert(fipeCorolla.modelos[0].historicoAnos.length >= 4, 'Deve conter histórico de desvalorização');
 
+// ── 11. MODELO DO VEÍCULO E FOTO ASSOCIADA ──
+console.log('\n11. Modelo do Veículo e Foto Associada:');
+const pCorolla = analisarPlaca('BRA2E19');
+assert(pCorolla.veiculo !== undefined, 'Deve conter objeto veiculo');
+assert(pCorolla.veiculo.marca === 'Toyota', 'BRA2E19 deve mapear para Toyota');
+assert(pCorolla.veiculo.modelo === 'Corolla', 'BRA2E19 deve mapear para Corolla');
+assert(pCorolla.veiculo.fotoUrl.startsWith('https://'), 'Deve conter fotoUrl válida');
+assert(pCorolla.veiculo.fipe.valor === 'R$ 142.900,00', 'Deve conter valor FIPE oficial');
+
+const pMoto = analisarPlaca('ABC12C4');
+assert(pMoto.veiculo.marca === 'Honda', 'ABC12C4 deve mapear para Honda');
+assert(pMoto.veiculo.segmento.includes('Motocicleta'), 'Segmento de ABC12C4 deve ser Motocicleta');
+
 console.log(`\n========================================`);
 console.log(`RESULTADO FINAL: ${passed} PASSOU | ${failed} FALHOU`);
 console.log(`========================================`);

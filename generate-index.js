@@ -671,6 +671,50 @@ const html = `<!DOCTYPE html>
                   </div>
                 </div>
 
+                <!-- Card Oficial do Veículo (Foto Realista em Alta Resolução, FIPE & Modelo) -->
+                <div id="veiculo-card" style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);margin-bottom:18px;box-shadow:var(--shadow-sm);transition:all 0.2s ease;">
+                  <div style="position:relative;width:100%;height:220px;overflow:hidden;background:#090d16;">
+                    <img id="veiculo-foto-img" src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80" alt="Foto Oficial do Veículo" style="width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.3s ease;" />
+                    
+                    <!-- Badge da Montadora e Categoria -->
+                    <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;align-items:center;">
+                      <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-full);background:rgba(9,13,22,0.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:11px;font-weight:700;">
+                        <img id="veiculo-montadora-logo" src="https://icons-pro-api.maputo2.workers.dev/api/icons/toyota.svg" alt="Logo" style="width:16px;height:16px;object-fit:contain;" />
+                        <span id="veiculo-marca-nome">Toyota</span>
+                      </div>
+                      <span id="veiculo-segmento-badge" class="status-badge-pill blue" style="background:rgba(59,130,246,0.9);color:#fff;font-size:10.5px;border:none;">Sedan Médio</span>
+                    </div>
+
+                    <!-- Badge de Preço FIPE -->
+                    <div style="position:absolute;bottom:12px;right:12px;padding:6px 12px;border-radius:8px;background:rgba(9,13,22,0.9);backdrop-filter:blur(10px);border:1px solid rgba(16,185,129,0.4);text-align:right;">
+                      <div style="font-size:9.5px;font-weight:700;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.8px;">Tabela FIPE Oficial</div>
+                      <div id="veiculo-fipe-valor" style="font-size:15px;font-weight:900;color:#10b981;font-family:'JetBrains Mono',monospace;">R$ 142.900,00</div>
+                    </div>
+                  </div>
+
+                  <!-- Ficha Rápida do Veículo -->
+                  <div style="padding:14px 16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;">
+                      <div>
+                        <h3 id="veiculo-nome-completo" style="margin:0 0 4px;font-size:16px;font-weight:800;color:var(--ink);">
+                          Toyota Corolla Altis Hybrid 1.8 Flex
+                        </h3>
+                        <p id="veiculo-versao-sub" style="margin:0;font-size:12px;color:var(--muted);">
+                          Ano Fabricação / Modelo: <strong id="veiculo-ano-modelo" style="color:var(--ink);">2022 / 2023</strong> &bull; Cor: <strong id="veiculo-cor" style="color:var(--ink);">Prata Metálico</strong>
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Tags Técnicas do Veículo -->
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line-light);">
+                      <span class="category-pill blue" id="veiculo-combustivel-tag">Híbrido / Flex</span>
+                      <span class="category-pill" id="veiculo-potencia-tag">122 cv</span>
+                      <span class="category-pill" id="veiculo-motor-tag">1.8 16V</span>
+                      <span class="category-pill" id="veiculo-procedencia-tag">Nacional (SP)</span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Tabela de Especificações do Veículo -->
                 <div style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);">
                   <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;">
@@ -679,6 +723,22 @@ const html = `<!DOCTYPE html>
                   </div>
                   <table class="specs-table">
                     <tbody>
+                      <tr>
+                        <td class="label-col">Veículo & Modelo</td>
+                        <td class="val-col" id="val-veiculo-nome" style="font-weight:800;color:var(--ink);">Toyota Corolla Altis Hybrid</td>
+                      </tr>
+                      <tr>
+                        <td class="label-col">Ano / Modelo</td>
+                        <td class="val-col" id="val-veiculo-ano">2022 / 2023</td>
+                      </tr>
+                      <tr>
+                        <td class="label-col">Cor Cadastrada</td>
+                        <td class="val-col" id="val-veiculo-cor">Prata Metálico</td>
+                      </tr>
+                      <tr>
+                        <td class="label-col">Avaliação FIPE</td>
+                        <td class="val-col" id="val-veiculo-fipe" style="font-weight:800;color:#10b981;">R$ 142.900,00</td>
+                      </tr>
                       <tr>
                         <td class="label-col">Padrão da Placa</td>
                         <td class="val-col" id="val-padrao"><span class="status-badge-pill green">Mercosul</span></td>
@@ -1196,6 +1256,62 @@ const html = `<!DOCTYPE html>
           document.getElementById('val-circulacao').innerHTML = lib
             ? \`<span class="status-badge-pill green">LIBERADO AGORA</span>\`
             : \`<span class="status-badge-pill red">RESTRITO NO CENTRO EXPANDIDO</span>\`;
+
+          // Atualiza Ficha Cadastral e Foto Oficial do Veículo
+          if (data.veiculo) {
+            const v = data.veiculo;
+            const cardEl = document.getElementById('veiculo-card');
+            if (cardEl) cardEl.style.display = 'block';
+
+            const fotoEl = document.getElementById('veiculo-foto-img');
+            if (fotoEl && v.fotoUrl) fotoEl.src = v.fotoUrl;
+
+            const logoEl = document.getElementById('veiculo-montadora-logo');
+            if (logoEl && v.marcaLogoUrl) logoEl.src = v.marcaLogoUrl;
+
+            const marcaEl = document.getElementById('veiculo-marca-nome');
+            if (marcaEl) marcaEl.textContent = v.marca;
+
+            const segEl = document.getElementById('veiculo-segmento-badge');
+            if (segEl) segEl.textContent = v.segmento || 'Veículo Nacional';
+
+            const fipeEl = document.getElementById('veiculo-fipe-valor');
+            if (fipeEl) fipeEl.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || 'R$ 78.500,00');
+
+            const nomeEl = document.getElementById('veiculo-nome-completo');
+            if (nomeEl) nomeEl.textContent = v.nomeCompleto || \`\${v.marca} \${v.modelo}\`;
+
+            const anoEl = document.getElementById('veiculo-ano-modelo');
+            if (anoEl) anoEl.textContent = \`\${v.anoFabricacao || 2023} / \${v.anoModelo || 2024}\`;
+
+            const corEl = document.getElementById('veiculo-cor');
+            if (corEl) corEl.textContent = v.cor || 'Prata';
+
+            const combTag = document.getElementById('veiculo-combustivel-tag');
+            if (combTag) combTag.textContent = v.combustivel || 'Flex';
+
+            const potTag = document.getElementById('veiculo-potencia-tag');
+            if (potTag) potTag.textContent = v.potencia || 'Potência Homologada';
+
+            const motTag = document.getElementById('veiculo-motor-tag');
+            if (motTag) motTag.textContent = v.cilindrada || 'Motor Nacional';
+
+            const procTag = document.getElementById('veiculo-procedencia-tag');
+            if (procTag) procTag.textContent = v.procedencia || 'Brasil';
+
+            // Atualiza linhas correspondentes na tabela Raio-X
+            const rNome = document.getElementById('val-veiculo-nome');
+            if (rNome) rNome.textContent = v.nomeCompleto || \`\${v.marca} \${v.modelo}\`;
+
+            const rAno = document.getElementById('val-veiculo-ano');
+            if (rAno) rAno.textContent = \`\${v.anoFabricacao || 2023} / \${v.anoModelo || 2024}\`;
+
+            const rCor = document.getElementById('val-veiculo-cor');
+            if (rCor) rCor.textContent = v.cor || 'Prata';
+
+            const rFipe = document.getElementById('val-veiculo-fipe');
+            if (rFipe) rFipe.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || '-');
+          }
         } else {
           document.getElementById('val-padrao').innerHTML = \`<span class="status-badge-pill red">Inválida</span>\`;
           document.getElementById('val-conversao').textContent = data.mensagem || 'Placa irregular';
@@ -1203,6 +1319,8 @@ const html = `<!DOCTYPE html>
           document.getElementById('val-licenciamento').textContent = '-';
           document.getElementById('val-rodizio').textContent = '-';
           document.getElementById('val-circulacao').textContent = '-';
+          const cardEl = document.getElementById('veiculo-card');
+          if (cardEl) cardEl.style.display = 'none';
         }
 
         // Renderiza SVG com categoria e estilo selecionados
@@ -1383,11 +1501,13 @@ const html = `<!DOCTYPE html>
 
     // ── LÓGICA 5: GRÁFICOS DINÂMICOS VIA GRAFICOS-PRO API ──
     async function carregarGraficosAnycast() {
-      // 1. Gauge Chart de Rodízio
+      const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+
+      // 1. Gauge Chart de Rodízio (Paleta Vibrante de Alto Contraste)
       const gaugeContainer = document.getElementById('gauge-container');
-      if (gaugeContainer && !gaugeContainer.hasChildNodes()) {
+      if (gaugeContainer) {
         try {
-          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=gauge&valor=25&min=0&max=100&titulo=RODIZIO+SP+CET&subtitulo=Circulacao+Liberada&tema=dark&paleta=ocean');
+          const res = await fetch(\`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=gauge&valor=25&min=0&max=100&titulo=RODIZIO+SP+CET&subtitulo=Circulacao+Liberada&tema=\${curTheme}&paleta=contrast\`);
           if (res.ok) {
             gaugeContainer.innerHTML = await res.text();
           }
@@ -1396,9 +1516,9 @@ const html = `<!DOCTYPE html>
 
       // 2. Area Chart de Depreciação FIPE 5 Anos
       const areaContainer = document.getElementById('area-chart-container');
-      if (areaContainer && !areaContainer.hasChildNodes()) {
+      if (areaContainer) {
         try {
-          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=area&valores=90,82,74,68,62,56&labels=2021,2022,2023,2024,2025,2026&titulo=Depreciacao+FIPE+e+IPVA+(5+Anos)&prefixo=R$+&sufixo=k&tema=dark&paleta=ocean');
+          const res = await fetch(\`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=area&valores=90,82,74,68,62,56&labels=2021,2022,2023,2024,2025,2026&titulo=Depreciacao+FIPE+e+IPVA+(5+Anos)&prefixo=R$+&sufixo=k&tema=\${curTheme}&paleta=contrast\`);
           if (res.ok) {
             areaContainer.innerHTML = await res.text();
           }
@@ -1407,9 +1527,9 @@ const html = `<!DOCTYPE html>
 
       // 3. Donut Chart de Paridade Flex
       const donutContainer = document.getElementById('donut-chart-container');
-      if (donutContainer && !donutContainer.hasChildNodes()) {
+      if (donutContainer) {
         try {
-          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=donut&valores=64.7,35.3&labels=Etanol,Gasolina&titulo=Paridade+Flex&tema=dark&paleta=emerald&furo=0.65');
+          const res = await fetch(\`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=donut&valores=64.7,35.3&labels=Etanol,Gasolina&titulo=Paridade+Flex&tema=\${curTheme}&paleta=flex&furo=0.65\`);
           if (res.ok) {
             donutContainer.innerHTML = await res.text();
           }

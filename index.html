@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,6 +43,8 @@
       .playground-split { grid-template-columns: 1fr; }
     }
     .plate-render-frame {
+      transform: translateZ(0);
+      will-change: transform;
       background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.12), transparent 70%), var(--paper);
       border: 1px solid var(--line);
       border-radius: var(--radius-xl);
@@ -472,31 +474,35 @@
       </a>
 
       <nav class="primary-nav" id="primary-nav">
-        <div class="nav-section-label">FUNCIONALIDADES</div>
+        <div class="nav-section-label">FUNCIONALIDADES VEICULARES</div>
         <button class="nav-link is-active" data-view="placas">
           <i data-lucide="car"></i> <span>Placas & Mercosul</span>
+          <span class="nav-badge blue">27 UFs</span>
         </button>
         <button class="nav-link" data-view="chassi">
-          <i data-lucide="scan"></i> <span>Chassi / VIN (ISO 3779)</span>
+          <i data-lucide="scan"></i> <span>Chassi / VIN</span>
+          <span class="nav-badge purple">ISO 3779</span>
         </button>
         <button class="nav-link" data-view="renavam">
-          <i data-lucide="file-check-2"></i> <span>RENAVAM (Módulo 11)</span>
+          <i data-lucide="file-check-2"></i> <span>RENAVAM</span>
+          <span class="nav-badge" style="background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3);">Mod 11</span>
         </button>
         <button class="nav-link" data-view="flex">
-          <i data-lucide="fuel"></i> <span>Calculadora Flex ANP</span>
+          <i data-lucide="fuel"></i> <span>Calculadora Flex</span>
+          <span class="nav-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">ANP</span>
         </button>
         <button class="nav-link" data-view="graficos">
-          <i data-lucide="pie-chart"></i> <span>Gráficos & Telemetria</span>
+          <i data-lucide="pie-chart"></i> <span>Telemetria & Gráficos</span>
+          <span class="nav-badge purple">SVG</span>
         </button>
 
         <div class="nav-section-label">ECOSSISTEMA PONTE</div>
-        <a class="nav-link" href="https://ponte-marketplace.maputo2.workers.dev" target="_blank" rel="noopener">
+        <a class="nav-link" href="https://ponte-marketplace.maputo2.workers.dev/#catalogo" target="_blank" rel="noopener">
           <i data-lucide="layout-grid"></i> <span>API Marketplace</span>
-          <span class="nav-ext"><i data-lucide="arrow-up-right"></i></span>
+          <span class="nav-badge" style="background:rgba(163,230,53,0.15);color:#a3e635;border:1px solid rgba(163,230,53,0.3);">20 APIs</span>
         </a>
         <a class="nav-link" href="https://github.com/clepta2/placas-pro" target="_blank" rel="noopener">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-          <span>GitHub do Projeto</span>
+          <i data-lucide="github"></i> <span>GitHub do Projeto</span>
           <span class="nav-ext"><i data-lucide="arrow-up-right"></i></span>
         </a>
       </nav>
@@ -669,6 +675,50 @@
                   </div>
                 </div>
 
+                <!-- Card Oficial do Veículo (Foto Realista em Alta Resolução, FIPE & Modelo) -->
+                <div id="veiculo-card" style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);margin-bottom:18px;box-shadow:var(--shadow-sm);transition:all 0.2s ease;">
+                  <div style="position:relative;width:100%;height:220px;overflow:hidden;background:#090d16;">
+                    <img id="veiculo-foto-img" src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80" alt="Foto Oficial do Veículo" style="width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.3s ease;" />
+                    
+                    <!-- Badge da Montadora e Categoria -->
+                    <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;align-items:center;">
+                      <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-full);background:rgba(9,13,22,0.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:11px;font-weight:700;">
+                        <img id="veiculo-montadora-logo" src="https://icons-pro-api.maputo2.workers.dev/api/icons/toyota.svg" alt="Logo" style="width:16px;height:16px;object-fit:contain;" />
+                        <span id="veiculo-marca-nome">Toyota</span>
+                      </div>
+                      <span id="veiculo-segmento-badge" class="status-badge-pill blue" style="background:rgba(59,130,246,0.9);color:#fff;font-size:10.5px;border:none;">Sedan Médio</span>
+                    </div>
+
+                    <!-- Badge de Preço FIPE -->
+                    <div style="position:absolute;bottom:12px;right:12px;padding:6px 12px;border-radius:8px;background:rgba(9,13,22,0.9);backdrop-filter:blur(10px);border:1px solid rgba(16,185,129,0.4);text-align:right;">
+                      <div style="font-size:9.5px;font-weight:700;color:#cbd5e1;text-transform:uppercase;letter-spacing:0.8px;">Tabela FIPE Oficial</div>
+                      <div id="veiculo-fipe-valor" style="font-size:15px;font-weight:900;color:#10b981;font-family:'JetBrains Mono',monospace;">R$ 142.900,00</div>
+                    </div>
+                  </div>
+
+                  <!-- Ficha Rápida do Veículo -->
+                  <div style="padding:14px 16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;">
+                      <div>
+                        <h3 id="veiculo-nome-completo" style="margin:0 0 4px;font-size:16px;font-weight:800;color:var(--ink);">
+                          Toyota Corolla Altis Hybrid 1.8 Flex
+                        </h3>
+                        <p id="veiculo-versao-sub" style="margin:0;font-size:12px;color:var(--muted);">
+                          Ano Fabricação / Modelo: <strong id="veiculo-ano-modelo" style="color:var(--ink);">2022 / 2023</strong> &bull; Cor: <strong id="veiculo-cor" style="color:var(--ink);">Prata Metálico</strong>
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Tags Técnicas do Veículo -->
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line-light);">
+                      <span class="category-pill blue" id="veiculo-combustivel-tag">Híbrido / Flex</span>
+                      <span class="category-pill" id="veiculo-potencia-tag">122 cv</span>
+                      <span class="category-pill" id="veiculo-motor-tag">1.8 16V</span>
+                      <span class="category-pill" id="veiculo-procedencia-tag">Nacional (SP)</span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Tabela de Especificações do Veículo -->
                 <div style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);">
                   <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;">
@@ -677,6 +727,22 @@
                   </div>
                   <table class="specs-table">
                     <tbody>
+                      <tr>
+                        <td class="label-col">Veículo & Modelo</td>
+                        <td class="val-col" id="val-veiculo-nome" style="font-weight:800;color:var(--ink);">Toyota Corolla Altis Hybrid</td>
+                      </tr>
+                      <tr>
+                        <td class="label-col">Ano / Modelo</td>
+                        <td class="val-col" id="val-veiculo-ano">2022 / 2023</td>
+                      </tr>
+                      <tr>
+                        <td class="label-col">Cor Cadastrada</td>
+                        <td class="val-col" id="val-veiculo-cor">Prata Metálico</td>
+                      </tr>
+                      <tr>
+                        <td class="label-col">Avaliação FIPE</td>
+                        <td class="val-col" id="val-veiculo-fipe" style="font-weight:800;color:#10b981;">R$ 142.900,00</td>
+                      </tr>
                       <tr>
                         <td class="label-col">Padrão da Placa</td>
                         <td class="val-col" id="val-padrao"><span class="status-badge-pill green">Mercosul</span></td>
@@ -959,16 +1025,33 @@
     </main>
   </div>
 
+    <!-- Barra de Navegação Inferior Mobile (Bottom Navigation) -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navegação mobile">
+      <button class="mobile-nav-item is-active" data-view="placas">
+        <i data-lucide="car"></i>
+        <span>Placas</span>
+      </button>
+      <button class="mobile-nav-item" data-view="chassi">
+        <i data-lucide="scan"></i>
+        <span>Chassi</span>
+      </button>
+      <button class="mobile-nav-item" data-view="renavam">
+        <i data-lucide="file-check-2"></i>
+        <span>RENAVAM</span>
+      </button>
+      <button class="mobile-nav-item" data-view="flex">
+        <i data-lucide="fuel"></i>
+        <span>Flex</span>
+      </button>
+      <button class="mobile-nav-item" data-view="graficos">
+        <i data-lucide="pie-chart"></i>
+        <span>Gráficos</span>
+      </button>
+    </nav>
+
+
   <!-- Script da Aplicação e Integração -->
   <script type="module">
-    import {
-      analisarPlaca,
-      validarRenavam,
-      decodificarVin,
-      calcularParidadeFlex,
-      renderizarPlacaMercosulSvg,
-      renderizarPlacaAntigaSvg
-    } from './placas-pro.js';
     // Tema Claro / Escuro
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
@@ -1021,6 +1104,7 @@
         const tabKey = btn.dataset.tab || btn.dataset.view;
         if (!tabKey) return;
         document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabKey));
+        document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item').forEach(b => b.classList.toggle('is-active', b.dataset.view === tabKey));
         document.querySelectorAll('.primary-nav .nav-link[data-view]').forEach(b => b.classList.toggle('is-active', b.dataset.view === tabKey));
         document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
         const target = document.getElementById('section-' + tabKey);
@@ -1186,7 +1270,7 @@ print_r(json_decode($response, true));`;
 
     // ── LÓGICA 1: PLACAS ──
     async function executarConsultaPlaca(placaInput) {
-      const clean = (placaInput || 'BRA2E19').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+      const clean = placaInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
       document.getElementById('placa-input').value = clean;
       updateSnippet();
 
@@ -1194,63 +1278,104 @@ print_r(json_decode($response, true));`;
       consoleOutput.textContent = 'Enviando requisição para a Cloudflare Edge...';
 
       const t0 = performance.now();
-      let data = null;
-      let lat = 1;
-
       try {
         const res = await fetch(`${API_BASE}/api/placas/${clean}`);
-        if (res.ok) {
-          data = await res.json();
-          lat = Math.round(performance.now() - t0);
+        const data = await res.json();
+        const lat = Math.round(performance.now() - t0);
+
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
+
+        // Atualiza campos visuais
+        if (data.valido) {
+          document.getElementById('val-padrao').innerHTML = `<span class="status-badge-pill green">${data.padrao}</span>`;
+          document.getElementById('val-conversao').textContent = data.formato === 'antiga' ? data.placaMercosulFormatada : (data.placaAntigaFormatada || 'Emplacamento Novo');
+          document.getElementById('val-origem').textContent = `${data.origem.estado} (${data.origem.uf}) — Região ${data.origem.regiao}`;
+          document.getElementById('val-licenciamento').textContent = `${data.licenciamento.mesVencimentoExtenso} (${data.licenciamento.statusExercicioAtual})`;
+          document.getElementById('val-rodizio').textContent = `${data.rodizioSP.diaRestricao} (${data.rodizioSP.horarios})`;
+          const lib = data.rodizioSP.circulacaoPermitidaAgora;
+          document.getElementById('val-circulacao').innerHTML = lib
+            ? `<span class="status-badge-pill green">LIBERADO AGORA</span>`
+            : `<span class="status-badge-pill red">RESTRITO NO CENTRO EXPANDIDO</span>`;
+
+          // Atualiza Ficha Cadastral e Foto Oficial do Veículo
+          if (data.veiculo) {
+            const v = data.veiculo;
+            const cardEl = document.getElementById('veiculo-card');
+            if (cardEl) cardEl.style.display = 'block';
+
+            const fotoEl = document.getElementById('veiculo-foto-img');
+            if (fotoEl && v.fotoUrl) fotoEl.src = v.fotoUrl;
+
+            const logoEl = document.getElementById('veiculo-montadora-logo');
+            if (logoEl && v.marcaLogoUrl) logoEl.src = v.marcaLogoUrl;
+
+            const marcaEl = document.getElementById('veiculo-marca-nome');
+            if (marcaEl) marcaEl.textContent = v.marca;
+
+            const segEl = document.getElementById('veiculo-segmento-badge');
+            if (segEl) segEl.textContent = v.segmento || 'Veículo Nacional';
+
+            const fipeEl = document.getElementById('veiculo-fipe-valor');
+            if (fipeEl) fipeEl.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || 'R$ 78.500,00');
+
+            const nomeEl = document.getElementById('veiculo-nome-completo');
+            if (nomeEl) nomeEl.textContent = v.nomeCompleto || `${v.marca} ${v.modelo}`;
+
+            const anoEl = document.getElementById('veiculo-ano-modelo');
+            if (anoEl) anoEl.textContent = `${v.anoFabricacao || 2023} / ${v.anoModelo || 2024}`;
+
+            const corEl = document.getElementById('veiculo-cor');
+            if (corEl) corEl.textContent = v.cor || 'Prata';
+
+            const combTag = document.getElementById('veiculo-combustivel-tag');
+            if (combTag) combTag.textContent = v.combustivel || 'Flex';
+
+            const potTag = document.getElementById('veiculo-potencia-tag');
+            if (potTag) potTag.textContent = v.potencia || 'Potência Homologada';
+
+            const motTag = document.getElementById('veiculo-motor-tag');
+            if (motTag) motTag.textContent = v.cilindrada || 'Motor Nacional';
+
+            const procTag = document.getElementById('veiculo-procedencia-tag');
+            if (procTag) procTag.textContent = v.procedencia || 'Brasil';
+
+            // Atualiza linhas correspondentes na tabela Raio-X
+            const rNome = document.getElementById('val-veiculo-nome');
+            if (rNome) rNome.textContent = v.nomeCompleto || `${v.marca} ${v.modelo}`;
+
+            const rAno = document.getElementById('val-veiculo-ano');
+            if (rAno) rAno.textContent = `${v.anoFabricacao || 2023} / ${v.anoModelo || 2024}`;
+
+            const rCor = document.getElementById('val-veiculo-cor');
+            if (rCor) rCor.textContent = v.cor || 'Prata';
+
+            const rFipe = document.getElementById('val-veiculo-fipe');
+            if (rFipe) rFipe.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || '-');
+          }
+        } else {
+          document.getElementById('val-padrao').innerHTML = `<span class="status-badge-pill red">Inválida</span>`;
+          document.getElementById('val-conversao').textContent = data.mensagem || 'Placa irregular';
+          document.getElementById('val-origem').textContent = '-';
+          document.getElementById('val-licenciamento').textContent = '-';
+          document.getElementById('val-rodizio').textContent = '-';
+          document.getElementById('val-circulacao').textContent = '-';
+          const cardEl = document.getElementById('veiculo-card');
+          if (cardEl) cardEl.style.display = 'none';
         }
-      } catch (_) {}
 
-      // Fallback local determinístico 0ms
-      if (!data) {
-        data = analisarPlaca(clean);
-        data.ok = true;
-        data.latencia_ms = 1;
-        data.status = 200;
-        lat = 1;
-      }
-
-      renderJsonToConsole(data, data.valido ? '200 OK' : '400 INVÁLIDA', data.valido, lat);
-
-      // Atualiza campos visuais
-      if (data.valido) {
-        document.getElementById('val-padrao').innerHTML = `<span class="status-badge-pill green">${data.padrao}</span>`;
-        document.getElementById('val-conversao').textContent = data.formato === 'antiga' ? data.placaMercosulFormatada : (data.placaAntigaFormatada || 'Emplacamento Novo');
-        document.getElementById('val-origem').textContent = `${data.origem ? data.origem.estado : 'São Paulo'} (${data.origem ? data.origem.uf : 'SP'}) — Região ${data.origem ? data.origem.regiao : 'Sudeste'}`;
-        document.getElementById('val-licenciamento').textContent = data.licenciamento ? `${data.licenciamento.mesVencimentoExtenso} (${data.licenciamento.statusExercicioAtual})` : 'Em dia';
-        document.getElementById('val-rodizio').textContent = data.rodizioSP ? `${data.rodizioSP.diaRestricao} (${data.rodizioSP.horarios})` : 'Livre';
-        const lib = data.rodizioSP ? data.rodizioSP.circulacaoPermitidaAgora : true;
-        document.getElementById('val-circulacao').innerHTML = lib
-          ? `<span class="status-badge-pill green">LIBERADO AGORA</span>`
-          : `<span class="status-badge-pill red">RESTRITO NO CENTRO EXPANDIDO</span>`;
-      } else {
-        document.getElementById('val-padrao').innerHTML = `<span class="status-badge-pill red">Inválida</span>`;
-        document.getElementById('val-conversao').textContent = data.mensagem || 'Placa irregular';
-        document.getElementById('val-origem').textContent = '-';
-        document.getElementById('val-licenciamento').textContent = '-';
-        document.getElementById('val-rodizio').textContent = '-';
-        document.getElementById('val-circulacao').textContent = '-';
-      }
-
-      // Renderiza SVG local determinístico (evita falha de fetch)
-      try {
+        // Renderiza SVG com categoria e estilo selecionados
         let svgUrl = `${API_BASE}/api/placas/${clean}/svg?categoria=${currentCategoria}`;
-        if (currentPlateMode === 'antiga') svgUrl = `${API_BASE}/api/placas/${clean}/antiga-svg`;
+        if (currentPlateMode === 'antiga') {
+          svgUrl = `${API_BASE}/api/placas/${clean}/antiga-svg`;
+        }
         const resSvg = await fetch(svgUrl);
         if (resSvg.ok) {
-          document.getElementById('plate-svg-box').innerHTML = await resSvg.text();
-          return;
+          const svgTxt = await resSvg.text();
+          document.getElementById('plate-svg-box').innerHTML = svgTxt;
         }
-      } catch (_) {}
-
-      const localSvg = currentPlateMode === 'antiga'
-        ? renderizarPlacaAntigaSvg(clean, { categoria: currentCategoria })
-        : renderizarPlacaMercosulSvg(clean, { categoria: currentCategoria });
-      document.getElementById('plate-svg-box').innerHTML = localSvg;
+      } catch (err) {
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
+      }
     }
 
     document.getElementById('btn-exec-placa').addEventListener('click', () => {
@@ -1276,7 +1401,7 @@ print_r(json_decode($response, true));`;
 
     // ── LÓGICA 2: CHASSI ──
     async function executarConsultaChassi(chassiInput) {
-      const clean = (chassiInput || '9BWCA45Z1FP012345').trim().toUpperCase();
+      const clean = chassiInput.trim().toUpperCase();
       document.getElementById('chassi-input').value = clean;
       updateSnippet();
 
@@ -1284,49 +1409,37 @@ print_r(json_decode($response, true));`;
       consoleOutput.textContent = 'Decodificando chassi na borda...';
 
       const t0 = performance.now();
-      let data = null;
-      let lat = 1;
-
       try {
         const res = await fetch(`${API_BASE}/api/placas/chassi/${clean}`);
-        if (res.ok) {
-          data = await res.json();
-          lat = Math.round(performance.now() - t0);
+        const data = await res.json();
+        const lat = Math.round(performance.now() - t0);
+
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
+
+        if (data.valido) {
+          document.getElementById('val-chassi-wmi').textContent = `${data.fabricante} (${data.wmi})`;
+          document.getElementById('val-chassi-pais').textContent = `${data.paisFabricacao} (${data.origem})`;
+          document.getElementById('val-chassi-ano').textContent = data.anoModelo;
+          document.getElementById('val-chassi-check').innerHTML = data.checkDigitValido
+            ? `<span class="status-badge-pill green">Válido (${data.checkDigitCalculado})</span>`
+            : `<span class="status-badge-pill red">Informado: ${data.checkDigitInformado} (Esperado: ${data.checkDigitCalculado})</span>`;
+          document.getElementById('val-chassi-serie').textContent = `Planta ${data.plantaMontagem} · Série ${data.numeroSerie}`;
+          
+          document.getElementById('display-fabricante-nome').textContent = data.fabricante;
+          document.getElementById('display-fabricante-origem').textContent = `Código WMI: ${data.wmi} · ${data.paisFabricacao} (${data.origem})`;
+
+          // Busca o logo vetorial oficial na API Icons Pro!
+          const logoSlug = BRAND_LOGOS[data.fabricante] || 'volkswagen';
+          document.getElementById('brand-logo-img').src = `https://icons-pro-api.maputo2.workers.dev/api/icons/${logoSlug}.svg`;
+        } else {
+          document.getElementById('val-chassi-wmi').innerHTML = `<span class="status-badge-pill red">Inválido</span>`;
+          document.getElementById('val-chassi-pais').textContent = data.mensagem;
+          document.getElementById('val-chassi-ano').textContent = '-';
+          document.getElementById('val-chassi-check').textContent = '-';
+          document.getElementById('val-chassi-serie').textContent = '-';
         }
-      } catch (_) {}
-
-      // Fallback local determinístico 0ms
-      if (!data) {
-        data = decodificarVin(clean);
-        data.ok = true;
-        data.latencia_ms = 1;
-        data.status = 200;
-        data.origem = "Decodificação Determinística Anycast (ISO 3779 / SAE J853)";
-        lat = 1;
-      }
-
-      renderJsonToConsole(data, data.valido ? '200 OK' : '400 INVÁLIDO', data.valido, lat);
-
-      if (data.valido) {
-        document.getElementById('val-chassi-wmi').textContent = `${data.fabricante} (${data.wmi})`;
-        document.getElementById('val-chassi-pais').textContent = `${data.paisFabricacao || 'Brasil'} (${data.origem || 'Nacional'})`;
-        document.getElementById('val-chassi-ano').textContent = data.anoModelo;
-        document.getElementById('val-chassi-check').innerHTML = data.checkDigitValido
-          ? `<span class="status-badge-pill green">Válido (${data.checkDigitCalculado})</span>`
-          : `<span class="status-badge-pill red">Informado: ${data.checkDigitInformado} (Esperado: ${data.checkDigitCalculado})</span>`;
-        document.getElementById('val-chassi-serie').textContent = `Planta ${data.plantaMontagem} · Série ${data.numeroSerie}`;
-        
-        document.getElementById('display-fabricante-nome').textContent = data.fabricante;
-        document.getElementById('display-fabricante-origem').textContent = `Código WMI: ${data.wmi} · ${data.paisFabricacao || 'Brasil'} (${data.origem || 'Nacional'})`;
-
-        const logoSlug = BRAND_LOGOS[data.fabricante] || 'volkswagen';
-        document.getElementById('brand-logo-img').src = `https://icons-pro-api.maputo2.workers.dev/api/icons/${logoSlug}.svg`;
-      } else {
-        document.getElementById('val-chassi-wmi').innerHTML = `<span class="status-badge-pill red">Inválido</span>`;
-        document.getElementById('val-chassi-pais').textContent = data.mensagem || 'Chassi irregular';
-        document.getElementById('val-chassi-ano').textContent = '-';
-        document.getElementById('val-chassi-check').textContent = '-';
-        document.getElementById('val-chassi-serie').textContent = '-';
+      } catch (err) {
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1341,7 +1454,7 @@ print_r(json_decode($response, true));`;
 
     // ── LÓGICA 3: RENAVAM ──
     async function executarValidacaoRenavam(renavamInput) {
-      const clean = (renavamInput || '00632345678').replace(/\D/g, '');
+      const clean = renavamInput.replace(/\D/g, '');
       document.getElementById('renavam-input').value = clean;
       updateSnippet();
 
@@ -1349,40 +1462,29 @@ print_r(json_decode($response, true));`;
       consoleOutput.textContent = 'Validando RENAVAM...';
 
       const t0 = performance.now();
-      let data = null;
-      let lat = 1;
-
       try {
         const res = await fetch(`${API_BASE}/api/placas/renavam/${clean}`);
-        if (res.ok) {
-          data = await res.json();
-          lat = Math.round(performance.now() - t0);
+        const data = await res.json();
+        const lat = Math.round(performance.now() - t0);
+
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
+
+        const badge = document.getElementById('renavam-status-badge');
+        const disp = document.getElementById('renavam-display-val');
+        const msg = document.getElementById('renavam-msg-val');
+
+        disp.textContent = data.renavamFormatado || clean;
+        msg.textContent = data.mensagem;
+
+        if (data.valido) {
+          badge.className = 'status-badge-pill green';
+          badge.textContent = 'RENAVAM REGULAR & VÁLIDO';
+        } else {
+          badge.className = 'status-badge-pill red';
+          badge.textContent = 'RENAVAM INVÁLIDO';
         }
-      } catch (_) {}
-
-      if (!data) {
-        data = validarRenavam(clean);
-        data.ok = true;
-        data.latencia_ms = 1;
-        data.status = 200;
-        lat = 1;
-      }
-
-      renderJsonToConsole(data, data.valido ? '200 OK' : '400 INVÁLIDO', data.valido, lat);
-
-      const badge = document.getElementById('renavam-status-badge');
-      const disp = document.getElementById('renavam-display-val');
-      const msg = document.getElementById('renavam-msg-val');
-
-      disp.textContent = data.renavamFormatado || clean;
-      msg.textContent = data.mensagem;
-
-      if (data.valido) {
-        badge.className = 'status-badge-pill green';
-        badge.textContent = 'RENAVAM REGULAR & VÁLIDO';
-      } else {
-        badge.className = 'status-badge-pill red';
-        badge.textContent = 'RENAVAM INVÁLIDO';
+      } catch (err) {
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
     }
 
@@ -1407,42 +1509,31 @@ print_r(json_decode($response, true));`;
       const consoleOutput = document.getElementById('console-output');
 
       const t0 = performance.now();
-      let data = null;
-      let lat = 1;
-
       try {
         const res = await fetch(`${API_BASE}/api/placas/flex?etanol=${e}&gasolina=${g}`);
-        if (res.ok) {
-          data = await res.json();
-          lat = Math.round(performance.now() - t0);
+        const data = await res.json();
+        const lat = Math.round(performance.now() - t0);
+
+        renderJsonToConsole(data, res.ok ? '200 OK' : `${res.status} ERRO`, res.ok, lat);
+
+        const box = document.getElementById('flex-box-result');
+        const best = document.getElementById('flex-best');
+        const pct = document.getElementById('flex-pct');
+        const desc = document.getElementById('flex-desc');
+
+        if (data.combustivelVantajoso === 'ETANOL') {
+          box.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+          best.innerHTML = '<i data-lucide="leaf" style="color:#10b981;width:28px;height:28px;"></i> <span>ETANOL</span>';
+        } else {
+          box.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+          best.innerHTML = '<i data-lucide="fuel" style="color:#f59e0b;width:28px;height:28px;"></i> <span>GASOLINA</span>';
         }
-      } catch (_) {}
-
-      if (!data) {
-        data = calcularParidadeFlex(parseFloat(e), parseFloat(g));
-        data.ok = true;
-        data.latencia_ms = 1;
-        data.status = 200;
-        lat = 1;
+        pct.textContent = `Paridade: ${data.paridadePercentual} (Limiar técnico: ${data.limiarAdotado})`;
+        desc.textContent = data.parecerTecnico;
+        renderLucide();
+      } catch (err) {
+        renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
-
-      renderJsonToConsole(data, '200 OK', true, lat);
-
-      const box = document.getElementById('flex-box-result');
-      const best = document.getElementById('flex-best');
-      const pct = document.getElementById('flex-pct');
-      const desc = document.getElementById('flex-desc');
-
-      if (data.combustivelVantajoso === 'ETANOL') {
-        box.style.borderColor = 'rgba(16, 185, 129, 0.35)';
-        best.innerHTML = '<i data-lucide="leaf" style="color:#10b981;width:28px;height:28px;"></i> <span>ETANOL</span>';
-      } else {
-        box.style.borderColor = 'rgba(245, 158, 11, 0.35)';
-        best.innerHTML = '<i data-lucide="fuel" style="color:#f59e0b;width:28px;height:28px;"></i> <span>GASOLINA</span>';
-      }
-      pct.textContent = `Paridade: ${data.paridadePercentual} (Limiar técnico: ${data.limiarAdotado})`;
-      desc.textContent = data.parecerTecnico;
-      renderLucide();
     }
 
     document.getElementById('flex-etanol').addEventListener('input', executarCalculoFlex);
@@ -1450,11 +1541,13 @@ print_r(json_decode($response, true));`;
 
     // ── LÓGICA 5: GRÁFICOS DINÂMICOS VIA GRAFICOS-PRO API ──
     async function carregarGraficosAnycast() {
-      // 1. Gauge Chart de Rodízio
+      const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+
+      // 1. Gauge Chart de Rodízio (Paleta Vibrante de Alto Contraste)
       const gaugeContainer = document.getElementById('gauge-container');
-      if (gaugeContainer && !gaugeContainer.hasChildNodes()) {
+      if (gaugeContainer) {
         try {
-          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=gauge&valor=25&min=0&max=100&titulo=RODIZIO+SP+CET&subtitulo=Circulacao+Liberada&tema=dark&paleta=ocean');
+          const res = await fetch(`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=gauge&valor=25&min=0&max=100&titulo=RODIZIO+SP+CET&subtitulo=Circulacao+Liberada&tema=${curTheme}&paleta=contrast`);
           if (res.ok) {
             gaugeContainer.innerHTML = await res.text();
           }
@@ -1463,9 +1556,9 @@ print_r(json_decode($response, true));`;
 
       // 2. Area Chart de Depreciação FIPE 5 Anos
       const areaContainer = document.getElementById('area-chart-container');
-      if (areaContainer && !areaContainer.hasChildNodes()) {
+      if (areaContainer) {
         try {
-          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=area&valores=90,82,74,68,62,56&labels=2021,2022,2023,2024,2025,2026&titulo=Depreciacao+FIPE+e+IPVA+(5+Anos)&prefixo=R$+&sufixo=k&tema=dark&paleta=ocean');
+          const res = await fetch(`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=area&valores=90,82,74,68,62,56&labels=2021,2022,2023,2024,2025,2026&titulo=Depreciacao+FIPE+e+IPVA+(5+Anos)&prefixo=R$+&sufixo=k&tema=${curTheme}&paleta=contrast`);
           if (res.ok) {
             areaContainer.innerHTML = await res.text();
           }
@@ -1474,15 +1567,44 @@ print_r(json_decode($response, true));`;
 
       // 3. Donut Chart de Paridade Flex
       const donutContainer = document.getElementById('donut-chart-container');
-      if (donutContainer && !donutContainer.hasChildNodes()) {
+      if (donutContainer) {
         try {
-          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=donut&valores=64.7,35.3&labels=Etanol,Gasolina&titulo=Paridade+Flex&tema=dark&paleta=emerald&furo=0.65');
+          const res = await fetch(`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=donut&valores=64.7,35.3&labels=Etanol,Gasolina&titulo=Paridade+Flex&tema=${curTheme}&paleta=flex&furo=0.65`);
           if (res.ok) {
             donutContainer.innerHTML = await res.text();
           }
         } catch (_) {}
       }
     }
+
+    
+    // Integração da Barra Inferior Mobile com Sincronização Perfeita
+    document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        if (!view) return;
+        document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item').forEach(b => b.classList.toggle('is-active', b.dataset.view === view));
+        document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.tab === view));
+        document.querySelectorAll('.primary-nav .nav-link[data-view]').forEach(b => b.classList.toggle('is-active', b.dataset.view === view));
+        document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+        const target = document.getElementById('section-' + view);
+        if (target) target.style.display = 'block';
+
+        const bread = document.getElementById('breadcrumb-title');
+        const titles = {
+          placas: 'Placas & Mercosul',
+          chassi: 'Chassi / VIN (ISO 3779)',
+          renavam: 'RENAVAM (Módulo 11)',
+          flex: 'Calculadora Flex ANP',
+          graficos: 'Gráficos & Telemetria'
+        };
+        if (bread && titles[view]) bread.textContent = titles[view];
+        updateSnippet();
+        renderLucide();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (view === 'graficos') carregarGraficosAnycast();
+      });
+    });
 
     // Botão Executar Sandbox
     document.getElementById('btn-run-sandbox').addEventListener('click', () => {
@@ -1496,10 +1618,7 @@ print_r(json_decode($response, true));`;
 
     // Inicialização
     renderLucide();
-    setTimeout(() => {
-      renderLucide();
-      executarConsultaPlaca('BRA2E19');
-    }, 100);
+    executarConsultaPlaca(document.getElementById('placa-input')?.value || 'BRA2E19');
   </script>
 </body>
 </html>

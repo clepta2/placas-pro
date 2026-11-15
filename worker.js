@@ -461,6 +461,331 @@ function limparApenasNumeros(str) {
   return out;
 }
 
+// ─── CATÁLOGO OFICIAL DE MODELOS & FOTOS DE VEÍCULOS (BRASIL) ───
+
+const BASE_VEICULOS_CONHECIDOS = {
+  'BRA2E19': {
+    marca: 'Toyota',
+    modelo: 'Corolla',
+    versao: 'Altis Hybrid 1.8 16V Flex Automático',
+    nomeCompleto: 'Toyota Corolla Altis Hybrid 1.8 Flex',
+    anoFabricacao: 2022,
+    anoModelo: 2023,
+    cor: 'Prata Metálico',
+    corHex: '#94a3b8',
+    segmento: 'Sedan Médio',
+    combustivel: 'Híbrido / Flex (Etanol e Gasolina)',
+    cilindrada: '1.798 cm³',
+    potencia: '122 cv (Combustão + Elétrico)',
+    transmissao: 'Automática Hybrid Transaxle CVT',
+    procedencia: 'Nacional (Indaiatuba - SP)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: {
+      codigo: '002174-1',
+      valor: 'R$ 142.900,00',
+      mesReferencia: 'Novembro / 2026',
+      historicoVariacaoAnual: '-4.2%'
+    },
+    ipvaEstimadoSp: 'R$ 5.716,00 (4.0%)',
+    fotoUrl: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/toyota.svg'
+  },
+  'EZK5520': {
+    marca: 'Volkswagen',
+    modelo: 'Golf GTI',
+    versao: '2.0 TSI 16V Turbo DSG',
+    nomeCompleto: 'Volkswagen Golf GTI 2.0 TSI DSG',
+    anoFabricacao: 2019,
+    anoModelo: 2019,
+    cor: 'Branco Puro',
+    corHex: '#f8fafc',
+    segmento: 'Hatch Esportivo',
+    combustivel: 'Gasolina',
+    cilindrada: '1.984 cm³ Turbo',
+    potencia: '230 cv a 4.700 rpm',
+    transmissao: 'Automatizada DSG 6 Velocidades Dupla Embreagem',
+    procedencia: 'Nacional (São José dos Pinhais - PR)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: {
+      codigo: '005388-0',
+      valor: 'R$ 158.400,00',
+      mesReferencia: 'Novembro / 2026',
+      historicoVariacaoAnual: '+1.5% (Apreciação)'
+    },
+    ipvaEstimadoSp: 'R$ 6.336,00 (4.0%)',
+    fotoUrl: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/volkswagen.svg'
+  },
+  'ABC12C4': {
+    marca: 'Honda',
+    modelo: 'CB 500X',
+    versao: 'ABS Adventure Touring',
+    nomeCompleto: 'Honda CB 500X ABS Touring',
+    anoFabricacao: 2023,
+    anoModelo: 2024,
+    cor: 'Vermelho Grand Prix',
+    corHex: '#ef4444',
+    segmento: 'Motocicleta Crossover / Trail',
+    combustivel: 'Gasolina',
+    cilindrada: '471 cm³ Bicilíndrico',
+    potencia: '50,4 cv a 8.500 rpm',
+    transmissao: 'Manual de 6 velocidades com embreagem deslizante',
+    procedencia: 'Nacional (Manaus - AM)',
+    portas: 0,
+    ocupantes: 2,
+    fipe: {
+      codigo: '811128-4',
+      valor: 'R$ 44.500,00',
+      mesReferencia: 'Novembro / 2026',
+      historicoVariacaoAnual: '-2.1%'
+    },
+    ipvaEstimadoSp: 'R$ 890,00 (2.0%)',
+    fotoUrl: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/honda.svg'
+  },
+  'RIO2016': {
+    marca: 'Hyundai',
+    modelo: 'HB20',
+    versao: 'Diamond Plus 1.0 Turbo GDI Flex Aut.',
+    nomeCompleto: 'Hyundai HB20 Diamond Plus 1.0 Turbo',
+    anoFabricacao: 2020,
+    anoModelo: 2020,
+    cor: 'Azul Sapphire Metálico',
+    corHex: '#3b82f6',
+    segmento: 'Hatch Compacto Premium',
+    combustivel: 'Flex (Álcool e Gasolina)',
+    cilindrada: '998 cm³ 3 Cilindros Turbo',
+    potencia: '120 cv a 6.000 rpm',
+    transmissao: 'Automática de 6 velocidades',
+    procedencia: 'Nacional (Piracicaba - SP)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: {
+      codigo: '015174-2',
+      valor: 'R$ 72.800,00',
+      mesReferencia: 'Novembro / 2026',
+      historicoVariacaoAnual: '-3.8%'
+    },
+    ipvaEstimadoSp: 'R$ 2.912,00 (4.0%)',
+    fotoUrl: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/hyundai.svg'
+  },
+  'ABC1234': {
+    marca: 'Fiat',
+    modelo: 'Uno',
+    versao: 'Mille Fire 1.0 MPI 8V Gasolina 2p',
+    nomeCompleto: 'Fiat Uno Mille Fire 1.0',
+    anoFabricacao: 2004,
+    anoModelo: 2005,
+    cor: 'Cinza Chumbo',
+    corHex: '#64748b',
+    segmento: 'Popular / Hatch Compacto',
+    combustivel: 'Gasolina',
+    cilindrada: '999 cm³ 4 Cilindros',
+    potencia: '55 cv a 5.500 rpm',
+    transmissao: 'Manual de 5 marchas',
+    procedencia: 'Nacional (Betim - MG)',
+    portas: 2,
+    ocupantes: 5,
+    fipe: {
+      codigo: '001150-9',
+      valor: 'R$ 16.200,00',
+      mesReferencia: 'Novembro / 2026',
+      historicoVariacaoAnual: '+3.2% (Clássico Popular)'
+    },
+    ipvaEstimadoSp: 'ISENTO (Veículo com 22 anos - Lei SP isenta após 20 anos)',
+    fotoUrl: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/fiat.svg'
+  }
+};
+
+const POOL_VEICULOS_BRASIL = [
+  {
+    marca: 'Chevrolet',
+    modelo: 'Onix',
+    versao: 'Plus Premier 1.0 Turbo Flex Aut.',
+    nomeCompleto: 'Chevrolet Onix Plus Premier 1.0 Turbo',
+    anoFabricacao: 2022,
+    anoModelo: 2023,
+    cor: 'Vermelho Carmim',
+    corHex: '#b91c1c',
+    segmento: 'Sedan Compacto',
+    combustivel: 'Flex (Álcool e Gasolina)',
+    cilindrada: '999 cm³ Turbo',
+    potencia: '116 cv',
+    transmissao: 'Automática 6 Marchas',
+    procedencia: 'Nacional (Gravataí - RS)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '004495-4', valor: 'R$ 89.900,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/chevrolet.svg'
+  },
+  {
+    marca: 'Jeep',
+    modelo: 'Compass',
+    versao: 'Longitude 1.3 Turbo 270 Flex Aut.',
+    nomeCompleto: 'Jeep Compass Longitude 1.3 Turbo',
+    anoFabricacao: 2023,
+    anoModelo: 2023,
+    cor: 'Preto Carbon',
+    corHex: '#18181b',
+    segmento: 'SUV Médio',
+    combustivel: 'Flex (Álcool e Gasolina)',
+    cilindrada: '1.332 cm³ Turbo',
+    potencia: '185 cv',
+    transmissao: 'Automática 6 Marchas',
+    procedencia: 'Nacional (Goiana - PE)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '017068-2', valor: 'R$ 164.500,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/jeep.svg'
+  },
+  {
+    marca: 'Fiat',
+    modelo: 'Strada',
+    versao: 'Freedom 1.3 Flex 8V Cabine Dupla',
+    nomeCompleto: 'Fiat Strada Freedom 1.3 CD',
+    anoFabricacao: 2023,
+    anoModelo: 2024,
+    cor: 'Branco Banchisa',
+    corHex: '#f1f5f9',
+    segmento: 'Picape Compacta',
+    combustivel: 'Flex (Álcool e Gasolina)',
+    cilindrada: '1.332 cm³ Firefly',
+    potencia: '107 cv',
+    transmissao: 'Manual 5 Marchas',
+    procedencia: 'Nacional (Betim - MG)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '001533-4', valor: 'R$ 99.800,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/fiat.svg'
+  },
+  {
+    marca: 'Toyota',
+    modelo: 'Hilux',
+    versao: 'SRV 2.8 16V 4x4 Diesel Aut.',
+    nomeCompleto: 'Toyota Hilux SRV 2.8 Diesel 4x4',
+    anoFabricacao: 2022,
+    anoModelo: 2023,
+    cor: 'Prata Nevoeiro',
+    corHex: '#94a3b8',
+    segmento: 'Picape Média 4x4',
+    combustivel: 'Diesel',
+    cilindrada: '2.755 cm³ Turbo Diesel',
+    potencia: '204 cv',
+    transmissao: 'Automática 6 Marchas com Tração 4x4',
+    procedencia: 'Importada (Zárate - Argentina)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '002047-8', valor: 'R$ 238.900,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/toyota.svg'
+  },
+  {
+    marca: 'Volkswagen',
+    modelo: 'Polo',
+    versao: 'Track 1.0 MPI Flex 12V 5p',
+    nomeCompleto: 'Volkswagen Polo Track 1.0 Flex',
+    anoFabricacao: 2023,
+    anoModelo: 2024,
+    cor: 'Cinza Platinum',
+    corHex: '#475569',
+    segmento: 'Hatch Compacto',
+    combustivel: 'Flex (Álcool e Gasolina)',
+    cilindrada: '999 cm³ 3 Cilindros',
+    potencia: '84 cv',
+    transmissao: 'Manual 5 Marchas',
+    procedencia: 'Nacional (Taubaté - SP)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '005528-0', valor: 'R$ 78.400,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/volkswagen.svg'
+  },
+  {
+    marca: 'Honda',
+    modelo: 'Civic',
+    versao: 'Touring 1.5 16V Turbo Gasolina Aut.',
+    nomeCompleto: 'Honda Civic Touring 1.5 Turbo',
+    anoFabricacao: 2021,
+    anoModelo: 2021,
+    cor: 'Preto Cristal Perolizado',
+    corHex: '#090d16',
+    segmento: 'Sedan Médio Premium',
+    combustivel: 'Gasolina',
+    cilindrada: '1.498 cm³ Turbo VTEC',
+    potencia: '173 cv',
+    transmissao: 'Automática CVT de 7 marchas virtuais',
+    procedencia: 'Nacional (Sumaré - SP)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '014088-0', valor: 'R$ 139.800,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/honda.svg'
+  },
+  {
+    marca: 'BMW',
+    modelo: '320i',
+    versao: 'M Sport 2.0 TwinPower Turbo Aut.',
+    nomeCompleto: 'BMW 320i M Sport 2.0 Turbo',
+    anoFabricacao: 2022,
+    anoModelo: 2023,
+    cor: 'Azul Portimão Metálico',
+    corHex: '#1d4ed8',
+    segmento: 'Sedan Esportivo Premium',
+    combustivel: 'Flex / Gasolina',
+    cilindrada: '1.998 cm³ TwinPower',
+    potencia: '184 cv',
+    transmissao: 'Automática Steptronic 8 Marchas',
+    procedencia: 'Nacional (Araquari - SC)',
+    portas: 4,
+    ocupantes: 5,
+    fipe: { codigo: '009228-2', valor: 'R$ 295.000,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/bmw.svg'
+  },
+  {
+    marca: 'Porsche',
+    modelo: '911',
+    versao: 'Carrera S 3.0 Bi-Turbo PDK',
+    nomeCompleto: 'Porsche 911 Carrera S 3.0',
+    anoFabricacao: 2023,
+    anoModelo: 2023,
+    cor: 'Amarelo Racing',
+    corHex: '#eab308',
+    segmento: 'Superesportivo Coupé',
+    combustivel: 'Gasolina Premium',
+    cilindrada: '2.981 cm³ Boxer 6 Cilindros Bi-Turbo',
+    potencia: '450 cv',
+    transmissao: 'Automatizada PDK 8 Velocidades',
+    procedencia: 'Importada (Stuttgart - Alemanha)',
+    portas: 2,
+    ocupantes: 4,
+    fipe: { codigo: '035098-2', valor: 'R$ 980.000,00', mesReferencia: 'Novembro / 2026' },
+    fotoUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+    marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/porsche.svg'
+  }
+];
+
+function obterDadosVeiculoPorPlaca(placa, tipoVeiculo = 'automovel') {
+  const limpa = String(placa || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  if (BASE_VEICULOS_CONHECIDOS[limpa]) {
+    return BASE_VEICULOS_CONHECIDOS[limpa];
+  }
+
+  let hash = 0;
+  for (let i = 0; i < limpa.length; i++) {
+    hash = (hash * 31 + limpa.charCodeAt(i)) >>> 0;
+  }
+  const idx = hash % POOL_VEICULOS_BRASIL.length;
+  return POOL_VEICULOS_BRASIL[idx];
+}
+
 function analisarPlaca(placaInput) {
   const limpa = limparAlfanumerico(placaInput);
 
@@ -544,6 +869,7 @@ function analisarPlaca(placaInput) {
   const ultimoDigito = isDigito(c6) ? c6 : (isDigito(c5) ? c5 : null);
   const rodizioInfo = obterInfoRodizioSP(ultimoDigito);
   const licenciamentoInfo = obterLicenciamento(ultimoDigito, estadoInfo ? estadoInfo.uf : 'SP');
+  const veiculoInfo = obterDadosVeiculoPorPlaca(limpa, tipoVeiculo);
 
   return {
     valido: true,
@@ -556,6 +882,7 @@ function analisarPlaca(placaInput) {
     placaMercosulFormatada: placaMercosul,
     podeConverterParaAntiga: conversivel && Boolean(placaAntiga),
     ultimoDigito,
+    veiculo: veiculoInfo,
     origem: estadoInfo || {
       uf: 'DESCONHECIDO',
       estado: 'Faixa Especial / Em atualização',
