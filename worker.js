@@ -18,6 +18,8 @@
  * @see https://github.com/clepta2/placas-pro
  */
 
+import { CSS_SUITE, HTML_INDEX, CLIENT_JS } from './site-assets.js';
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -997,7 +999,40 @@ export default {
       });
     };
 
-    // ── ROTA: DOCUMENTAÇÃO / HTML INTERATIVO ──
+    // ── ROTA: ARQUIVOS ESTÁTICOS DO SITE PRÓPRIO ──
+    if (pathname === '/ponte-suite.css') {
+      return new Response(CSS_SUITE, {
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'text/css; charset=utf-8',
+          'Cache-Control': 'public, max-age=604800, s-maxage=2592000'
+        }
+      });
+    }
+
+    if (pathname === '/placas-pro.js') {
+      return new Response(CLIENT_JS, {
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'application/javascript; charset=utf-8',
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      });
+    }
+
+    // ── ROTA: SITE PRÓPRIO OFICIAL (TEMPLATE SUÍTE PONTE / OZPRO) ──
+    const acceptHeader = request.headers.get('Accept') || '';
+    if ((pathname === '/' || pathname === '/app') && !acceptHeader.includes('application/json')) {
+      return new Response(HTML_INDEX, {
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=300, s-maxage=3600'
+        }
+      });
+    }
+
+    // ── ROTA: DOCUMENTAÇÃO / SWAGGER INTERATIVO ──
     if (pathname === '/docs' || pathname === '/documentacao') {
       const html = `<!DOCTYPE html>
 <html lang="pt-BR">

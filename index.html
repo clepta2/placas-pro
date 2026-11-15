@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placas Pro — Inteligência Veicular, Auditoria & Telemetria Anycast</title>
+  <meta name="description" content="Validador e Conversor de Placas Mercosul e Cinza, Mapeamento CONTRAN 27 UFs, RENAVAM Módulo 11, Chassi VIN ISO 3779, Licenciamento DETRAN, Rodízio SP e Renderizador SVG na Cloudflare Edge.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ponte-suite.css">
+  <style>
+    .plate-display-card {
+      background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.12), transparent 70%), #0b1324;
+      border: 1px solid #1e293b;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      min-height: 180px;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    }
+    .plate-svg-wrapper {
+      max-width: 400px;
+      width: 100%;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.6));
+      transition: transform 0.2s ease;
+    }
+    .plate-svg-wrapper:hover {
+      transform: scale(1.02);
+    }
+    .grid-specs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .spec-item {
+      background: var(--paper-elevated, #162032);
+      border: 1px solid var(--line, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      padding: 1rem;
+    }
+    .spec-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted, #94a3b8);
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+    }
+    .spec-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink, #f8fafc);
+    }
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-info { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+  </style>
+</head>
+<body>
+  <!-- Header da Suíte Anycast -->
+  <header>
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon" style="background:#3b82f6;color:#ffffff;display:flex;align-items:center;justify-content:center;border-radius:10px;width:40px;height:40px;font-size:22px;">
+          🚗
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:1.15rem;letter-spacing:-0.02em;display:flex;align-items:center;gap:0.5rem;">
+            Placas & Veículos Pro
+            <span class="badge-status badge-info">v1.0.0 Anycast</span>
+          </div>
+          <div style="font-size:0.75rem;color:var(--muted);">Cloudflare Edge · CONTRAN · SENATRAN · ISO 3779</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <a href="https://ponte-marketplace.maputo2.workers.dev" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+          <span>🌐 Ponte Marketplace</span>
+        </a>
+        <a href="https://github.com/clepta2/placas-pro" target="_blank" rel="noopener" class="btn btn-secondary btn-sm" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+          <span>GitHub</span>
+        </a>
+        <button id="themeToggle" class="btn btn-secondary btn-sm" style="padding:0.4rem 0.6rem;" title="Alternar Tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="container" style="max-width:1100px;margin:2rem auto;padding:0 1.25rem;">
+    <!-- Hero / Headline -->
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.35rem 0.9rem;border-radius:9999px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);color:#60a5fa;font-size:0.8rem;font-weight:700;margin-bottom:1rem;">
+        ⚡ Sub-2ms Anycast Latency · Zero Regex · 100% Determinístico
+      </div>
+      <h1 style="font-size:2.6rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:0.75rem;line-height:1.2;">
+        Inteligência Veicular & Validação de Placas na Borda
+      </h1>
+      <p style="color:var(--muted);font-size:1.1rem;max-width:720px;margin:0 auto;line-height:1.6;">
+        Validação e conversão bidirecional Mercosul & Cinza, mapeamento das 27 UFs do CONTRAN, auditoria de RENAVAM Módulo 11, decodificador Chassi VIN ISO 3779 e renderizador vetorial SVG.
+      </p>
+    </div>
+
+    <!-- Abas / Tabs de Navegação -->
+    <div style="display:flex;gap:0.5rem;background:var(--paper,#111827);border:1px solid var(--line,#1e293b);border-radius:12px;padding:0.35rem;margin-bottom:2rem;overflow-x:auto;">
+      <button class="tab-btn active" data-tab="placas" style="flex:1;min-width:160px;">🚗 Placas & Mercosul</button>
+      <button class="tab-btn" data-tab="chassi" style="flex:1;min-width:160px;">🔍 Chassi / VIN (ISO)</button>
+      <button class="tab-btn" data-tab="renavam" style="flex:1;min-width:160px;">📋 RENAVAM (Módulo 11)</button>
+      <button class="tab-btn" data-tab="flex" style="flex:1;min-width:160px;">⛽ Calculadora Flex</button>
+      <button class="tab-btn" data-tab="api" style="flex:1;min-width:160px;">💻 API & Integração</button>
+    </div>
+
+    <!-- TAB 1: PLACAS & MERCOSUL -->
+    <section id="tab-placas" class="tab-content">
+      <div class="card" style="background:var(--paper,#111827);border:1px solid var(--line,#1e293b);border-radius:var(--radius-xl);padding:2rem;margin-bottom:2rem;">
+        <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.6rem;">
+          <span>🔍 Consulta & Conversão de Placas Oficiais</span>
+        </h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">
+          Digite uma placa antiga (ex: <code style="color:#60a5fa;">ABC-1234</code>) ou Mercosul (ex: <code style="color:#60a5fa;">BRA2E19</code> ou moto <code style="color:#60a5fa;">ABC12C4</code>).
+        </p>
+
+        <!-- Formulário de Placa -->
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+          <input type="text" id="inputPlaca" value="BRA2E19" placeholder="Ex: BRA2E19 ou ABC-1234" maxlength="8" style="flex:2;min-width:220px;height:46px;background:#090d16;border:1px solid var(--line,#1e293b);border-radius:var(--radius-md);padding:0 1rem;font-family:var(--font-mono);font-size:1.25rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;outline:none;" />
+          <button id="btnConsultarPlaca" class="btn btn-primary" style="height:46px;padding:0 1.5rem;font-weight:700;background:#3b82f6;color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;display:flex;align-items:center;gap:0.5rem;">
+            <span>Consultar Placa</span>
+          </button>
+          <button id="btnGerarPlaca" class="btn btn-secondary" style="height:46px;padding:0 1.25rem;font-weight:600;border-radius:var(--radius-md);cursor:pointer;">
+            ⚡ Gerar Placa Válida
+          </button>
+        </div>
+
+        <!-- Exemplos de 1 Clique -->
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;font-size:0.85rem;margin-bottom:2rem;">
+          <span style="color:var(--muted);font-weight:600;">Exemplos rápidos:</span>
+          <button class="btn btn-secondary btn-sm sample-plate-btn" data-plate="BRA2E19">🚗 BRA2E19 (Mercosul Carro)</button>
+          <button class="btn btn-secondary btn-sm sample-plate-btn" data-plate="ABC12C4">🏍️ ABC12C4 (Mercosul Moto)</button>
+          <button class="btn btn-secondary btn-sm sample-plate-btn" data-plate="EZK-5520">🚙 EZK-5520 (Cinza SP)</button>
+          <button class="btn btn-secondary btn-sm sample-plate-btn" data-plate="RIO-2016">🏖️ RIO-2016 (Rio de Janeiro)</button>
+        </div>
+
+        <!-- Placa SVG Oficial Renderizada -->
+        <div class="plate-display-card">
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;">
+            Renderização Vetorial SVG Anycast em Tempo Real
+          </div>
+          <div id="svgContainer" class="plate-svg-wrapper">
+            <!-- SVG injetado dinamicamente -->
+          </div>
+        </div>
+
+        <!-- Painel de Especificações Técnicas -->
+        <div id="plateDetailsPanel" class="grid-specs">
+          <div class="spec-item">
+            <div class="spec-label">Padrão & Modelo</div>
+            <div id="specPadrao" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Conversão Antiga <-> Mercosul</div>
+            <div id="specConversao" class="spec-value" style="font-family:var(--font-mono);">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Estado de Origem (CONTRAN)</div>
+            <div id="specOrigem" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Licenciamento Anual DETRAN</div>
+            <div id="specLicenciamento" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Rodízio Municipal SP (CET)</div>
+            <div id="specRodizio" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Status de Circulação Agora</div>
+            <div id="specCirculacao" class="spec-value">-</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CHASSI / VIN (ISO 3779) -->
+    <section id="tab-chassi" class="tab-content" style="display:none;">
+      <div class="card" style="background:var(--paper,#111827);border:1px solid var(--line,#1e293b);border-radius:var(--radius-xl);padding:2rem;">
+        <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:0.5rem;">🔍 Decodificador e Auditor de Chassi (VIN ISO 3779)</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">
+          Audite o número de chassi de 17 caracteres conforme as normas internacionais ISO 3779 e SAE J853. As letras <strong style="color:#ef4444;">I, O, Q</strong> são proibidas para evitar fraudes.
+        </p>
+
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+          <input type="text" id="inputChassi" value="9BWCA45Z1FP012345" placeholder="Digite o Chassi de 17 caracteres..." maxlength="17" style="flex:2;min-width:240px;height:46px;background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);padding:0 1rem;font-family:var(--font-mono);font-size:1.1rem;text-transform:uppercase;color:#fff;outline:none;" />
+          <button id="btnConsultarChassi" class="btn btn-primary" style="height:46px;padding:0 1.5rem;font-weight:700;background:#3b82f6;color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;">
+            Decodificar Chassi
+          </button>
+        </div>
+
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;font-size:0.85rem;margin-bottom:1.75rem;">
+          <span style="color:var(--muted);font-weight:600;">Exemplos de montadoras:</span>
+          <button class="btn btn-secondary btn-sm sample-vin-btn" data-vin="9BWCA45Z1FP012345">🚗 Volkswagen Brasil (9BW - 2015)</button>
+          <button class="btn btn-secondary btn-sm sample-vin-btn" data-vin="9BGKS48V0LG123456">🚙 Chevrolet Onix (9BG - 2020)</button>
+          <button class="btn btn-secondary btn-sm sample-vin-btn" data-vin="5YJ3E1EB8NF123456">⚡ Tesla Model 3 (5YJ - EUA 2022)</button>
+          <button class="btn btn-secondary btn-sm sample-vin-btn" data-vin="WAUZZZ8V7FA012345">🇩🇪 Audi AG Alemanha (WAU)</button>
+        </div>
+
+        <div id="chassiResultPanel" class="grid-specs">
+          <div class="spec-item">
+            <div class="spec-label">Fabricante (WMI)</div>
+            <div id="vinFabricante" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">País de Montagem</div>
+            <div id="vinPais" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Ano-Modelo Oficial</div>
+            <div id="vinAno" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Check Digit (Posição 9)</div>
+            <div id="vinCheckDigit" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Planta de Montagem</div>
+            <div id="vinPlanta" class="spec-value">-</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Número de Série</div>
+            <div id="vinSerie" class="spec-value" style="font-family:var(--font-mono);">-</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: RENAVAM (MÓDULO 11) -->
+    <section id="tab-renavam" class="tab-content" style="display:none;">
+      <div class="card" style="background:var(--paper,#111827);border:1px solid var(--line,#1e293b);border-radius:var(--radius-xl);padding:2rem;">
+        <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:0.5rem;">📋 Validador Oficial de RENAVAM (DENATRAN / SENATRAN)</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">
+          Validação do Registro Nacional de Veículos Automotores usando o algoritmo matemático ponderado de Módulo 11 oficial com pesos <code style="color:#60a5fa;">[3, 2, 9, 8, 7, 6, 5, 4, 3, 2]</code>.
+        </p>
+
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+          <input type="text" id="inputRenavam" value="00632345678" placeholder="Digite o RENAVAM (9 a 11 dígitos)..." maxlength="11" style="flex:2;min-width:220px;height:46px;background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);padding:0 1rem;font-family:var(--font-mono);font-size:1.15rem;color:#fff;outline:none;" />
+          <button id="btnValidarRenavam" class="btn btn-primary" style="height:46px;padding:0 1.5rem;font-weight:700;background:#3b82f6;color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;">
+            Validar RENAVAM
+          </button>
+          <button id="btnGerarRenavam" class="btn btn-secondary" style="height:46px;padding:0 1.25rem;font-weight:600;border-radius:var(--radius-md);cursor:pointer;">
+            ⚡ Gerar RENAVAM Válido
+          </button>
+        </div>
+
+        <div id="renavamResultBox" style="background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);padding:1.25rem;margin-top:1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+            <span id="renavamBadge" class="badge-status badge-success">Regular & Válido</span>
+            <span style="font-size:0.8rem;color:var(--muted);font-family:var(--font-mono);">DENATRAN Módulo 11</span>
+          </div>
+          <div style="font-size:1.2rem;font-weight:700;font-family:var(--font-mono);margin-bottom:0.5rem;" id="renavamDisplay">
+            00632345678
+          </div>
+          <p id="renavamMensagem" style="color:var(--muted);font-size:0.875rem;">
+            RENAVAM regular e matematicamente válido.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: CALCULADORA FLEX -->
+    <section id="tab-flex" class="tab-content" style="display:none;">
+      <div class="card" style="background:var(--paper,#111827);border:1px solid var(--line,#1e293b);border-radius:var(--radius-xl);padding:2rem;">
+        <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:0.5rem;">⛽ Calculadora Técnica de Paridade Flex (Etanol x Gasolina)</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">
+          Compare o preço na bomba e descubra qual combustível oferece maior autonomia e economia financeira com base no limiar técnico de rendimento calórico (70%).
+        </p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:1.25rem;margin-bottom:1.5rem;">
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;color:var(--muted);">Preço do Etanol (Litro)</label>
+            <input type="number" step="0.01" id="flexEtanol" value="3.85" style="width:100%;height:46px;background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);padding:0 1rem;font-family:var(--font-mono);font-size:1.15rem;color:#fff;outline:none;" />
+          </div>
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;color:var(--muted);">Preço da Gasolina (Litro)</label>
+            <input type="number" step="0.01" id="flexGasolina" value="5.95" style="width:100%;height:46px;background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);padding:0 1rem;font-family:var(--font-mono);font-size:1.15rem;color:#fff;outline:none;" />
+          </div>
+        </div>
+
+        <div id="flexResultBox" style="background:radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12), transparent 70%), #090d16;border:1px solid #059669;border-radius:var(--radius-md);padding:1.5rem;text-align:center;">
+          <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:#10b981;font-weight:700;margin-bottom:0.5rem;">
+            Combustível Mais Vantajoso
+          </div>
+          <div id="flexVantajoso" style="font-size:2.2rem;font-weight:800;color:#fff;margin-bottom:0.5rem;">
+            🌱 ETANOL
+          </div>
+          <div id="flexParidade" style="font-size:1.1rem;color:#93c5fd;font-weight:600;margin-bottom:0.75rem;">
+            Paridade: 64.7% (Abaixo do teto de 70%)
+          </div>
+          <p id="flexParecer" style="color:var(--muted);font-size:0.9rem;max-width:540px;margin:0 auto;line-height:1.5;">
+            Abastecer com Etanol está proporcionando economia estimada de 7.6% em relação à Gasolina neste momento.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: API & INTEGRAÇÃO -->
+    <section id="tab-api" class="tab-content" style="display:none;">
+      <div class="card" style="background:var(--paper,#111827);border:1px solid var(--line,#1e293b);border-radius:var(--radius-xl);padding:2rem;">
+        <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:0.5rem;">💻 Guia de Integração Rápida REST (Cloudflare Anycast)</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">
+          Integre telemetria veicular diretamente no seu software, ERP, aplicativo móvel ou e-commerce com chamadas HTTP diretas.
+        </p>
+
+        <!-- Base URL -->
+        <div style="background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;">
+          <div>
+            <div style="font-size:0.75rem;text-transform:uppercase;color:var(--muted);font-weight:600;">Base URL Oficial Anycast</div>
+            <code style="color:#60a5fa;font-family:var(--font-mono);font-size:0.95rem;">https://placas-pro-api.clepta2.workers.dev</code>
+          </div>
+          <span class="badge-status badge-success">HTTP/3 QUIC Ativo</span>
+        </div>
+
+        <!-- Snippets -->
+        <div style="background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;background:#0d1527;border-bottom:1px solid var(--line);">
+            <span style="font-size:0.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;">Exemplo cURL (Shell)</span>
+            <button class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText('curl -s https://placas-pro-api.clepta2.workers.dev/api/placas/BRA2E19');alert('cURL copiado!');">Copiar cURL</button>
+          </div>
+          <pre style="padding:1.25rem;color:#93c5fd;font-family:var(--font-mono);font-size:0.85rem;overflow-x:auto;margin:0;">curl -s "https://placas-pro-api.clepta2.workers.dev/api/placas/BRA2E19" \
+  -H "Authorization: ******" \
+  -H "x-api-key: plc_live_mercosul_2026"</pre>
+        </div>
+
+        <!-- Renderizador SVG em HTML -->
+        <div style="background:#090d16;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;margin-top:1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;background:#0d1527;border-bottom:1px solid var(--line);">
+            <span style="font-size:0.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;">Incorporação Direta de Placa SVG em HTML / App</span>
+            <button class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText('<img src=&quot;https://placas-pro-api.clepta2.workers.dev/api/placas/BRA2E19/svg&quot; alt=&quot;Placa Mercosul&quot; width=&quot;400&quot;>');alert('HTML copiado!');">Copiar HTML</button>
+          </div>
+          <pre style="padding:1.25rem;color:#93c5fd;font-family:var(--font-mono);font-size:0.85rem;overflow-x:auto;margin:0;">&lt;!-- Renderiza a placa oficial em alta definição direto da CDN --&gt;
+&lt;img src="https://placas-pro-api.clepta2.workers.dev/api/placas/BRA2E19/svg" alt="Placa Mercosul" width="400"&gt;</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé Oficial -->
+  <footer style="margin-top:auto;border-top:1px solid var(--line,#1e293b);padding:2rem 1.25rem;text-align:center;color:var(--muted);font-size:0.85rem;">
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <div>Placas & Veículos Pro • Ponte API Marketplace • Infraestrutura Anycast Cloudflare</div>
+      <div>Licença MIT • clepta2</div>
+    </div>
+  </footer>
+
+  <!-- Lógica da Aplicação -->
+  <script type="module">
+    import {
+      analisarPlaca,
+      validarRenavam,
+      decodificarVin,
+      calcularParidadeFlex,
+      renderizarPlacaMercosulSvg
+    } from './placas-pro.js?v=1.0.1';
+
+    // Alternador de Abas
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+        btn.classList.add('active');
+        const tabId = 'tab-' + btn.dataset.tab;
+        const target = document.getElementById(tabId);
+        if (target) target.style.display = 'block';
+      });
+    });
+
+    // 1. Módulo de Placas
+    function consultarPlaca(placaInput) {
+      const data = analisarPlaca(placaInput);
+      const svg = renderizarPlacaMercosulSvg(placaInput);
+      document.getElementById('svgContainer').innerHTML = svg;
+
+      if (!data.valido) {
+        document.getElementById('specPadrao').innerHTML = `<span class="badge-status badge-danger">Inválida</span>`;
+        document.getElementById('specConversao').textContent = data.mensagem || 'Placa fora do padrão nacional';
+        document.getElementById('specOrigem').textContent = '-';
+        document.getElementById('specLicenciamento').textContent = '-';
+        document.getElementById('specRodizio').textContent = '-';
+        document.getElementById('specCirculacao').textContent = '-';
+        return;
+      }
+
+      document.getElementById('specPadrao').innerHTML = `<span class="badge-status badge-success">${data.padrao}</span>`;
+      
+      let conversaoTexto = '-';
+      if (data.formato === 'antiga') {
+        conversaoTexto = `Equivalente Mercosul: ${data.placaMercosulFormatada}`;
+      } else if (data.podeConverterParaAntiga) {
+        conversaoTexto = `Equivalente Antiga: ${data.placaAntigaFormatada}`;
+      } else {
+        conversaoTexto = 'Emplacamento Novo (Pós-2018 Sem Par Antigo)';
+      }
+      document.getElementById('specConversao').textContent = conversaoTexto;
+
+      if (data.origem) {
+        document.getElementById('specOrigem').textContent = `${data.origem.estado} (${data.origem.uf}) — Região ${data.origem.regiao}`;
+      }
+
+      if (data.licenciamento) {
+        document.getElementById('specLicenciamento').textContent = `${data.licenciamento.mesVencimentoExtenso} (${data.licenciamento.statusExercicioAtual})`;
+      }
+
+      if (data.rodizioSP) {
+        document.getElementById('specRodizio').textContent = `${data.rodizioSP.diaRestricao} (Horários de pico: 07h-10h / 17h-20h)`;
+        const circ = data.rodizioSP.circulacaoPermitidaAgora;
+        document.getElementById('specCirculacao').innerHTML = circ
+          ? `<span class="badge-status badge-success">LIBERADO AGORA</span>`
+          : `<span class="badge-status badge-danger">RESTRITO NO CENTRO EXPANDIDO</span>`;
+      }
+    }
+
+    document.getElementById('btnConsultarPlaca').addEventListener('click', () => {
+      consultarPlaca(document.getElementById('inputPlaca').value);
+    });
+
+    document.getElementById('inputPlaca').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') consultarPlaca(e.target.value);
+    });
+
+    document.querySelectorAll('.sample-plate-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('inputPlaca').value = btn.dataset.plate;
+        consultarPlaca(btn.dataset.plate);
+      });
+    });
+
+    document.getElementById('btnGerarPlaca').addEventListener('click', () => {
+      const ufs = ['SP', 'RJ', 'MG', 'PR', 'RS', 'SC', 'BA'];
+      const prefixos = { SP: 'EZK', RJ: 'RIO', MG: 'HOK', PR: 'AAA', RS: 'IAA', SC: 'LWR', BA: 'JKS' };
+      const ufAleatoria = ufs[Math.floor(Math.random() * ufs.length)];
+      const pre = prefixos[ufAleatoria];
+      const n1 = Math.floor(Math.random() * 10);
+      const letrasMercosul = ['A','B','C','D','E','F','G','H','I','J'];
+      const l2 = letrasMercosul[Math.floor(Math.random() * letrasMercosul.length)];
+      const n3 = Math.floor(Math.random() * 10);
+      const n4 = Math.floor(Math.random() * 10);
+      const novaPlaca = `${pre}${n1}${l2}${n3}${n4}`;
+      document.getElementById('inputPlaca').value = novaPlaca;
+      consultarPlaca(novaPlaca);
+    });
+
+    // 2. Módulo de Chassi
+    function consultarChassi(vinInput) {
+      const data = decodificarVin(vinInput);
+      if (!data.valido) {
+        document.getElementById('vinFabricante').innerHTML = `<span class="badge-status badge-danger">Inválido</span>`;
+        document.getElementById('vinPais').textContent = data.mensagem || 'Chassi irregular';
+        document.getElementById('vinAno').textContent = '-';
+        document.getElementById('vinCheckDigit').textContent = '-';
+        document.getElementById('vinPlanta').textContent = '-';
+        document.getElementById('vinSerie').textContent = '-';
+        return;
+      }
+
+      document.getElementById('vinFabricante').textContent = `${data.fabricante} (${data.wmi})`;
+      document.getElementById('vinPais').textContent = `${data.paisFabricacao} (${data.origem})`;
+      document.getElementById('vinAno').textContent = `${data.anoModelo}`;
+      document.getElementById('vinCheckDigit').innerHTML = data.checkDigitValido
+        ? `<span class="badge-status badge-success">Válido (${data.checkDigitCalculado})</span>`
+        : `<span class="badge-status badge-warning">Informado: ${data.checkDigitInformado} (Calc: ${data.checkDigitCalculado})</span>`;
+      document.getElementById('vinPlanta').textContent = data.plantaMontagem || 'Padrão';
+      document.getElementById('vinSerie').textContent = data.numeroSerie || '-';
+    }
+
+    document.getElementById('btnConsultarChassi').addEventListener('click', () => {
+      consultarChassi(document.getElementById('inputChassi').value);
+    });
+
+    document.querySelectorAll('.sample-vin-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('inputChassi').value = btn.dataset.vin;
+        consultarChassi(btn.dataset.vin);
+      });
+    });
+
+    // 3. Módulo de RENAVAM
+    function consultarRenavam(renavamInput) {
+      const res = validarRenavam(renavamInput);
+      const badge = document.getElementById('renavamBadge');
+      const display = document.getElementById('renavamDisplay');
+      const msg = document.getElementById('renavamMensagem');
+
+      display.textContent = res.renavamFormatado || renavamInput;
+      msg.textContent = res.mensagem;
+
+      if (res.valido) {
+        badge.className = 'badge-status badge-success';
+        badge.textContent = 'Regular & Válido';
+      } else {
+        badge.className = 'badge-status badge-danger';
+        badge.textContent = 'Dígito Inválido';
+      }
+    }
+
+    document.getElementById('btnValidarRenavam').addEventListener('click', () => {
+      consultarRenavam(document.getElementById('inputRenavam').value);
+    });
+
+    document.getElementById('btnGerarRenavam').addEventListener('click', () => {
+      const d = [];
+      for (let i = 0; i < 10; i++) d.push(Math.floor(Math.random() * 10));
+      const pesos = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+      let soma = 0;
+      for (let i = 0; i < 10; i++) soma += d[i] * pesos[i];
+      const resto = (soma * 10) % 11;
+      const dv = (resto === 10 || resto === 11) ? 0 : resto;
+      const novoRenavam = d.join('') + dv;
+      document.getElementById('inputRenavam').value = novoRenavam;
+      consultarRenavam(novoRenavam);
+    });
+
+    // 4. Calculadora Flex
+    function atualizarFlex() {
+      const e = parseFloat(document.getElementById('flexEtanol').value);
+      const g = parseFloat(document.getElementById('flexGasolina').value);
+      const res = calcularParidadeFlex(e, g);
+
+      const box = document.getElementById('flexResultBox');
+      const v = document.getElementById('flexVantajoso');
+      const p = document.getElementById('flexParidade');
+      const c = document.getElementById('flexParecer');
+
+      if (res.combustivelVantajoso === 'ETANOL') {
+        box.style.borderColor = '#059669';
+        v.innerHTML = '🌱 ETANOL';
+        v.style.color = '#10b981';
+      } else {
+        box.style.borderColor = '#f59e0b';
+        v.innerHTML = '⛽ GASOLINA';
+        v.style.color = '#f59e0b';
+      }
+      p.textContent = `Paridade: ${res.paridadePercentual} (Limiar técnico: ${res.limiarAdotado})`;
+      c.textContent = res.parecerTecnico;
+    }
+
+    document.getElementById('flexEtanol').addEventListener('input', atualizarFlex);
+    document.getElementById('flexGasolina').addEventListener('input', atualizarFlex);
+
+    // Inicialização
+    consultarPlaca('BRA2E19');
+    consultarChassi('9BWCA45Z1FP012345');
+    consultarRenavam('00632345678');
+    atualizarFlex();
+  </script>
+</body>
+</html>
