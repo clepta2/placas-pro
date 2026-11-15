@@ -230,6 +230,21 @@ const html = `<!DOCTYPE html>
       object-fit: contain;
     }
 
+    /* Terminal Console: contraste garantido em qualquer tema */
+    .console-json, #console-output {
+      color: #f8fafc !important;
+      font-family: 'JetBrains Mono', monospace !important;
+    }
+
+    /* Compactação de Pílulas e Chips para evitar botões gigantes */
+    .sample-placa, .sample-chassi, .sample-renavam, .sample-boleto, .cat-btn, #btn-mode-mercosul, #btn-mode-antiga {
+      min-height: 28px !important;
+      height: 28px !important;
+      padding: 0 10px !important;
+      font-size: 11px !important;
+      border-radius: 6px !important;
+    }
+
     html, body {
       overflow-x: hidden !important;
       max-width: 100vw !important;
@@ -251,8 +266,8 @@ const html = `<!DOCTYPE html>
       }
       .topbar {
         height: auto !important;
-        min-height: 52px !important;
-        padding: 8px 12px !important;
+        min-height: 48px !important;
+        padding: 6px 12px !important;
         gap: 6px !important;
       }
       .breadcrumb {
@@ -270,6 +285,7 @@ const html = `<!DOCTYPE html>
       }
       .primary-button.accent {
         height: 32px !important;
+        min-height: 32px !important;
         padding: 0 10px !important;
         font-size: 11px !important;
       }
@@ -278,7 +294,7 @@ const html = `<!DOCTYPE html>
         height: 32px !important;
       }
       .content-wrap {
-        padding: 12px 14px 40px !important;
+        padding: 12px 12px 36px !important;
       }
       .page-heading {
         margin-bottom: 12px !important;
@@ -295,48 +311,66 @@ const html = `<!DOCTYPE html>
       .page-subtitle {
         font-size: 11.5px !important;
         line-height: 1.4 !important;
+        margin-bottom: 10px !important;
       }
       .billing-models-grid {
-        grid-template-columns: 1fr 1fr 1fr !important;
+        display: flex !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
         gap: 6px !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 2px !important;
+      }
+      .billing-models-grid::-webkit-scrollbar {
+        display: none !important;
       }
       .model-card {
-        padding: 8px 10px !important;
+        flex: 1 0 auto !important;
+        padding: 6px 10px !important;
         border-radius: var(--radius-md) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
       }
       .model-card .model-badge {
         font-size: 9px !important;
-        padding: 2px 6px !important;
-        margin-bottom: 4px !important;
+        padding: 2px 5px !important;
+        margin-bottom: 0 !important;
+        white-space: nowrap !important;
       }
       .model-card div[style*="font-size:20px"] {
-        font-size: 12px !important;
-        margin-bottom: 2px !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        margin-bottom: 0 !important;
+        white-space: nowrap !important;
       }
       .model-card p {
         display: none !important;
       }
       .tab-nav-bar {
         display: flex !important;
-        flex-wrap: wrap !important;
-        padding: 4px !important;
-        gap: 4px !important;
-        margin-bottom: 14px !important;
-        overflow-x: visible !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
         scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 6px !important;
+        padding: 4px !important;
+        margin-bottom: 14px !important;
+        border-radius: var(--radius-lg) !important;
       }
       .tab-nav-bar::-webkit-scrollbar {
         display: none !important;
       }
       .tab-nav-btn {
-        flex: 1 1 calc(50% - 6px) !important;
-        min-height: 30px !important;
-        padding: 4px 6px !important;
-        font-size: 10.5px !important;
+        flex: 0 0 auto !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        padding: 0 12px !important;
+        font-size: 11.5px !important;
+        white-space: nowrap !important;
+        border-radius: var(--radius-md) !important;
         gap: 5px !important;
-        white-space: normal !important;
         text-align: center !important;
       }
       .tab-nav-btn svg, .tab-nav-btn .lucide {
@@ -344,7 +378,7 @@ const html = `<!DOCTYPE html>
         height: 14px !important;
       }
       .card-dashboard {
-        padding: 14px !important;
+        padding: 12px !important;
         border-radius: var(--radius-lg) !important;
       }
       .card-dashboard div[style*="font-size:14px"] {
@@ -355,17 +389,26 @@ const html = `<!DOCTYPE html>
         margin-bottom: 10px !important;
       }
       input[type="text"], input[type="number"], select {
-        height: 38px !important;
-        font-size: 12px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        font-size: 12.5px !important;
+        padding: 0 10px !important;
       }
-      .primary-button.accent[style*="height:44px"], #btn-exec-placa {
-        height: 38px !important;
+      .primary-button, .secondary-button, #btn-exec-placa, #btn-gerar-placa, #btn-exec-chassi, #btn-exec-renavam {
+        height: 36px !important;
+        min-height: 36px !important;
         padding: 0 12px !important;
-        font-size: 12px !important;
+        font-size: 11.5px !important;
+      }
+      .sample-placa, .sample-chassi, .sample-renavam, .sample-boleto, .cat-btn, #btn-mode-mercosul, #btn-mode-antiga {
+        min-height: 26px !important;
+        height: 26px !important;
+        padding: 0 7px !important;
+        font-size: 10.5px !important;
       }
       .plate-render-frame {
         padding: 10px 6px !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 12px !important;
         width: 100% !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
@@ -375,8 +418,8 @@ const html = `<!DOCTYPE html>
         width: 100% !important;
       }
       .playground-split {
-        margin-top: 14px !important;
-        gap: 14px !important;
+        margin-top: 12px !important;
+        gap: 12px !important;
         width: 100% !important;
         box-sizing: border-box !important;
       }
@@ -387,24 +430,35 @@ const html = `<!DOCTYPE html>
         overflow-x: hidden !important;
       }
       .specs-table td {
-        padding: 8px 10px !important;
-        font-size: 11.5px !important;
+        padding: 7px 9px !important;
+        font-size: 11px !important;
       }
       .specs-table td.label-col {
-        font-size: 10.5px !important;
+        font-size: 10px !important;
+        width: 38% !important;
       }
       .terminal-window {
         border-radius: var(--radius-lg) !important;
+        background: #091311 !important;
       }
       .terminal-topbar {
-        padding: 8px 12px !important;
+        padding: 7px 10px !important;
       }
       .snippet-tab {
-        padding: 3px 6px !important;
+        padding: 2px 6px !important;
         font-size: 10px !important;
       }
       .terminal-body {
-        padding: 10px 12px !important;
+        padding: 8px 10px !important;
+        font-size: 11px !important;
+      }
+      .playground-console {
+        padding: 12px !important;
+        min-height: 200px !important;
+        max-height: 380px !important;
+      }
+      .console-json, #console-output {
+        color: #f8fafc !important;
         font-size: 11px !important;
       }
     }
@@ -900,7 +954,7 @@ const html = `<!DOCTYPE html>
                   <span id="console-latency">Latência: 1.2ms</span>
                   <span>Cloudflare Anycast</span>
                 </div>
-                <pre class="console-json" id="console-output" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#162032;line-height:1.5;"></pre>
+                <pre class="console-json" id="console-output" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#f8fafc;line-height:1.5;"></pre>
               </div>
             </div>
           </div>
