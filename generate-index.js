@@ -1228,6 +1228,148 @@ const html = `<!DOCTYPE html>
       consoleOutput.innerHTML = highlighted;
     }
 
+    const VEICULOS_CLIENT = {
+      'BRA2E19': {
+        marca: 'Toyota',
+        modelo: 'Corolla Altis Hybrid 1.8 Flex',
+        nomeCompleto: 'Toyota Corolla Altis Hybrid 1.8 Flex',
+        anoFabricacao: 2022,
+        anoModelo: 2023,
+        cor: 'Prata Metálico',
+        segmento: 'Sedan Médio',
+        combustivel: 'Híbrido / Flex',
+        potencia: '122 cv',
+        cilindrada: '1.798 cm³',
+        procedencia: 'Nacional (SP)',
+        valorFipeFormatado: 'R$ 142.900,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/toyota.svg'
+      },
+      'EZK5520': {
+        marca: 'Volkswagen',
+        modelo: 'Golf GTI 2.0 TSI DSG',
+        nomeCompleto: 'Volkswagen Golf GTI 2.0 TSI DSG',
+        anoFabricacao: 2019,
+        anoModelo: 2019,
+        cor: 'Branco Puro',
+        segmento: 'Hatch Esportivo',
+        combustivel: 'Gasolina',
+        potencia: '230 cv',
+        cilindrada: '1.984 cm³ Turbo',
+        procedencia: 'Nacional (PR)',
+        valorFipeFormatado: 'R$ 158.400,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/volkswagen.svg'
+      },
+      'ABC12C4': {
+        marca: 'Honda',
+        modelo: 'CB 500X ABS Touring',
+        nomeCompleto: 'Honda CB 500X ABS Touring',
+        anoFabricacao: 2023,
+        anoModelo: 2024,
+        cor: 'Vermelho Grand Prix',
+        segmento: 'Motocicleta Crossover',
+        combustivel: 'Gasolina',
+        potencia: '50,4 cv',
+        cilindrada: '471 cm³',
+        procedencia: 'Nacional (AM)',
+        valorFipeFormatado: 'R$ 44.500,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/honda.svg'
+      },
+      'RIO2016': {
+        marca: 'Hyundai',
+        modelo: 'HB20 Diamond Plus 1.0 Turbo',
+        nomeCompleto: 'Hyundai HB20 Diamond Plus 1.0 Turbo',
+        anoFabricacao: 2020,
+        anoModelo: 2020,
+        cor: 'Azul Sapphire Metálico',
+        segmento: 'Hatch Compacto',
+        combustivel: 'Flex',
+        potencia: '120 cv',
+        cilindrada: '998 cm³ Turbo',
+        procedencia: 'Nacional (SP)',
+        valorFipeFormatado: 'R$ 72.800,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/hyundai.svg'
+      }
+    };
+
+    const POOL_CLIENT = [
+      {
+        marca: 'Chevrolet',
+        modelo: 'Onix Plus Premier 1.0 Turbo',
+        nomeCompleto: 'Chevrolet Onix Plus Premier 1.0 Turbo',
+        anoFabricacao: 2022,
+        anoModelo: 2023,
+        cor: 'Vermelho Carmim',
+        segmento: 'Sedan Compacto',
+        combustivel: 'Flex',
+        potencia: '116 cv',
+        cilindrada: '999 cm³ Turbo',
+        procedencia: 'Nacional (RS)',
+        valorFipeFormatado: 'R$ 89.900,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/chevrolet.svg'
+      },
+      {
+        marca: 'Jeep',
+        modelo: 'Compass Longitude 1.3 Turbo',
+        nomeCompleto: 'Jeep Compass Longitude 1.3 Turbo',
+        anoFabricacao: 2023,
+        anoModelo: 2023,
+        cor: 'Preto Carbon',
+        segmento: 'SUV Médio',
+        combustivel: 'Flex',
+        potencia: '185 cv',
+        cilindrada: '1.332 cm³ Turbo',
+        procedencia: 'Nacional (PE)',
+        valorFipeFormatado: 'R$ 164.500,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/jeep.svg'
+      },
+      {
+        marca: 'Fiat',
+        modelo: 'Strada Freedom 1.3 CD',
+        nomeCompleto: 'Fiat Strada Freedom 1.3 CD',
+        anoFabricacao: 2023,
+        anoModelo: 2024,
+        cor: 'Branco Banchisa',
+        segmento: 'Picape Compacta',
+        combustivel: 'Flex',
+        potencia: '107 cv',
+        cilindrada: '1.332 cm³',
+        procedencia: 'Nacional (MG)',
+        valorFipeFormatado: 'R$ 99.800,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/fiat.svg'
+      },
+      {
+        marca: 'BMW',
+        modelo: '320i M Sport 2.0 Turbo',
+        nomeCompleto: 'BMW 320i M Sport 2.0 Turbo',
+        anoFabricacao: 2022,
+        anoModelo: 2023,
+        cor: 'Azul Portimão Metálico',
+        segmento: 'Sedan Premium',
+        combustivel: 'Flex / Gasolina',
+        potencia: '184 cv',
+        cilindrada: '1.998 cm³',
+        procedencia: 'Nacional (SC)',
+        valorFipeFormatado: 'R$ 295.000,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+        marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/bmw.svg'
+      }
+    ];
+
+    function obterDadosVeiculoClient(placa, tipoVeiculo) {
+      const clean = String(placa || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+      if (VEICULOS_CLIENT[clean]) return VEICULOS_CLIENT[clean];
+      let hash = 0;
+      for (let i = 0; i < clean.length; i++) hash = (hash * 31 + clean.charCodeAt(i)) >>> 0;
+      return POOL_CLIENT[hash % POOL_CLIENT.length];
+    }
+
     // ── LÓGICA 1: PLACAS ──
     async function executarConsultaPlaca(placaInput) {
       const clean = placaInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -1242,6 +1384,10 @@ const html = `<!DOCTYPE html>
         const res = await fetch(\`\${API_BASE}/api/placas/\${clean}\`);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
+
+        if (data.valido && !data.veiculo) {
+          data.veiculo = obterDadosVeiculoClient(clean, data.tipoVeiculo);
+        }
 
         renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
 
