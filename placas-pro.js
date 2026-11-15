@@ -778,17 +778,27 @@ export function estimarIpva(valorVenal, uf = 'SP') {
   };
 }
 
-// ─── 8. RENDERIZADOR GRÁFICO VETORIAL SVG (PLACA MERCOSUL OFICIAL) ───
+// ─── 8. RENDERIZADOR GRÁFICO VETORIAL SVG (PLACA MERCOSUL & ANTIGA OFICIAIS) ───
+
+const CORES_CATEGORIA_MERCOSUL = {
+  particular: { texto: '#18181b', fundo: '#FFFFFF', borda: '#27272a', nome: 'Particular / Passeio' },
+  comercial: { texto: '#dc2626', fundo: '#FFFFFF', borda: '#dc2626', nome: 'Comercial / Aluguel (Táxi/Caminhão/Van)' },
+  oficial: { texto: '#1d4ed8', fundo: '#FFFFFF', borda: '#1d4ed8', nome: 'Oficial (Governo/Polícia/Ambulância)' },
+  colecao: { texto: '#e4e4e7', fundo: '#18181b', borda: '#52525b', nome: 'Colecionador (Placa Preta Mercosul)' },
+  especial: { texto: '#16a34a', fundo: '#FFFFFF', borda: '#16a34a', nome: 'Especial / Teste de Montadora' },
+  diplomatico: { texto: '#ca8a04', fundo: '#FFFFFF', borda: '#ca8a04', nome: 'Diplomático / Consular' }
+};
 
 /**
- * Renderiza uma placa Mercosul oficial em formato vetorial SVG ultra nítido.
- * Dimensões automotivas oficiais proporcionais (400x130).
+ * Renderiza uma placa Mercosul oficial em formato vetorial SVG imponente e em alta definição (520x170).
  */
 export function renderizarPlacaMercosulSvg(placa, options = {}) {
   const analise = analisarPlaca(placa);
   const textoPlaca = analise.valido ? (analise.placaMercosulFormatada || analise.placaNormalizada) : 'BRA2E19';
   const pais = options.pais || 'BRASIL';
   const uf = (analise.origem && analise.origem.uf && analise.origem.uf !== 'DESCONHECIDO') ? analise.origem.uf : 'BR';
+  const catKey = (options.categoria || 'particular').toLowerCase();
+  const categoriaCfg = CORES_CATEGORIA_MERCOSUL[catKey] || CORES_CATEGORIA_MERCOSUL.particular;
 
   // Sanitização anti-XSS no SVG
   const sanitize = (s) => String(s || '').replace(/</g, '').replace(/>/g, '').replace(/"/g, '');
@@ -796,74 +806,151 @@ export function renderizarPlacaMercosulSvg(placa, options = {}) {
   const paisSanitizado = sanitize(pais);
   const ufSanitizado = sanitize(uf);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 130" width="400" height="130" style="font-family: 'Helvetica Neue', Arial, sans-serif; user-select: none;">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 170" width="100%" height="170" style="font-family: 'Helvetica Neue', Arial, sans-serif; user-select: none; display: block; filter: drop-shadow(0 14px 28px rgba(0,0,0,0.35));">
   <defs>
     <filter id="plate-shadow" x="-5%" y="-5%" width="110%" height="115%">
-      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.25"/>
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity="0.30"/>
+    </filter>
+    <filter id="char-relief" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="1.2" flood-color="#000" flood-opacity="0.35"/>
     </filter>
     <linearGradient id="blue-stripe" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#002776" />
-      <stop offset="50%" stop-color="#0038A8" />
-      <stop offset="100%" stop-color="#002776" />
+      <stop offset="0%" stop-color="#002266" />
+      <stop offset="50%" stop-color="#003db8" />
+      <stop offset="100%" stop-color="#002266" />
     </linearGradient>
     <linearGradient id="silver-border" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d4d4d8" />
-      <stop offset="50%" stop-color="#f4f4f5" />
-      <stop offset="100%" stop-color="#a1a1aa" />
+      <stop offset="0%" stop-color="#cbd5e1" />
+      <stop offset="50%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#94a3b8" />
     </linearGradient>
   </defs>
 
-  <!-- Corpo Principal da Placa com Sombra -->
-  <rect x="5" y="5" width="390" height="120" rx="14" ry="14" fill="#FFFFFF" stroke="url(#silver-border)" stroke-width="3" filter="url(#plate-shadow)"/>
+  <!-- Corpo Principal da Placa com Sombra Automotiva Real -->
+  <rect x="6" y="6" width="508" height="158" rx="18" ry="18" fill="${categoriaCfg.fundo}" stroke="url(#silver-border)" stroke-width="3.5" filter="url(#plate-shadow)"/>
   
-  <!-- Borda Interna Preta Suave (Padrão Mercosul) -->
-  <rect x="8" y="8" width="384" height="114" rx="11" ry="11" fill="none" stroke="#27272a" stroke-width="2.5"/>
+  <!-- Borda Interna Suave Oficial -->
+  <rect x="10" y="10" width="500" height="150" rx="14" ry="14" fill="none" stroke="${categoriaCfg.borda}" stroke-width="3"/>
 
-  <!-- Faixa Azul Mercosul no Topo -->
-  <path d="M 9,19 Q 9,9 19,9 L 381,9 Q 391,9 391,19 L 391,38 L 9,38 Z" fill="url(#blue-stripe)"/>
+  <!-- Faixa Azul Mercosul no Topo (Altura Proporcional de 48px) -->
+  <path d="M 12,24 Q 12,12 24,12 L 496,12 Q 508,12 508,24 L 508,50 L 12,50 Z" fill="url(#blue-stripe)"/>
 
   <!-- Emblema Oficial Mercosul (Esquerda) -->
-  <g transform="translate(18, 14)">
+  <g transform="translate(24, 17)">
     <!-- 4 Estrelas do Cruzeiro do Sul -->
-    <circle cx="9" cy="5" r="1.5" fill="#FFFFFF"/>
-    <circle cx="5" cy="11" r="1.5" fill="#FFFFFF"/>
-    <circle cx="13" cy="11" r="1.5" fill="#FFFFFF"/>
-    <circle cx="9" cy="17" r="1.5" fill="#FFFFFF"/>
+    <circle cx="12" cy="7" r="2" fill="#FFFFFF"/>
+    <circle cx="7" cy="15" r="2" fill="#FFFFFF"/>
+    <circle cx="17" cy="15" r="2" fill="#FFFFFF"/>
+    <circle cx="12" cy="23" r="2" fill="#FFFFFF"/>
     <!-- Arco do Mercosul -->
-    <path d="M 2,13 A 10 10 0 0 1 18 13" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
-    <text x="22" y="15" fill="#FFFFFF" font-size="8" font-weight="900" letter-spacing="0.5">MERCOSUL</text>
+    <path d="M 3,18 A 13 13 0 0 1 21 18" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="28" y="20" fill="#FFFFFF" font-size="11" font-weight="900" letter-spacing="1">MERCOSUL</text>
   </g>
 
   <!-- Nome do País Centralizado -->
-  <text x="200" y="27" fill="#FFFFFF" font-size="15" font-weight="900" text-anchor="middle" letter-spacing="4">${paisSanitizado}</text>
+  <text x="260" y="36" fill="#FFFFFF" font-size="20" font-weight="900" text-anchor="middle" letter-spacing="6">${paisSanitizado}</text>
 
-  <!-- Bandeira do Brasil (Direita) -->
-  <g transform="translate(352, 14)">
-    <rect width="28" height="18" fill="#009c3b" rx="2" stroke="#FFFFFF" stroke-width="0.5"/>
-    <polygon points="14,2 26,9 14,16 2,9" fill="#ffdf00"/>
-    <circle cx="14" cy="9" r="4.2" fill="#002776"/>
-    <path d="M 10.5,9.5 Q 14,8 17.5,9.5" fill="none" stroke="#FFFFFF" stroke-width="0.8"/>
+  <!-- Bandeira Oficial do Brasil em Alta Resolução (Direita) -->
+  <g transform="translate(450, 16)">
+    <rect width="40" height="26" fill="#009c3b" rx="3" stroke="#FFFFFF" stroke-width="0.7"/>
+    <polygon points="20,3 37,13 20,23 3,13" fill="#ffdf00"/>
+    <circle cx="20" cy="13" r="6" fill="#002776"/>
+    <path d="M 15,13.5 Q 20,11.5 25,13.5" fill="none" stroke="#FFFFFF" stroke-width="1.1"/>
   </g>
 
   <!-- Marca D'água Anti-Fraude com UF de Registro -->
-  <text x="365" y="112" fill="#d1d5db" font-size="11" font-weight="900" text-anchor="end" letter-spacing="1">${ufSanitizado}</text>
+  <text x="472" y="146" fill="${catKey === 'colecao' ? '#52525b' : '#cbd5e1'}" font-size="15" font-weight="900" text-anchor="end" letter-spacing="2">${ufSanitizado}</text>
 
-  <!-- QR Code Estilizado no Canto Inferior Esquerdo (Padrão de Segurança) -->
-  <g transform="translate(18, 48)">
-    <rect width="26" height="26" fill="#18181b" rx="2"/>
-    <rect x="2" y="2" width="8" height="8" fill="#FFFFFF"/>
-    <rect x="4" y="4" width="4" height="4" fill="#18181b"/>
-    <rect x="16" y="2" width="8" height="8" fill="#FFFFFF"/>
-    <rect x="18" y="4" width="4" height="4" fill="#18181b"/>
-    <rect x="2" y="16" width="8" height="8" fill="#FFFFFF"/>
-    <rect x="4" y="18" width="4" height="4" fill="#18181b"/>
-    <rect x="14" y="14" width="4" height="4" fill="#FFFFFF"/>
-    <rect x="20" y="20" width="4" height="4" fill="#FFFFFF"/>
-    <text x="0" y="36" fill="#a1a1aa" font-size="6" font-weight="bold">QR-SEC</text>
+  <!-- QR Code de Segurança Nítido no Canto Inferior Esquerdo -->
+  <g transform="translate(24, 66)">
+    <rect width="36" height="36" fill="${categoriaCfg.texto}" rx="3"/>
+    <rect x="3" y="3" width="11" height="11" fill="#FFFFFF"/>
+    <rect x="6" y="6" width="5" height="5" fill="${categoriaCfg.texto}"/>
+    <rect x="22" y="3" width="11" height="11" fill="#FFFFFF"/>
+    <rect x="25" y="6" width="5" height="5" fill="${categoriaCfg.texto}"/>
+    <rect x="3" y="22" width="11" height="11" fill="#FFFFFF"/>
+    <rect x="6" y="25" width="5" height="5" fill="${categoriaCfg.texto}"/>
+    <rect x="18" y="18" width="6" height="6" fill="#FFFFFF"/>
+    <rect x="27" y="27" width="6" height="6" fill="#FFFFFF"/>
+    <text x="0" y="48" fill="${catKey === 'colecao' ? '#71717a' : '#94a3b8'}" font-size="8" font-weight="bold">QR-SEC</text>
   </g>
 
-  <!-- Caracteres Oficiais da Placa (Tipografia Padrão FE-Schrift Alto Contraste) -->
-  <text x="215" y="103" fill="#18181b" font-size="62" font-weight="900" text-anchor="middle" letter-spacing="7" font-family="'Impact', 'Arial Black', sans-serif">
+  <!-- Rebites de Fixação nos Cantos Superiores (Furação Oficial) -->
+  <circle cx="28" cy="24" r="3.5" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.2"/>
+  <circle cx="492" cy="24" r="3.5" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.2"/>
+
+  <!-- Caracteres Oficiais Estampados em Alto Relevo (Tipografia FE-Schrift Alto Contraste) -->
+  <text x="275" y="132" fill="${categoriaCfg.texto}" font-size="82" font-weight="900" text-anchor="middle" letter-spacing="9" font-family="'Impact', 'Arial Black', sans-serif" filter="url(#char-relief)">
+    ${textoSanitizado}
+  </text>
+</svg>`;
+}
+
+/**
+ * Renderiza a placa clássica cinza brasileira (AAA-9999) com tarjeta de município em SVG.
+ */
+export function renderizarPlacaAntigaSvg(placa, options = {}) {
+  const analise = analisarPlaca(placa);
+  const textoPlaca = analise.placaAntigaFormatada || (analise.valido ? analise.placaOriginal.toUpperCase() : 'ABC-1234');
+  const cidade = options.cidade || (analise.origem ? analise.origem.estado : 'SAO PAULO');
+  const uf = options.uf || (analise.origem ? analise.origem.uf : 'SP');
+
+  const sanitize = (s) => String(s || '').replace(/</g, '').replace(/>/g, '').replace(/"/g, '');
+  const textoSanitizado = sanitize(textoPlaca);
+  const tarjetaSanitizada = `${sanitize(cidade).toUpperCase()} - ${sanitize(uf).toUpperCase()}`;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 170" width="100%" height="170" style="font-family: 'Helvetica Neue', Arial, sans-serif; user-select: none; display: block; filter: drop-shadow(0 14px 28px rgba(0,0,0,0.35));">
+  <defs>
+    <filter id="old-plate-shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity="0.30"/>
+    </filter>
+    <filter id="old-char-relief" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1.5" dy="2" stdDeviation="1" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <linearGradient id="metal-gray" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9ca3af" />
+      <stop offset="35%" stop-color="#d1d5db" />
+      <stop offset="70%" stop-color="#e5e7eb" />
+      <stop offset="100%" stop-color="#9ca3af" />
+    </linearGradient>
+    <linearGradient id="tarjeta-metal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e5e7eb" />
+      <stop offset="50%" stop-color="#f3f4f6" />
+      <stop offset="100%" stop-color="#d1d5db" />
+    </linearGradient>
+  </defs>
+
+  <!-- Fundo Metálico Cinza da Placa Clássica -->
+  <rect x="6" y="6" width="508" height="158" rx="16" ry="16" fill="url(#metal-gray)" stroke="#4b5563" stroke-width="3" filter="url(#old-plate-shadow)"/>
+  <rect x="10" y="10" width="500" height="150" rx="13" ry="13" fill="none" stroke="#374151" stroke-width="2.5"/>
+
+  <!-- Tarjeta Metálica Superior de Município com Parafusos e Rebites -->
+  <g transform="translate(110, 16)">
+    <rect width="300" height="32" rx="6" fill="url(#tarjeta-metal)" stroke="#4b5563" stroke-width="1.8"/>
+    <!-- Rebites da Tarjeta -->
+    <circle cx="10" cy="16" r="3.5" fill="#374151" stroke="#9ca3af" stroke-width="1"/>
+    <circle cx="290" cy="16" r="3.5" fill="#374151" stroke="#9ca3af" stroke-width="1"/>
+    <!-- Texto do Município e UF -->
+    <text x="150" y="22" fill="#1f2937" font-size="14" font-weight="900" text-anchor="middle" letter-spacing="3">
+      ${tarjetaSanitizada}
+    </text>
+  </g>
+
+  <!-- Parafusos Principais de Fixação Automotiva nos Cantos -->
+  <circle cx="32" cy="32" r="5" fill="#1f2937" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="28" y1="32" x2="36" y2="32" stroke="#e5e7eb" stroke-width="1.2"/>
+  <circle cx="488" cy="32" r="5" fill="#1f2937" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="484" y1="32" x2="492" y2="32" stroke="#e5e7eb" stroke-width="1.2"/>
+
+  <!-- Lacre do DETRAN de Arame/Plástico no Canto Inferior Esquerdo -->
+  <g transform="translate(24, 114)">
+    <circle cx="16" cy="16" r="14" fill="#6b7280" stroke="#374151" stroke-width="1.5"/>
+    <circle cx="16" cy="16" r="8" fill="#4b5563"/>
+    <text x="16" y="19" fill="#e5e7eb" font-size="7" font-weight="bold" text-anchor="middle">DETRAN</text>
+  </g>
+
+  <!-- Caracteres Estampados em Relevo da Placa Antiga (ABC-1234) -->
+  <text x="260" y="132" fill="#111827" font-size="82" font-weight="900" text-anchor="middle" letter-spacing="8" font-family="'Impact', 'Arial Black', sans-serif" filter="url(#old-char-relief)">
     ${textoSanitizado}
   </text>
 </svg>`;
