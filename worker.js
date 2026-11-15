@@ -18,7 +18,7 @@
  * @see https://github.com/clepta2/placas-pro
  */
 
-import { CSS_SUITE, HTML_INDEX, CLIENT_JS } from './site-assets.js';
+import { STYLES_CSS, HTML_INDEX, CLIENT_JS, OZPRO_MARK_SVG } from './site-assets.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -999,13 +999,23 @@ export default {
       });
     };
 
-    // ── ROTA: ARQUIVOS ESTÁTICOS DO SITE PRÓPRIO ──
-    if (pathname === '/ponte-suite.css') {
-      return new Response(CSS_SUITE, {
+    // ── ROTA: ARQUIVOS ESTÁTICOS DO SITE PRÓPRIO (TEMPLATE PONTE API MARKETPLACE) ──
+    if (pathname === '/styles.css' || pathname === '/ponte-suite.css') {
+      return new Response(STYLES_CSS, {
         headers: {
           ...CORS_HEADERS,
           'Content-Type': 'text/css; charset=utf-8',
           'Cache-Control': 'public, max-age=604800, s-maxage=2592000'
+        }
+      });
+    }
+
+    if (pathname === '/brand/ozpro-mark.svg') {
+      return new Response(OZPRO_MARK_SVG, {
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'image/svg+xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=2592000, s-maxage=2592000'
         }
       });
     }
