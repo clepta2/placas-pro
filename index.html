@@ -1522,27 +1522,27 @@
       const codeEl = document.getElementById('snippet-code');
 
       if (currentSnippetLang === 'curl') {
-        codeEl.textContent = 'curl -s "' + info.full + '" \
+        codeEl.textContent = `curl -s "${info.full}" \
   -H "Authorization: ******" \
-  -H "x-api-key: plc_live_mercosul_2026"';
+  -H "x-api-key: plc_live_mercosul_2026"`;
       } else if (currentSnippetLang === 'nodejs') {
-        codeEl.textContent = 'const res = await fetch("' + info.full + '", {
+        codeEl.textContent = `const res = await fetch("${info.full}", {
   headers: { "Authorization": "******", "x-api-key": "plc_live_mercosul_2026" }
 });
 const data = await res.json();
-console.log(data);';
+console.log(data);`;
       } else if (currentSnippetLang === 'python') {
-        codeEl.textContent = 'import requests
-res = requests.get("' + info.full + '", headers={"Authorization": "******", "x-api-key": "plc_live_mercosul_2026"})
-print(res.json())';
+        codeEl.textContent = `import requests
+res = requests.get("${info.full}", headers={"Authorization": "******", "x-api-key": "plc_live_mercosul_2026"})
+print(res.json())`;
       } else if (currentSnippetLang === 'php') {
-        codeEl.textContent = '$ch = curl_init("' + info.full + '");
+        codeEl.textContent = `$ch = curl_init("${info.full}");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: ******", "x-api-key: plc_live_mercosul_2026"]);
 $response = curl_exec($ch);
-print_r(json_decode($response, true));';
+print_r(json_decode($response, true));`;
       } else if (currentSnippetLang === 'go') {
-        codeEl.textContent = 'package main
+        codeEl.textContent = `package main
 
 import (
 	"fmt"
@@ -1551,21 +1551,21 @@ import (
 )
 
 func main() {
-	req, _ := http.NewRequest("GET", "' + info.full + '", nil)
+	req, _ := http.NewRequest("GET", "${info.full}", nil)
 	req.Header.Set("Authorization", "******")
 	req.Header.Set("x-api-key", "plc_live_mercosul_2026")
 	resp, _ := http.DefaultClient.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(body))
-}';
+}`;
       } else if (currentSnippetLang === 'csharp') {
-        codeEl.textContent = 'using System.Net.Http;
+        codeEl.textContent = `using System.Net.Http;
 
 var client = new HttpClient();
 client.DefaultRequestHeaders.Add("Authorization", "******");
 client.DefaultRequestHeaders.Add("x-api-key", "plc_live_mercosul_2026");
-var response = await client.GetStringAsync("' + info.full + '");
-Console.WriteLine(response);';
+var response = await client.GetStringAsync("${info.full}");
+Console.WriteLine(response);`;
       }
     }
 

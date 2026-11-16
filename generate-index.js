@@ -1535,17 +1535,17 @@ function getHtml() {
       const codeEl = document.getElementById('snippet-code');
 
       if (currentSnippetLang === 'curl') {
-        codeEl.textContent = 'curl -s "' + info.full + '" \\\n  -H "Authorization: ******" \\\n  -H "x-api-key: plc_live_mercosul_2026"';
+        codeEl.textContent = \`curl -s "\${info.full}" \\\n  -H "Authorization: ******" \\\n  -H "x-api-key: plc_live_mercosul_2026"\`;
       } else if (currentSnippetLang === 'nodejs') {
-        codeEl.textContent = 'const res = await fetch("' + info.full + '", {\n  headers: { "Authorization": "******", "x-api-key": "plc_live_mercosul_2026" }\n});\nconst data = await res.json();\nconsole.log(data);';
+        codeEl.textContent = \`const res = await fetch("\${info.full}", {\n  headers: { "Authorization": "******", "x-api-key": "plc_live_mercosul_2026" }\n});\nconst data = await res.json();\nconsole.log(data);\`;
       } else if (currentSnippetLang === 'python') {
-        codeEl.textContent = 'import requests\nres = requests.get("' + info.full + '", headers={"Authorization": "******", "x-api-key": "plc_live_mercosul_2026"})\nprint(res.json())';
+        codeEl.textContent = \`import requests\nres = requests.get("\${info.full}", headers={"Authorization": "******", "x-api-key": "plc_live_mercosul_2026"})\nprint(res.json())\`;
       } else if (currentSnippetLang === 'php') {
-        codeEl.textContent = '$ch = curl_init("' + info.full + '");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: ******", "x-api-key: plc_live_mercosul_2026"]);\n$response = curl_exec($ch);\nprint_r(json_decode($response, true));';
+        codeEl.textContent = \`$ch = curl_init("\${info.full}");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: ******", "x-api-key: plc_live_mercosul_2026"]);\n$response = curl_exec($ch);\nprint_r(json_decode($response, true));\`;
       } else if (currentSnippetLang === 'go') {
-        codeEl.textContent = 'package main\n\nimport (\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\treq, _ := http.NewRequest("GET", "' + info.full + '", nil)\n\treq.Header.Set("Authorization", "******")\n\treq.Header.Set("x-api-key", "plc_live_mercosul_2026")\n\tresp, _ := http.DefaultClient.Do(req)\n\tbody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}';
+        codeEl.textContent = \`package main\n\nimport (\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\treq, _ := http.NewRequest("GET", "\${info.full}", nil)\n\treq.Header.Set("Authorization", "******")\n\treq.Header.Set("x-api-key", "plc_live_mercosul_2026")\n\tresp, _ := http.DefaultClient.Do(req)\n\tbody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}\`;
       } else if (currentSnippetLang === 'csharp') {
-        codeEl.textContent = 'using System.Net.Http;\n\nvar client = new HttpClient();\nclient.DefaultRequestHeaders.Add("Authorization", "******");\nclient.DefaultRequestHeaders.Add("x-api-key", "plc_live_mercosul_2026");\nvar response = await client.GetStringAsync("' + info.full + '");\nConsole.WriteLine(response);';
+        codeEl.textContent = \`using System.Net.Http;\n\nvar client = new HttpClient();\nclient.DefaultRequestHeaders.Add("Authorization", "******");\nclient.DefaultRequestHeaders.Add("x-api-key", "plc_live_mercosul_2026");\nvar response = await client.GetStringAsync("\${info.full}");\nConsole.WriteLine(response);\`;
       }
     }
 
@@ -2014,7 +2014,7 @@ function getHtml() {
                     pastilhasFreioTraseira: 'Pastilhas Traseiras',
                     velasIgnicao: 'Velas de Ignição'
                   };
-                  pecasBox.innerHTML = Object.entries(m.pecasDesgaste).map(([k, p]) => '<div style="padding:6px 8px;border-radius:var(--radius-sm);background:var(--paper-elevated,#111827);border:1px solid var(--line-light);"><div style="font-weight:700;color:var(--ink);font-size:10.5px;">' + (nomes[k] || k) + '</div><div style="color:#38bdf8;font-size:10px;font-family:\'JetBrains Mono\',monospace;">OEM: ' + (p.oem || '-') + '</div><div style="color:var(--muted);font-size:9.5px;">Aftermarket: ' + (p.aftermarket || '-') + '</div></div>').join('');
+                  pecasBox.innerHTML = Object.entries(m.pecasDesgaste).map(([k, p]) => '<div style="padding:6px 8px;border-radius:var(--radius-sm);background:var(--paper-elevated,#111827);border:1px solid var(--line-light);"><div style="font-weight:700;color:var(--ink);font-size:10.5px;">' + (nomes[k] || k) + '</div><div style="color:#38bdf8;font-size:10px;font-family:monospace;">OEM: ' + (p.oem || '-') + '</div><div style="color:var(--muted);font-size:9.5px;">Aftermarket: ' + (p.aftermarket || '-') + '</div></div>').join('');
                 }
               }
             }
