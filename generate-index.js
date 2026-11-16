@@ -1,16 +1,22 @@
 import fs from 'fs';
 import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL } from './catalogo-veiculos-brasil.js';
 
-const html = `<!DOCTYPE html>
+console.log('Compiling ultra-enhanced Placas & Veículos Pro Console...');
+
+function getHtml() {
+  const marcasJson = JSON.stringify(MONTADORAS_BRASIL);
+  const familiasJson = JSON.stringify(FAMILIAS_VEICULOS_BRASIL);
+
+  return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Placas & Veículos Pro • Console Oficial Anycast • Ponte API Market</title>
   <meta name="description" content="Validador e Conversor de Placas Mercosul e Cinza, Mapeamento CONTRAN 27 UFs, RENAVAM Módulo 11, Chassi VIN ISO 3779, Licenciamento DETRAN, Rodízio SP e Renderizador SVG na Cloudflare Edge." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  
+  
   <link rel="stylesheet" href="styles.css?v=4.0.0" />
   <script>
     (function() {
@@ -18,7 +24,59 @@ const html = `<!DOCTYPE html>
       document.documentElement.setAttribute('data-theme', savedTheme);
     })();
   </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+/**
+ * ponte-icons.js
+ * Motor Vetorial Soberano de Ícones da Suíte Ponte / OZPro
+ * 100% Zero Dependências Externas (Sem UNPKG, Sem CDNs, Sem Scripts de Terceiros)
+ * Entrega nativa e instantânea diretamente da memória RAM
+ */
+(function() {
+  const ICONS = {"x":"<path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path>","car":"<path d=\"M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2\"></path><circle cx=\"7\" cy=\"17\" r=\"2\"></circle><path d=\"M9 17h6\"></path><circle cx=\"17\" cy=\"17\" r=\"2\"></circle>","scan":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"></path><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"></path><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"></path><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"></path>","file-check-2":"<path d=\"M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v6\"></path><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"></path><path d=\"m14 20 2 2 4-4\"></path>","shield-check":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"></path><path d=\"m9 12 2 2 4-4\"></path>","fuel":"<path d=\"M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5\"></path><path d=\"M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16\"></path><path d=\"M2 21h13\"></path><path d=\"M3 9h11\"></path>","pie-chart":"<path d=\"M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z\"></path><path d=\"M21.21 15.89A10 10 0 1 1 8 2.83\"></path>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"></path><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"></path><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"></path>","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"></rect><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"></rect><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"></rect><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"></rect>","arrow-up-right":"<path d=\"M7 7h10v10\"></path><path d=\"M7 17 17 7\"></path>","menu":"<path d=\"M4 5h16\"></path><path d=\"M4 12h16\"></path><path d=\"M4 19h16\"></path>","chevron-right":"<path d=\"m9 18 6-6-6-6\"></path>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"></path>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"></path><path d=\"M20 2v4\"></path><path d=\"M22 4h-4\"></path><circle cx=\"4\" cy=\"20\" r=\"2\"></circle>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"></path><circle cx=\"12\" cy=\"10\" r=\"3\"></circle>","zap":"<path d=\"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z\"></path>","search":"<path d=\"m21 21-4.34-4.34\"></path><circle cx=\"11\" cy=\"11\" r=\"8\"></circle>","play":"<path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\"></path>","bike":"<circle cx=\"18.5\" cy=\"17.5\" r=\"3.5\"></circle><circle cx=\"5.5\" cy=\"17.5\" r=\"3.5\"></circle><circle cx=\"15\" cy=\"5\" r=\"1\"></circle><path d=\"M12 17.5V14l-3-3 4-3 2 3h2\"></path>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"></rect><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"></path>","download":"<path d=\"M12 15V3\"></path><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><path d=\"m7 10 5 5 5-5\"></path>","image":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"></rect><circle cx=\"9\" cy=\"9\" r=\"2\"></circle><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"></path>","gauge":"<path d=\"m12 14 4-4\"></path><path d=\"M3.34 19a10 10 0 1 1 17.32 0\"></path>","leaf":"<path d=\"M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20\"></path><path d=\"M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13\"></path>","receipt":"<path d=\"M12 17V7\"></path><path d=\"M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8\"></path><path d=\"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z\"></path>","clipboard-list":"<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"></rect><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"></path><path d=\"M12 11h4\"></path><path d=\"M12 16h4\"></path><path d=\"M8 11h.01\"></path><path d=\"M8 16h.01\"></path>","git-commit":"<circle cx=\"12\" cy=\"12\" r=\"3\"></circle><line x1=\"3\" x2=\"9\" y1=\"12\" y2=\"12\"></line><line x1=\"15\" x2=\"21\" y1=\"12\" y2=\"12\"></line>","scale":"<path d=\"M12 3v18\"></path><path d=\"m19 8 3 8a5 5 0 0 1-6 0zV7\"></path><path d=\"M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1\"></path><path d=\"m5 8 3 8a5 5 0 0 1-6 0zV7\"></path><path d=\"M7 21h10\"></path>","check-circle-2":"<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m16 9-5.5 5.5L8 12\"></path>","activity":"<path d=\"M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2\"></path>","alert-circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"></line><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"></line>","alert-triangle":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"></path><path d=\"M12 9v4\"></path><path d=\"M12 17h.01\"></path>","badge-check":"<path d=\"M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z\"></path><path d=\"m16 9-5.5 5.5L8 12\"></path>","barcode":"<path d=\"M3 5v14\"></path><path d=\"M8 5v14\"></path><path d=\"M12 5v14\"></path><path d=\"M17 5v14\"></path><path d=\"M21 5v14\"></path>","bell":"<path d=\"M10.268 21a2 2 0 0 0 3.464 0\"></path><path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\"></path>","book-open":"<path d=\"M12 5v16\"></path><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\"></path>","bot":"<path d=\"M12 8V4H8\"></path><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"></rect><path d=\"M2 14h2\"></path><path d=\"M20 14h2\"></path><path d=\"M15 13v2\"></path><path d=\"M9 13v2\"></path>","building":"<path d=\"M12 10h.01\"></path><path d=\"M12 14h.01\"></path><path d=\"M12 6h.01\"></path><path d=\"M16 10h.01\"></path><path d=\"M16 14h.01\"></path><path d=\"M16 6h.01\"></path><path d=\"M8 10h.01\"></path><path d=\"M8 14h.01\"></path><path d=\"M8 6h.01\"></path><path d=\"M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3\"></path><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect>","building-2":"<path d=\"M10 12h4\"></path><path d=\"M10 8h4\"></path><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"></path><path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\"></path><path d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\"></path>","check":"<path d=\"M20 6 9 17l-5-5\"></path>","circle-dollar-sign":"<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8\"></path><path d=\"M12 18V6\"></path>","clipboard-check":"<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"></rect><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"></path><path d=\"m9 14 2 2 4-4\"></path>","compass":"<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z\"></path>","cpu":"<path d=\"M12 20v2\"></path><path d=\"M12 2v2\"></path><path d=\"M17 20v2\"></path><path d=\"M17 2v2\"></path><path d=\"M2 12h2\"></path><path d=\"M2 17h2\"></path><path d=\"M2 7h2\"></path><path d=\"M20 12h2\"></path><path d=\"M20 17h2\"></path><path d=\"M20 7h2\"></path><path d=\"M7 20v2\"></path><path d=\"M7 2v2\"></path><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"></rect><rect x=\"8\" y=\"8\" width=\"8\" height=\"8\" rx=\"1\"></rect>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"></ellipse><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"></path><path d=\"M3 12A9 3 0 0 0 21 12\"></path>","ellipsis":"<circle cx=\"12\" cy=\"12\" r=\"1\"></circle><circle cx=\"19\" cy=\"12\" r=\"1\"></circle><circle cx=\"5\" cy=\"12\" r=\"1\"></circle>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"></path><circle cx=\"12\" cy=\"12\" r=\"3\"></circle>","file-check":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"></path><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"></path><path d=\"m9 15 2 2 4-4\"></path>","file-text":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"></path><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"></path><path d=\"M10 9H8\"></path><path d=\"M16 13H8\"></path><path d=\"M16 17H8\"></path>","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"></path><path d=\"M2 12h20\"></path>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"></line><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"></line><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"></line><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"></line>","key":"<path d=\"m2 21 9.6-9.6\"></path><path d=\"m7.5 15.5 2.3 2.3a1 1 0 0 1 0 1.4l-2.1 2.1a1 1 0 0 1-1.4 0L4 19\"></path><circle cx=\"15.5\" cy=\"7.5\" r=\"5.5\"></circle>","key-round":"<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\"></path><circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"></circle>","landmark":"<path d=\"M10 18v-7\"></path><path d=\"M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z\"></path><path d=\"M14 18v-7\"></path><path d=\"M18 18v-7\"></path><path d=\"M3 22h18\"></path><path d=\"M6 18v-7\"></path>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"></rect><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path>","log-in":"<path d=\"m10 17 5-5-5-5\"></path><path d=\"M15 12H3\"></path><path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\"></path>","phone":"<path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"></path>","plug-zap":"<path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"></path><path d=\"m2 22 3-3\"></path><path d=\"M7.5 13.5 10 11\"></path><path d=\"M10.5 16.5 13 14\"></path><path d=\"m18 3-4 4h6l-4 4\"></path>","plus":"<path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path>","plus-circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M8 12h8\"></path><path d=\"M12 8v8\"></path>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"></rect><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"></rect><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"></rect><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"></path><path d=\"M21 21v.01\"></path><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"></path><path d=\"M3 12h.01\"></path><path d=\"M12 3h.01\"></path><path d=\"M12 16v.01\"></path><path d=\"M16 12h1\"></path><path d=\"M21 12v.01\"></path><path d=\"M12 21v-1\"></path>","receipt-text":"<path d=\"M13 16H8\"></path><path d=\"M14 8H8\"></path><path d=\"M16 12H8\"></path><path d=\"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z\"></path>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"></path><path d=\"M21 3v5h-5\"></path><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"></path><path d=\"M8 16H3v5\"></path>","send":"<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"></path><path d=\"m21.854 2.147-10.94 10.939\"></path>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"></path><circle cx=\"12\" cy=\"12\" r=\"3\"></circle>","shield-alert":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"></path><path d=\"M12 8v4\"></path><path d=\"M12 16h.01\"></path>","shuffle":"<path d=\"m18 14 4 4-4 4\"></path><path d=\"m18 2 4 4-4 4\"></path><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"></path><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"></path><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"></path>","store":"<path d=\"M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5\"></path><path d=\"M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244\"></path><path d=\"M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05\"></path>","terminal":"<path d=\"M12 19h8\"></path><path d=\"m4 17 6-6-6-6\"></path>","user":"<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle>","user-check":"<path d=\"m16 11 2 2 4-4\"></path><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"></line><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"></line>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"></path><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"></path><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"></path><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"></path>","wrench":"<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z\"></path>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"></circle><path d=\"M12 2v2\"></path><path d=\"M12 20v2\"></path><path d=\"m4.93 4.93 1.41 1.41\"></path><path d=\"m17.66 17.66 1.41 1.41\"></path><path d=\"M2 12h2\"></path><path d=\"M20 12h2\"></path><path d=\"m6.34 17.66-1.41 1.41\"></path><path d=\"m19.07 4.93-1.41 1.41\"></path>"};
+
+  function getIconSvg(name, size, strokeWidth) {
+    const cleanName = (name || '').toLowerCase().trim();
+    const inner = ICONS[cleanName] || ICONS['sparkles'] || '';
+    const sz = size || 18;
+    const sw = strokeWidth || 2;
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + sz + '" height="' + sz + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + sw + '" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-' + cleanName + '" style="display:inline-block;vertical-align:middle;">' + inner + '</svg>';
+  }
+
+  function createIcons() {
+    const elements = document.querySelectorAll('[data-lucide], i.lucide');
+    elements.forEach(function(el) {
+      const name = el.getAttribute('data-lucide') || el.dataset.lucide;
+      if (!name) return;
+      const sz = el.getAttribute('width') || el.dataset.size || 18;
+      const sw = el.getAttribute('stroke-width') || 2;
+      const svgStr = getIconSvg(name, sz, sw);
+      const temp = document.createElement('span');
+      temp.innerHTML = svgStr;
+      const svg = temp.firstElementChild;
+      if (svg) {
+        if (el.className) svg.setAttribute('class', svg.getAttribute('class') + ' ' + el.className);
+        if (el.id) svg.id = el.id;
+        el.replaceWith(svg);
+      }
+    });
+  }
+
+  // API Global Compatível
+  window.lucide = {
+    createIcons: createIcons,
+    icons: ICONS,
+    getIconSvg: getIconSvg
+  };
+  window.ponteIcons = window.lucide;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createIcons);
+  } else {
+    createIcons();
+  }
+})();
+
+</script>
   <style>
     /* Padrão Rigoroso de Ícones e Tipografia Profissional */
     svg.lucide, .lucide {
@@ -38,7 +96,7 @@ const html = `<!DOCTYPE html>
     }
     .playground-split {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
       gap: 26px;
       margin-top: 24px;
     }
@@ -108,7 +166,7 @@ const html = `<!DOCTYPE html>
     .tab-nav-btn {
       flex: 1;
       min-height: 40px;
-      padding: 0 18px;
+      padding: 0 16px;
       border: none;
       background: transparent;
       border-radius: var(--radius-md);
@@ -161,6 +219,11 @@ const html = `<!DOCTYPE html>
       background: rgba(59, 130, 246, 0.12);
       color: #3b82f6;
       border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .status-badge-pill.amber {
+      background: rgba(245, 158, 11, 0.12);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
     }
     .terminal-window {
       background: #091311;
@@ -231,19 +294,32 @@ const html = `<!DOCTYPE html>
       object-fit: contain;
     }
 
-    /* Terminal Console: contraste garantido em qualquer tema */
+    /* Terminal Console */
     .console-json, #console-output {
       color: #f8fafc !important;
       font-family: 'JetBrains Mono', monospace !important;
     }
 
-    /* Compactação de Pílulas e Chips para evitar botões gigantes */
+    /* Compactação de Pílulas e Chips */
     .sample-placa, .sample-chassi, .sample-renavam, .sample-boleto, .cat-btn, #btn-mode-mercosul, #btn-mode-antiga {
       min-height: 28px !important;
       height: 28px !important;
       padding: 0 10px !important;
       font-size: 11px !important;
       border-radius: 6px !important;
+    }
+
+    /* Bloqueio de vazamento da gaveta no Desktop */
+    @media (min-width: 851px) {
+      .sidebar-drawer-close {
+        display: none !important;
+      }
+      .mobile-hamburger-btn {
+        display: none !important;
+      }
+      .mobile-bottom-nav {
+        display: none !important;
+      }
     }
 
     html, body {
@@ -262,21 +338,27 @@ const html = `<!DOCTYPE html>
       .app-shell {
         grid-template-columns: 1fr !important;
       }
-      /* Sidebar mobile drawer */
       .sidebar {
         position: fixed !important;
         top: 0 !important;
-        left: 0 !important;
+        left: -320px !important;
         bottom: 0 !important;
         width: 285px !important;
         max-width: 85vw !important;
         z-index: 100 !important;
-        transform: translateX(-100%);
-        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        transform: none !important;
+        transition: left 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
         display: flex !important;
+        box-shadow: var(--shadow-xl) !important;
       }
       .sidebar.is-open {
-        transform: translateX(0) !important;
+        left: 0 !important;
+      }
+      .mobile-hamburger-btn {
+        display: grid !important;
+      }
+      .sidebar-drawer-close {
+        display: grid !important;
       }
       .topbar {
         height: auto !important;
@@ -308,7 +390,7 @@ const html = `<!DOCTYPE html>
         height: 32px !important;
       }
       .content-wrap {
-        padding: 12px 12px 36px !important;
+        padding: 12px 12px 76px !important;
       }
       .page-heading {
         margin-bottom: 12px !important;
@@ -326,41 +408,6 @@ const html = `<!DOCTYPE html>
         font-size: 11.5px !important;
         line-height: 1.4 !important;
         margin-bottom: 10px !important;
-      }
-      .billing-models-grid {
-        display: flex !important;
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
-        -webkit-overflow-scrolling: touch !important;
-        gap: 6px !important;
-        margin-bottom: 12px !important;
-        padding-bottom: 2px !important;
-      }
-      .billing-models-grid::-webkit-scrollbar {
-        display: none !important;
-      }
-      .model-card {
-        flex: 1 0 auto !important;
-        padding: 6px 10px !important;
-        border-radius: var(--radius-md) !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-      }
-      .model-card .model-badge {
-        font-size: 9px !important;
-        padding: 2px 5px !important;
-        margin-bottom: 0 !important;
-        white-space: nowrap !important;
-      }
-      .model-card div[style*="font-size:20px"] {
-        font-size: 11.5px !important;
-        font-weight: 700 !important;
-        margin-bottom: 0 !important;
-        white-space: nowrap !important;
-      }
-      .model-card p {
-        display: none !important;
       }
       .tab-nav-bar {
         display: flex !important;
@@ -391,46 +438,6 @@ const html = `<!DOCTYPE html>
         width: 14px !important;
         height: 14px !important;
       }
-      .card-dashboard {
-        padding: 12px !important;
-        border-radius: var(--radius-lg) !important;
-      }
-      .card-dashboard div[style*="font-size:14px"] {
-        font-size: 12.5px !important;
-      }
-      .card-dashboard p[style*="font-size:12.5px"] {
-        font-size: 11px !important;
-        margin-bottom: 10px !important;
-      }
-      input[type="text"], input[type="number"], select {
-        height: 36px !important;
-        min-height: 36px !important;
-        font-size: 12.5px !important;
-        padding: 0 10px !important;
-      }
-      .primary-button, .secondary-button, #btn-exec-placa, #btn-gerar-placa, #btn-exec-chassi, #btn-exec-renavam {
-        height: 36px !important;
-        min-height: 36px !important;
-        padding: 0 12px !important;
-        font-size: 11.5px !important;
-      }
-      .sample-placa, .sample-chassi, .sample-renavam, .sample-boleto, .cat-btn, #btn-mode-mercosul, #btn-mode-antiga {
-        min-height: 26px !important;
-        height: 26px !important;
-        padding: 0 7px !important;
-        font-size: 10.5px !important;
-      }
-      .plate-render-frame {
-        padding: 10px 6px !important;
-        margin-bottom: 12px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important;
-      }
-      .plate-render-svg-wrap {
-        max-width: 100% !important;
-        width: 100% !important;
-      }
       .playground-split {
         margin-top: 12px !important;
         gap: 12px !important;
@@ -443,37 +450,44 @@ const html = `<!DOCTYPE html>
         box-sizing: border-box !important;
         overflow-x: hidden !important;
       }
-      .specs-table td {
-        padding: 7px 9px !important;
-        font-size: 11px !important;
+      .mobile-bottom-nav {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 62px !important;
+        background: rgba(15, 23, 42, 0.94) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        z-index: 90 !important;
+        padding: 0 4px !important;
       }
-      .specs-table td.label-col {
-        font-size: 10px !important;
-        width: 38% !important;
+      .mobile-nav-item {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        background: transparent !important;
+        border: none !important;
+        color: #94a3b8 !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        padding: 6px 0 !important;
       }
-      .terminal-window {
-        border-radius: var(--radius-lg) !important;
-        background: #091311 !important;
+      .mobile-nav-item.is-active {
+        color: #38bdf8 !important;
+        font-weight: 800 !important;
       }
-      .terminal-topbar {
-        padding: 7px 10px !important;
-      }
-      .snippet-tab {
-        padding: 2px 6px !important;
-        font-size: 10px !important;
-      }
-      .terminal-body {
-        padding: 8px 10px !important;
-        font-size: 11px !important;
-      }
-      .playground-console {
-        padding: 12px !important;
-        min-height: 200px !important;
-        max-height: 380px !important;
-      }
-      .console-json, #console-output {
-        color: #f8fafc !important;
-        font-size: 11px !important;
+      .mobile-nav-item svg, .mobile-nav-item .lucide {
+        width: 20px !important;
+        height: 20px !important;
       }
     }
   </style>
@@ -500,6 +514,9 @@ const html = `<!DOCTYPE html>
         <button class="nav-link" data-view="renavam">
           <i data-lucide="file-check-2"></i> <span>RENAVAM (Módulo 11)</span>
         </button>
+        <button class="nav-link" data-view="ipva">
+          <i data-lucide="shield-check"></i> <span>Isenção IPVA (27 UFs)</span>
+        </button>
         <button class="nav-link" data-view="flex">
           <i data-lucide="fuel"></i> <span>Calculadora Flex ANP</span>
         </button>
@@ -508,9 +525,6 @@ const html = `<!DOCTYPE html>
         </button>
         <button class="nav-link" data-view="catalogo">
           <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
-        </button>
-        <button class="nav-link" data-view="obd2">
-          <i data-lucide="wrench"></i> <span>Scanner OBD-II</span>
         </button>
 
         <div class="nav-section-label">ECOSSISTEMA PONTE</div>
@@ -574,7 +588,7 @@ const html = `<!DOCTYPE html>
             <p class="eyebrow">TELEMETRIA, GRÁFICOS & CONFORMIDADE VEICULAR</p>
             <h1>Placas & Veículos Pro • Console Oficial Anycast</h1>
             <p class="page-subtitle">
-              Validação matemática e conversão bidirecional Mercosul & Cinza, mapeamento das 27 UFs do CONTRAN, auditoria de RENAVAM Módulo 11, decodificador Chassi VIN ISO 3779 e renderizador vetorial SVG nativo.
+              Validação matemática e conversão bidirecional Mercosul & Cinza, mapeamento das 27 UFs do CONTRAN, auditoria de RENAVAM Módulo 11, decodificador Chassi VIN ISO 3779, diagnóstico fiscal de IPVA e renderizador vetorial SVG nativo.
             </p>
           </div>
         </div>
@@ -609,13 +623,16 @@ const html = `<!DOCTYPE html>
         <!-- Seletor de Abas de Funcionalidades -->
         <div class="tab-nav-bar">
           <button class="tab-nav-btn is-active" data-tab="placas">
-            <i data-lucide="car"></i> <span>Validador de Placas & Mercosul</span>
+            <i data-lucide="car"></i> <span>Placas & Mercosul</span>
           </button>
           <button class="tab-nav-btn" data-tab="chassi">
             <i data-lucide="scan"></i> <span>Chassi / VIN (ISO 3779)</span>
           </button>
           <button class="tab-nav-btn" data-tab="renavam">
             <i data-lucide="file-check-2"></i> <span>RENAVAM (Módulo 11)</span>
+          </button>
+          <button class="tab-nav-btn" data-tab="ipva">
+            <i data-lucide="shield-check"></i> <span>Isenção IPVA (27 UFs)</span>
           </button>
           <button class="tab-nav-btn" data-tab="flex">
             <i data-lucide="fuel"></i> <span>Calculadora Flex ANP</span>
@@ -625,9 +642,6 @@ const html = `<!DOCTYPE html>
           </button>
           <button class="tab-nav-btn" data-tab="catalogo">
             <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
-          </button>
-          <button class="tab-nav-btn" data-tab="obd2">
-            <i data-lucide="wrench"></i> <span>Scanner OBD-II</span>
           </button>
         </div>
 
@@ -690,6 +704,25 @@ const html = `<!DOCTYPE html>
                     <button class="secondary-button cat-btn" data-cat="comercial" style="padding:3px 8px;font-size:10.5px;font-weight:700;color:#ef4444;">Comercial</button>
                     <button class="secondary-button cat-btn" data-cat="colecao" style="padding:3px 8px;font-size:10.5px;font-weight:700;">Colecionador</button>
                     <button class="secondary-button cat-btn" data-cat="oficial" style="padding:3px 8px;font-size:10.5px;font-weight:700;color:#3b82f6;">Oficial</button>
+                  </div>
+                </div>
+
+                <!-- Barra de Ações de Exportação da Placa (Copiar / Baixar SVG & PNG) -->
+                <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;">Vetor SVG Anycast Oficial (520×170)</span>
+                    <span class="status-badge-pill green" style="font-size:10px;padding:2px 7px;">300 DPI</span>
+                  </div>
+                  <div style="display:flex;gap:6px;align-items:center;">
+                    <button id="btn-copy-svg" class="secondary-button" style="height:28px;padding:0 9px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;" title="Copiar código SVG bruto">
+                      <i data-lucide="copy" style="width:13px;height:13px;"></i> <span>Copiar SVG</span>
+                    </button>
+                    <button id="btn-download-svg" class="secondary-button" style="height:28px;padding:0 9px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;" title="Baixar arquivo vetorial .svg">
+                      <i data-lucide="download" style="width:13px;height:13px;"></i> <span>Baixar .SVG</span>
+                    </button>
+                    <button id="btn-download-png" class="secondary-button" style="height:28px;padding:0 9px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;" title="Exportar imagem PNG de alta resolução">
+                      <i data-lucide="image" style="width:13px;height:13px;"></i> <span>Baixar PNG</span>
+                    </button>
                   </div>
                 </div>
 
@@ -759,8 +792,8 @@ const html = `<!DOCTYPE html>
                         <span class="status-badge-pill green" id="veiculo-selo-conpet" style="font-size:10px;padding:2px 8px;">Selo Conpet A</span>
                       </div>
                       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11.5px;">
-                        <div>⛽ <strong>Gasolina:</strong> <span id="veiculo-consumo-gasolina" style="color:var(--ink);">15,4 km/l (urb) • 17,8 km/l (rod)</span></div>
-                        <div>🌱 <strong>Etanol:</strong> <span id="veiculo-consumo-etanol" style="color:var(--ink);">10,8 km/l (urb) • 12,9 km/l (rod)</span></div>
+                        <div><i data-lucide="fuel" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:4px;color:#3b82f6;"></i> <strong>Gasolina:</strong> <span id="veiculo-consumo-gasolina" style="color:var(--ink);">15,4 km/l (urb) • 17,8 km/l (rod)</span></div>
+                        <div><i data-lucide="leaf" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:4px;color:#10b981;"></i> <strong>Etanol:</strong> <span id="veiculo-consumo-etanol" style="color:var(--ink);">10,8 km/l (urb) • 12,9 km/l (rod)</span></div>
                       </div>
                     </div>
 
@@ -795,6 +828,40 @@ const html = `<!DOCTYPE html>
                       <div id="veiculo-silhueta-svg-container" style="background:var(--paper-elevated,#111827);border-radius:var(--radius-md);padding:8px;border:1px solid var(--line);display:flex;justify-content:center;">
                         <!-- SVG gerado dinamicamente -->
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Oficial de Manutenção Preventiva & Peças OEM -->
+                <div id="manutencao-card" style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);margin-bottom:18px;box-shadow:var(--shadow-sm);">
+                  <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between;">
+                    <span style="display:flex;align-items:center;gap:7px;">
+                      <i data-lucide="wrench" style="color:var(--blue);"></i>
+                      <span>Guia de Manutenção Preventiva & Peças OEM</span>
+                    </span>
+                    <a id="btn-manual-link" href="https://www.toyota.com.br/manuais" target="_blank" rel="noopener" class="secondary-button" style="height:26px;padding:0 8px;font-size:10.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;text-decoration:none;">
+                      <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+                      <span>Manual Oficial PDF</span>
+                    </a>
+                  </div>
+                  <div style="padding:14px 16px;">
+                    <!-- Óleo e Pneus -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                      <div style="padding:10px;border-radius:var(--radius-md);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                        <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;">Óleo Recomendado</div>
+                        <div id="manutencao-oleo-tipo" style="font-size:13px;font-weight:800;color:var(--ink);margin:2px 0;">SAE 0W-20 (4.2L)</div>
+                        <div id="manutencao-oleo-norma" style="font-size:10.5px;color:var(--muted);">API SP / ILSAC GF-6A</div>
+                      </div>
+                      <div style="padding:10px;border-radius:var(--radius-md);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                        <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;">Calibragem de Pneus</div>
+                        <div id="manutencao-pneus-pressao" style="font-size:13px;font-weight:800;color:var(--ink);margin:2px 0;">32 PSI (D) • 30 PSI (T)</div>
+                        <div id="manutencao-pneus-medida" style="font-size:10.5px;color:var(--muted);">215/50 R17 91V</div>
+                      </div>
+                    </div>
+                    <!-- Peças de Desgaste -->
+                    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Códigos de Peças Frequentes (OEM / Aftermarket):</div>
+                    <div id="pecas-lista-box" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;">
+                      <!-- Peças injetadas via JS -->
                     </div>
                   </div>
                 </div>
@@ -887,6 +954,17 @@ const html = `<!DOCTYPE html>
                   </button>
                 </div>
 
+                <!-- Diagrama Visual Interativo da Decomposição Estrutural ISO 3779 -->
+                <div style="margin-bottom:20px;padding:16px;border-radius:var(--radius-lg);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                  <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+                    <span><i data-lucide="git-commit" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"></i> Decomposição Estrutural da Sequência VIN</span>
+                    <span class="status-badge-pill blue" style="font-size:10px;padding:2px 7px;">17 Caracteres</span>
+                  </div>
+                  <div id="chassi-breakdown-row" style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <!-- Segmentos WMI, VDS, Check Digit, Ano, Planta, Serial gerados dinamicamente -->
+                  </div>
+                </div>
+
                 <!-- Emblema da Montadora com SVG Oficial de Icons Pro -->
                 <div id="montadora-badge-box" style="padding:18px;border-radius:var(--radius-lg);background:var(--paper-elevated,#162032);border:1px solid var(--line);margin-bottom:20px;display:flex;align-items:center;gap:18px;">
                   <div class="brand-logo-frame" id="brand-logo-container">
@@ -899,8 +977,9 @@ const html = `<!DOCTYPE html>
                 </div>
 
                 <div style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);">
-                  <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);">
-                    🔍 Raio-X do Chassi
+                  <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;">
+                    <i data-lucide="scan" style="width:16px;height:16px;color:var(--blue);"></i>
+                    <span>Raio-X Técnico do Chassi</span>
                   </div>
                   <table class="specs-table">
                     <tbody>
@@ -936,15 +1015,15 @@ const html = `<!DOCTYPE html>
                 <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
                   <span style="display:flex;align-items:center;gap:8px;">
                     <i data-lucide="file-check-2" style="color:var(--blue);"></i>
-                    <span>Validador Oficial de RENAVAM (DENATRAN / SENATRAN)</span>
+                    <span>Validador de RENAVAM (Algoritmo Módulo 11)</span>
                   </span>
-                  <span class="status-badge-pill blue">Módulo 11</span>
+                  <span class="status-badge-pill blue">DENATRAN</span>
                 </div>
                 <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;">
-                  Validação do Registro Nacional com pesos regressivos <code>[3, 2, 9, 8, 7, 6, 5, 4, 3, 2]</code> e preenchimento de zeros à esquerda:
+                  Validação com verificação de dígitos e pesos oficiais do Registro Nacional de Veículos Automotores:
                 </p>
 
-                <div style="display:gap:10px;margin-bottom:14px;flex-wrap:wrap;display:flex;">
+                <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
                   <input type="text" id="renavam-input" value="00632345678" placeholder="Digite o RENAVAM de 9 a 11 dígitos..." maxlength="11" style="flex:2;min-width:200px;height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--radius-md);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--ink);background:var(--paper);outline:none;" />
                   <button id="btn-exec-renavam" class="primary-button accent" style="height:44px;padding:0 18px;font-size:13px;font-weight:700;">
                     <i data-lucide="play"></i> <span>Validar</span>
@@ -965,6 +1044,61 @@ const html = `<!DOCTYPE html>
                   <p id="renavam-msg-val" style="font-size:12.5px;color:var(--muted);margin:0;">
                     Dígito verificador confere com o cálculo ponderado oficial do DENATRAN.
                   </p>
+                </div>
+
+                <!-- Tabela Didática do Cálculo Ponderado Módulo 11 -->
+                <div style="margin-top:16px;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);">
+                  <div style="padding:10px 14px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;">
+                    Matriz de Pesos Oficiais Módulo 11 (3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
+                  </div>
+                  <div id="renavam-weights-grid" style="display:grid;grid-template-columns:repeat(11, 1fr);gap:2px;padding:10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;">
+                    <!-- Injetado dinamicamente -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAINEL NOVO: ISENÇÃO DE IPVA POR ESTADO (27 UFS) -->
+            <div id="section-ipva" class="tab-pane" style="display:none;">
+              <div class="card-dashboard">
+                <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                  <span style="display:flex;align-items:center;gap:8px;">
+                    <i data-lucide="shield-check" style="color:var(--blue);"></i>
+                    <span>Diagnóstico Fiscal de Isenção de IPVA por Estado (27 UFs)</span>
+                  </span>
+                  <span class="status-badge-pill green">Legislação Estadual 2026</span>
+                </div>
+                <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;">
+                  Consulte a idade de corte legal para isenção total de IPVA de veículos automotores em todas as 27 Unidades Federativas do Brasil:
+                </p>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+                  <div>
+                    <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">Estado de Emplacamento (UF)</label>
+                    <select id="ipva-uf-select" style="width:100%;height:42px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-md);font-size:13px;font-weight:700;color:var(--ink);background:var(--paper);outline:none;">
+                      <!-- Opções de UFs geradas via JS -->
+                    </select>
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">Ano de Fabricação: <strong id="ipva-ano-display" style="color:var(--blue);">2006</strong> (<span id="ipva-idade-display">20 anos</span>)</label>
+                    <input type="range" id="ipva-ano-slider" min="1985" max="2026" value="2006" style="width:100%;height:42px;accent-color:var(--blue);cursor:pointer;" />
+                  </div>
+                </div>
+
+                <!-- Card de Diagnóstico Fiscal Dinâmico -->
+                <div id="ipva-result-card" style="padding:20px;border-radius:var(--radius-lg);border:1px solid rgba(16,185,129,0.35);background:radial-gradient(circle at 50% 0%, rgba(16,185,129,0.12), transparent 70%), var(--paper-elevated,#111827);margin-bottom:18px;">
+                  <!-- Conteúdo preenchido dinamicamente -->
+                </div>
+
+                <!-- Tabela Comparativa de Todas as 27 UFs -->
+                <div style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);">
+                  <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:12.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between;">
+                    <span><i data-lucide="scale" style="width:14px;height:14px;vertical-align:middle;margin-right:6px;"></i> Matriz de Isenção nas 27 UFs</span>
+                    <span style="font-size:11px;color:var(--muted);">SENATRAN & SEFAZ</span>
+                  </div>
+                  <div id="ipva-ufs-matrix" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:6px;padding:12px;font-size:11px;">
+                    <!-- Cartões de todas as UFs gerados via JS -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -1009,6 +1143,28 @@ const html = `<!DOCTYPE html>
                     Abastecer com Etanol economiza cerca de 7.6% em relação à Gasolina neste momento.
                   </p>
                 </div>
+
+                <!-- Medidor de Paridade & Simulador Financeiro de Tanque Cheio -->
+                <div style="margin-top:16px;background:var(--paper-elevated,#111827);border-radius:var(--radius-md);padding:14px;border:1px solid var(--line);">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:8px;">
+                    <span style="color:#10b981;">Etanol Vantajoso (&lt; 70%)</span>
+                    <span style="color:#f59e0b;">Equivalência (70% - 73%)</span>
+                    <span style="color:#3b82f6;">Gasolina Vantajosa (&gt; 73%)</span>
+                  </div>
+                  <div style="position:relative;width:100%;height:14px;background:linear-gradient(90deg, #10b981 0%, #10b981 70%, #f59e0b 70%, #f59e0b 73%, #3b82f6 73%, #3b82f6 100%);border-radius:7px;">
+                    <div id="flex-parity-needle" style="position:absolute;top:-3px;bottom:-3px;width:5px;background:#ffffff;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.8);left:64.7%;transition:all 0.2s ease;"></div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;font-size:11.5px;">
+                    <div style="padding:10px;border-radius:6px;background:var(--paper);border:1px solid var(--line);">
+                      <div style="color:var(--muted);font-size:10.5px;text-transform:uppercase;">Economia por Tanque (50L)</div>
+                      <div id="flex-economia-tanque" style="font-size:16px;font-weight:800;color:#10b981;margin-top:2px;">R$ 41,20</div>
+                    </div>
+                    <div style="padding:10px;border-radius:6px;background:var(--paper);border:1px solid var(--line);">
+                      <div style="color:var(--muted);font-size:10.5px;text-transform:uppercase;">Economia Anual (15.000 km)</div>
+                      <div id="flex-economia-anual" style="font-size:16px;font-weight:800;color:#10b981;margin-top:2px;">R$ 1.236,00</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1045,104 +1201,103 @@ const html = `<!DOCTYPE html>
 
                 <!-- Gráfico Donut de Paridade Flex Anycast -->
                 <div style="background:#090d16;border:1px solid #1e293b;border-radius:var(--radius-lg);padding:18px;">
-                  <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#cbd5e1;margin-bottom:8px;">
-                    Distribuição Calórica & Paridade de Custo
+                  <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:8px;">
+                    Composição Donut de Custo de Combustível
                   </div>
-                  <div id="donut-chart-container" style="max-width:320px;margin:0 auto;"></div>
+                  <div id="donut-chart-container" style="max-width:300px;margin:0 auto;"></div>
                 </div>
               </div>
             </div>
 
-            <!-- PAINEL 6: CATÁLOGO INTEGRAL DE VEÍCULOS & FIPE BRASIL -->
+            <!-- PAINEL 6: CATÁLOGO NACIONAL FIPE -->
             <div id="section-catalogo" class="tab-pane" style="display:none;">
               <div class="card-dashboard">
                 <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
                   <span style="display:flex;align-items:center;gap:8px;">
                     <i data-lucide="layers" style="color:var(--blue);"></i>
-                    <span>Catálogo Nacional de Veículos & Base FIPE (Zero Unsplash)</span>
+                    <span>Catálogo Nacional de Montadoras & FIPE (100% Offline)</span>
                   </span>
-                  <span class="status-badge-pill green">100% Cobertura Brasil</span>
+                  <span class="status-badge-pill green">Oficial FIPE</span>
                 </div>
                 <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.5;">
-                  Explore modelos homologados no Brasil, dados Inmetro, avaliação FIPE e simulação de custos DETRAN:
+                  Busque modelos, preços médios de mercado, potência e consumo de combustível homologados pelo Inmetro:
                 </p>
 
-                <!-- Barra de Busca Rápida de Carros -->
-                <div style="display:flex;gap:8px;margin-bottom:12px;">
-                  <input type="text" id="catalogo-search-input" placeholder="Buscar por marca, modelo ou código FIPE (ex: Corolla, Onix, Gol)..." style="flex:1;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-md);font-size:12.5px;background:var(--paper);color:var(--ink);outline:none;" />
-                  <button class="primary-button accent" id="btn-catalogo-buscar" style="height:38px;padding:0 14px;font-size:12px;font-weight:700;">
-                    <i data-lucide="search"></i> <span>Buscar</span>
+                <!-- Input de Busca do Catálogo -->
+                <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+                  <input type="text" id="catalogo-search-input" placeholder="Buscar por modelo, marca ou código FIPE (ex: Corolla, Onix, 002174-1)..." style="flex:2;min-width:200px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-md);font-size:13px;color:var(--ink);background:var(--paper);outline:none;" />
+                  <button id="btn-catalogo-buscar" class="primary-button accent" style="height:40px;padding:0 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;">
+                    <i data-lucide="search" style="width:14px;height:14px;"></i> <span>Buscar</span>
                   </button>
                 </div>
 
-                <!-- Seletor de Categorias -->
-                <div class="category-row" style="margin-bottom:12px;display:flex;gap:6px;overflow-x:auto;">
-                  <button class="secondary-button cat-filter-btn is-selected" data-cat="todos" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Todos</button>
-                  <button class="secondary-button cat-filter-btn" data-cat="hatch" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Hatches</button>
-                  <button class="secondary-button cat-filter-btn" data-cat="sedan" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Sedans</button>
-                  <button class="secondary-button cat-filter-btn" data-cat="suv" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">SUVs</button>
-                  <button class="secondary-button cat-filter-btn" data-cat="picape" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Picapes</button>
-                  <button class="secondary-button cat-filter-btn" data-cat="motocicleta" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Motos</button>
-                  <button class="secondary-button cat-filter-btn" data-cat="eletrico" style="height:28px;padding:0 10px;font-size:11px;font-weight:700;border-radius:var(--radius-full);">Elétricos</button>
+                <!-- Filtros de Montadoras com Logos SVG da Icons Pro -->
+                <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">
+                  Montadoras Homologadas:
+                </div>
+                <div id="marcas-grid-container" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;">
+                  <!-- Injetado dinamicamente via JS -->
                 </div>
 
-                <!-- Grade de Montadoras / Marcas -->
-                <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">
-                  Montadoras Homologadas (Filtro por Marca):
-                </div>
-                <div id="marcas-grid-container" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;">
-                  <!-- Marcas com logos carregados dinamicamente via Icons Pro -->
-                </div>
-
-                <!-- Lista de Modelos Encontrados -->
-                <div id="catalogo-modelos-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));gap:12px;">
-                  <!-- Cards de veículos gerados dinamicamente -->
+                <!-- Grid de Cards de Veículos do Catálogo -->
+                <div id="catalogo-modelos-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:12px;max-height:480px;overflow-y:auto;padding-right:4px;">
+                  <!-- Cards preenchidos dinamicamente -->
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Coluna 2: Terminal Console Dark Oficial da Ponte API -->
+          <!-- Coluna 2: Terminal Dark Console e Snippets de Integração -->
           <div class="playground-right">
-            <div class="terminal-window">
-              <!-- Topbar do Console no Estilo macOS -->
+            <!-- Snippets de Código Multi-Linguagem -->
+            <div class="terminal-window" style="margin-bottom:18px;">
               <div class="terminal-topbar">
                 <div class="terminal-dots">
                   <div class="terminal-dot red"></div>
                   <div class="terminal-dot yellow"></div>
                   <div class="terminal-dot green"></div>
                 </div>
-                <div class="snippet-lang-tabs" role="tablist">
-                  <button class="snippet-tab is-active" data-lang="curl">cURL</button>
-                  <button class="snippet-tab" data-lang="nodejs">Node.js</button>
-                  <button class="snippet-tab" data-lang="python">Python</button>
-                  <button class="snippet-tab" data-lang="php">PHP</button>
+                <div style="display:flex;gap:4px;">
+                  <button class="secondary-button snippet-tab is-active" data-lang="curl">cURL</button>
+                  <button class="secondary-button snippet-tab" data-lang="nodejs">Node.js</button>
+                  <button class="secondary-button snippet-tab" data-lang="python">Python</button>
+                  <button class="secondary-button snippet-tab" data-lang="php">PHP</button>
+                  <button class="secondary-button snippet-tab" data-lang="go">Go</button>
+                  <button class="secondary-button snippet-tab" data-lang="csharp">C#</button>
                 </div>
-                <button class="icon-button copy-mini" id="btn-copy-code" title="Copiar Snippet">
+                <button id="btn-copy-code" class="icon-button" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;" title="Copiar Código">
                   <i data-lucide="copy" style="width:14px;height:14px;"></i>
                 </button>
               </div>
-
-              <!-- Caixa de Código do Snippet -->
-              <div class="snippet-code-box" style="padding:14px 18px;background:rgba(0,0,0,0.30);border-bottom:1px solid rgba(255,255,255,0.06);">
-                <pre class="snippet-pre" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;color:#7dd3fc;line-height:1.5;overflow-x:auto;"><code id="snippet-code">curl -s "https://placas-pro-api.clepta2.workers.dev/api/placas/BRA2E19" \
-  -H "Authorization: ******" \
-  -H "x-api-key: plc_live_mercosul_2026"</code></pre>
+              <div style="padding:8px 14px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.06);font-size:11px;color:#94a3b8;font-family:'JetBrains Mono',monospace;">
+                GET <span id="endpoint-display" style="color:#38bdf8;">/api/placas/BRA2E19</span>
               </div>
+              <pre class="terminal-body" id="snippet-code" style="margin:0;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#e2e8f0;line-height:1.5;overflow-x:auto;"></pre>
+            </div>
 
-              <!-- Barra de Execução Sandbox -->
-              <div class="playground-bar">
-                <span class="method-tag get">GET</span>
-                <code class="endpoint-code" id="endpoint-display" style="font-size:12px;">/api/placas/BRA2E19</code>
-                <button class="primary-button accent test-btn" id="btn-run-sandbox" style="white-space:nowrap;padding:0 14px;height:32px;">
-                  <i data-lucide="play"></i> <span>Executar</span>
-                </button>
+            <!-- Terminal Dark Interativo com Resposta JSON Formatada -->
+            <div class="terminal-window">
+              <div class="terminal-topbar">
+                <div class="terminal-dots">
+                  <div class="terminal-dot red"></div>
+                  <div class="terminal-dot yellow"></div>
+                  <div class="terminal-dot green"></div>
+                </div>
+                <div style="font-size:11px;font-weight:700;color:#94a3b8;font-family:'JetBrains Mono',monospace;">
+                  RESPOSTA JSON DA BORDA ANYCAST
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <button id="btn-copy-json" class="icon-button" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;" title="Copiar JSON">
+                    <i data-lucide="copy" style="width:14px;height:14px;"></i>
+                  </button>
+                  <button id="btn-run-sandbox" class="primary-button accent" style="height:26px;padding:0 10px;font-size:11px;display:inline-flex;align-items:center;gap:4px;">
+                    <i data-lucide="play" style="width:12px;height:12px;"></i> <span>Executar</span>
+                  </button>
+                </div>
               </div>
-
-              <!-- Console de Resposta JSON -->
-              <div class="playground-console" style="min-height:300px;max-height:540px;overflow-y:auto;padding:16px;">
-                <div class="console-response-header" id="console-header" style="font-size:11.5px;margin-bottom:10px;">
-                  <span class="badge-200" id="console-status">200 OK</span>
+              <div class="playground-console" style="min-height:300px;max-height:550px;overflow-y:auto;padding:14px;background:#091311;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:10.5px;color:#94a3b8;font-family:'JetBrains Mono',monospace;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:6px;">
+                  <span id="console-status" class="status-badge-pill green" style="padding:2px 8px;font-size:10px;">200 OK</span>
                   <span id="console-latency">Latência: 1.2ms</span>
                   <span>Cloudflare Anycast</span>
                 </div>
@@ -1155,8 +1310,29 @@ const html = `<!DOCTYPE html>
     </main>
   </div>
 
+  <!-- Toast Notification Flutuante -->
+  <div id="ponte-toast" style="position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 18px;border-radius:10px;background:rgba(15,23,42,0.95);backdrop-filter:blur(8px);border:1px solid rgba(59,130,246,0.3);color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,0.5);transform:translateY(100px);opacity:0;transition:all 0.25s cubic-bezier(0.16,1,0.3,1);pointer-events:none;">
+    <i data-lucide="check-circle-2" style="width:16px;height:16px;color:#10b981;"></i>
+    <span id="toast-msg">Mensagem</span>
+  </div>
+
   <!-- Script da Aplicação e Integração -->
   <script type="module">
+
+    function showToast(msg) {
+      const toast = document.getElementById('ponte-toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.style.transform = 'translateY(0)';
+      toast.style.opacity = '1';
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.style.transform = 'translateY(100px)';
+        toast.style.opacity = '0';
+      }, 2400);
+      renderLucide();
+    }
 
     // Controle do Menu Lateral Mobile (Drawer)
     function setupMobileNav() {
@@ -1190,12 +1366,34 @@ const html = `<!DOCTYPE html>
           document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
           const target = document.getElementById('section-' + tabKey);
           if (target) target.style.display = 'block';
+
+          const bread = document.getElementById('breadcrumb-title');
+          const titles = {
+            placas: 'Placas & Mercosul',
+            chassi: 'Chassi / VIN (ISO 3779)',
+            renavam: 'RENAVAM (Módulo 11)',
+            ipva: 'Isenção IPVA (27 UFs)',
+            flex: 'Calculadora Flex ANP',
+            graficos: 'Gráficos & Telemetria',
+            catalogo: 'Catálogo Nacional FIPE'
+          };
+          if (bread && titles[tabKey]) bread.textContent = titles[tabKey];
+
           closeDrawer();
-          if (typeof updateSnippet === 'function') updateSnippet();
-          if (window.lucide) window.lucide.createIcons();
+          updateSnippet();
+          renderLucide();
+
+          if (tabKey === 'graficos') {
+            carregarGraficosAnycast();
+          } else if (tabKey === 'catalogo') {
+            carregarCatalogoVeiculos();
+          } else if (tabKey === 'ipva') {
+            atualizarDiagnosticoIpva();
+          }
         });
       });
     }
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', setupMobileNav);
     } else {
@@ -1244,41 +1442,10 @@ const html = `<!DOCTYPE html>
       'Volvo do Brasil': 'volvo',
       'Nissan Motor Co': 'nissan',
       'Nissan do Brasil': 'nissan',
-      'Tesla Inc': 'tesla'
+      'Tesla Inc': 'tesla',
+      'Jeep': 'jeep',
+      'Jeep / Stellantis': 'jeep'
     };
-
-    // Navegação de Abas
-    const tabBtns = document.querySelectorAll('.tab-nav-btn, .primary-nav .nav-link[data-view]');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const tabKey = btn.dataset.tab || btn.dataset.view;
-        if (!tabKey) return;
-        document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tabKey));
-        document.querySelectorAll('.primary-nav .nav-link[data-view]').forEach(b => b.classList.toggle('is-active', b.dataset.view === tabKey));
-        document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
-        const target = document.getElementById('section-' + tabKey);
-        if (target) target.style.display = 'block';
-
-        const bread = document.getElementById('breadcrumb-title');
-        const titles = {
-          placas: 'Placas & Mercosul',
-          chassi: 'Chassi / VIN (ISO 3779)',
-          renavam: 'RENAVAM (Módulo 11)',
-          flex: 'Calculadora Flex ANP',
-          graficos: 'Gráficos & Telemetria',
-          catalogo: 'Catálogo Nacional FIPE'
-        };
-        if (bread && titles[tabKey]) bread.textContent = titles[tabKey];
-        updateSnippet();
-        renderLucide();
-
-        if (tabKey === 'graficos') {
-          carregarGraficosAnycast();
-        } else if (tabKey === 'catalogo') {
-          carregarCatalogoVeiculos();
-        }
-      });
-    });
 
     let currentSnippetLang = 'curl';
     document.querySelectorAll('.snippet-tab').forEach(t => {
@@ -1335,20 +1502,25 @@ const html = `<!DOCTYPE html>
       const tab = getActiveTab();
       if (tab === 'placas') {
         const val = (document.getElementById('placa-input').value || 'BRA2E19').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-        return { ep: \`/api/placas/\${val}\`, full: \`https://placas-pro-api.clepta2.workers.dev/api/placas/\${val}\` };
+        return { ep: '/api/placas/' + val, full: 'https://placas-pro-api.clepta2.workers.dev/api/placas/' + val };
       }
       if (tab === 'chassi') {
         const val = (document.getElementById('chassi-input').value || '9BWCA45Z1FP012345').trim().toUpperCase();
-        return { ep: \`/api/placas/chassi/\${val}\`, full: \`https://placas-pro-api.clepta2.workers.dev/api/placas/chassi/\${val}\` };
+        return { ep: '/api/placas/chassi/' + val, full: 'https://placas-pro-api.clepta2.workers.dev/api/placas/chassi/' + val };
       }
       if (tab === 'renavam') {
         const val = (document.getElementById('renavam-input').value || '00632345678').replace(/\\D/g, '');
-        return { ep: \`/api/placas/renavam/\${val}\`, full: \`https://placas-pro-api.clepta2.workers.dev/api/placas/renavam/\${val}\` };
+        return { ep: '/api/placas/renavam/' + val, full: 'https://placas-pro-api.clepta2.workers.dev/api/placas/renavam/' + val };
+      }
+      if (tab === 'ipva') {
+        const uf = document.getElementById('ipva-uf-select')?.value || 'SP';
+        const ano = document.getElementById('ipva-ano-slider')?.value || '2006';
+        return { ep: '/api/placas/isencao-ipva?uf=' + uf + '&anoFabricacao=' + ano, full: 'https://placas-pro-api.clepta2.workers.dev/api/placas/isencao-ipva?uf=' + uf + '&anoFabricacao=' + ano };
       }
       if (tab === 'flex') {
         const e = document.getElementById('flex-etanol').value || '3.85';
         const g = document.getElementById('flex-gasolina').value || '5.95';
-        return { ep: \`/api/placas/flex?etanol=\${e}&gasolina=\${g}\`, full: \`https://placas-pro-api.clepta2.workers.dev/api/placas/flex?etanol=\${e}&gasolina=\${g}\` };
+        return { ep: '/api/placas/flex?etanol=' + e + '&gasolina=' + g, full: 'https://placas-pro-api.clepta2.workers.dev/api/placas/flex?etanol=' + e + '&gasolina=' + g };
       }
       return { ep: '/api/placas/BRA2E19', full: 'https://placas-pro-api.clepta2.workers.dev/api/placas/BRA2E19' };
     }
@@ -1359,26 +1531,88 @@ const html = `<!DOCTYPE html>
       const codeEl = document.getElementById('snippet-code');
 
       if (currentSnippetLang === 'curl') {
-        codeEl.textContent = \`curl -s "\${info.full}" \\\n  -H "Authorization: ******" \\\n  -H "x-api-key: plc_live_mercosul_2026"\`;
+        codeEl.textContent = 'curl -s "' + info.full + '" \\\n  -H "Authorization: ******" \\\n  -H "x-api-key: plc_live_mercosul_2026"';
       } else if (currentSnippetLang === 'nodejs') {
-        codeEl.textContent = \`const res = await fetch("\${info.full}", {\n  headers: { "Authorization": "******", "x-api-key": "plc_live_mercosul_2026" }\n});\nconst data = await res.json();\nconsole.log(data);\`;
+        codeEl.textContent = 'const res = await fetch("' + info.full + '", {\n  headers: { "Authorization": "******", "x-api-key": "plc_live_mercosul_2026" }\n});\nconst data = await res.json();\nconsole.log(data);';
       } else if (currentSnippetLang === 'python') {
-        codeEl.textContent = \`import requests\nres = requests.get("\${info.full}", headers={"Authorization": "******", "x-api-key": "plc_live_mercosul_2026"})\nprint(res.json())\`;
+        codeEl.textContent = 'import requests\nres = requests.get("' + info.full + '", headers={"Authorization": "******", "x-api-key": "plc_live_mercosul_2026"})\nprint(res.json())';
       } else if (currentSnippetLang === 'php') {
-        codeEl.textContent = \`$ch = curl_init("\${info.full}");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: ******", "x-api-key: plc_live_mercosul_2026"]);\n$response = curl_exec($ch);\nprint_r(json_decode($response, true));\`;
+        codeEl.textContent = '$ch = curl_init("' + info.full + '");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: ******", "x-api-key: plc_live_mercosul_2026"]);\n$response = curl_exec($ch);\nprint_r(json_decode($response, true));';
+      } else if (currentSnippetLang === 'go') {
+        codeEl.textContent = 'package main\n\nimport (\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\treq, _ := http.NewRequest("GET", "' + info.full + '", nil)\n\treq.Header.Set("Authorization", "******")\n\treq.Header.Set("x-api-key", "plc_live_mercosul_2026")\n\tresp, _ := http.DefaultClient.Do(req)\n\tbody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}';
+      } else if (currentSnippetLang === 'csharp') {
+        codeEl.textContent = 'using System.Net.Http;\n\nvar client = new HttpClient();\nclient.DefaultRequestHeaders.Add("Authorization", "******");\nclient.DefaultRequestHeaders.Add("x-api-key", "plc_live_mercosul_2026");\nvar response = await client.GetStringAsync("' + info.full + '");\nConsole.WriteLine(response);';
       }
     }
 
-    // Copiar Snippet
-    document.getElementById('btn-copy-code').addEventListener('click', () => {
+    // Copiar Snippet & JSON com Toast Moderno
+    document.getElementById('btn-copy-code')?.addEventListener('click', () => {
       const txt = document.getElementById('snippet-code').textContent;
-      navigator.clipboard.writeText(txt).then(() => alert('Snippet copiado com sucesso!'));
+      navigator.clipboard.writeText(txt).then(() => showToast('Snippet de código copiado!'));
     });
 
-    // Base de conexão Anycast inteligente (suporta tanto rodando no Worker quanto no GitHub Pages/Localhost)
+    document.getElementById('btn-copy-json')?.addEventListener('click', () => {
+      const txt = document.getElementById('console-output').textContent;
+      navigator.clipboard.writeText(txt).then(() => showToast('Resposta JSON copiada!'));
+    });
+
+    // Exportação do SVG e PNG da Placa
+    document.getElementById('btn-copy-svg')?.addEventListener('click', () => {
+      const svgBox = document.getElementById('plate-svg-box');
+      const svgText = svgBox.innerHTML.trim();
+      if (!svgText) return;
+      navigator.clipboard.writeText(svgText).then(() => showToast('Código SVG vetorial copiado!'));
+    });
+
+    document.getElementById('btn-download-svg')?.addEventListener('click', () => {
+      const svgBox = document.getElementById('plate-svg-box');
+      const svgText = svgBox.innerHTML.trim();
+      if (!svgText) return;
+      const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const placa = document.getElementById('placa-input').value || 'placa';
+      a.href = url;
+      a.download = 'placa-' + placa.toUpperCase() + '.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Download do SVG iniciado!');
+    });
+
+    document.getElementById('btn-download-png')?.addEventListener('click', () => {
+      const svgBox = document.getElementById('plate-svg-box');
+      const svgEl = svgBox.querySelector('svg');
+      if (!svgEl) return;
+      const svgString = new XMLSerializer().serializeToString(svgEl);
+      const canvas = document.createElement('canvas');
+      canvas.width = 1040;
+      canvas.height = 340;
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, 1040, 340);
+        URL.revokeObjectURL(url);
+        const pngUrl = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        const placa = document.getElementById('placa-input').value || 'placa';
+        a.href = pngUrl;
+        a.download = 'placa-' + placa.toUpperCase() + '-hd.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('Download do PNG HD iniciado!');
+      };
+      img.src = url;
+    });
+
+    // Base de conexão Anycast inteligente
     const API_BASE = window.location.hostname.includes('workers.dev') ? '' : 'https://placas-pro-api.clepta2.workers.dev';
 
-    // Formatador JSON de Alto Contraste com Destaque de Sintaxe para Terminal
+    // Formatador JSON de Alto Contraste para o Terminal
     function renderJsonToConsole(data, statusText, isOk, latencyMs) {
       const consoleOutput = document.getElementById('console-output');
       const consoleStatus = document.getElementById('console-status');
@@ -1386,27 +1620,29 @@ const html = `<!DOCTYPE html>
 
       consoleStatus.textContent = statusText;
       consoleStatus.className = isOk ? 'badge-200' : 'badge-500';
-      consoleLat.textContent = \`Latência: \${latencyMs}ms\`;
+      consoleLat.textContent = 'Latência: ' + latencyMs + 'ms';
 
       const jsonStr = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
       const escaped = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       const highlighted = escaped.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
         if (/^"/.test(match)) {
           if (/:$/.test(match)) {
-            return \`<span style="color:#38bdf8;font-weight:600;">\${match}</span>\`;
+            return '<span style="color:#38bdf8;font-weight:600;">' + match + '</span>';
           } else {
-            return \`<span style="color:#86efac;">\${match}</span>\`;
+            return '<span style="color:#86efac;">' + match + '</span>';
           }
         } else if (/true|false/.test(match)) {
-          return \`<span style="color:#c084fc;font-weight:700;">\${match}</span>\`;
+          return '<span style="color:#c084fc;font-weight:700;">' + match + '</span>';
         } else if (/null/.test(match)) {
-          return \`<span style="color:#94a3b8;font-style:italic;">\${match}</span>\`;
+          return '<span style="color:#94a3b8;font-style:italic;">' + match + '</span>';
         } else {
-          return \`<span style="color:#fde047;font-weight:600;">\${match}</span>\`;
+          return '<span style="color:#fde047;font-weight:600;">' + match + '</span>';
         }
       });
       consoleOutput.innerHTML = highlighted;
     }
+
+    window.PLANOS_MANUTENCAO_CLIENT = ${JSON.stringify(PLANOS_MANUTENCAO_VEICULOS)};
 
     const VEICULOS_CLIENT = {
       'BRA2E19': {
@@ -1488,17 +1724,17 @@ const html = `<!DOCTYPE html>
         potencia: '116 cv',
         cilindrada: '999 cm³ Turbo',
         procedencia: 'Nacional (RS)',
-        valorFipeFormatado: 'R$ 89.900,00',
-        fotoUrl: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+        valorFipeFormatado: 'R$ 88.500,00',
+        fotoUrl: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
         marcaLogoUrl: 'https://icons-pro-api.maputo2.workers.dev/api/icons/chevrolet.svg'
       },
       {
         marca: 'Jeep',
-        modelo: 'Compass Longitude 1.3 Turbo',
-        nomeCompleto: 'Jeep Compass Longitude 1.3 Turbo',
+        modelo: 'Compass Longitude 1.3 Turbo Flex',
+        nomeCompleto: 'Jeep Compass Longitude 1.3 Turbo Flex',
         anoFabricacao: 2023,
         anoModelo: 2023,
-        cor: 'Preto Carbon',
+        cor: 'Cinza Granite Metálico',
         segmento: 'SUV Médio',
         combustivel: 'Flex',
         potencia: '185 cv',
@@ -1546,13 +1782,13 @@ const html = `<!DOCTYPE html>
       const segLower = (seg || '').toLowerCase();
       const cor = hex || '#94a3b8';
       if (segLower.includes('moto')) {
-        return \`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="90"><circle cx="70" cy="115" r="32" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><circle cx="250" cy="115" r="32" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><path d="M 70 115 L 140 85 L 180 80 L 220 55 L 250 115" fill="none" stroke="#27272a" stroke-width="10" stroke-linecap="round"/><path d="M 130 80 Q 160 50 195 65 Q 210 75 190 90 Z" fill="\${cor}" stroke="\${cor}" stroke-width="2"/></svg>\`;
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="90"><circle cx="70" cy="115" r="32" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><circle cx="250" cy="115" r="32" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><path d="M 70 115 L 140 85 L 180 80 L 220 55 L 250 115" fill="none" stroke="#27272a" stroke-width="10" stroke-linecap="round"/><path d="M 130 80 Q 160 50 195 65 Q 210 75 190 90 Z" fill="' + cor + '" stroke="' + cor + '" stroke-width="2"/></svg>';
       }
       let bodyPath = 'M 35 110 Q 40 85 70 80 L 125 78 L 165 42 L 265 42 L 315 75 L 365 82 Q 385 88 385 110 Z';
       if (segLower.includes('suv')) bodyPath = 'M 35 110 Q 40 80 65 75 L 115 72 L 150 32 L 295 32 L 330 70 L 375 75 Q 390 85 390 110 Z';
       else if (segLower.includes('picape')) bodyPath = 'M 35 110 Q 40 82 70 78 L 130 75 L 165 38 L 260 38 L 260 75 L 370 75 Q 388 85 388 110 Z';
       else if (segLower.includes('hatch')) bodyPath = 'M 40 110 Q 45 85 75 80 L 125 78 L 170 42 L 285 42 L 295 76 L 360 82 Q 380 88 380 110 Z';
-      return \`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 150" width="100%" height="90"><path d="\${bodyPath}" fill="\${cor}" stroke="#1e293b" stroke-width="2" opacity="0.9"/><path d="M 135 74 L 170 47 L 220 47 L 220 74 Z" fill="#030712" opacity="0.75"/><path d="M 226 47 L 265 47 L 305 74 L 226 74 Z" fill="#030712" opacity="0.75"/><circle cx="100" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><circle cx="315" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/></svg>\`;
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 150" width="100%" height="90"><path d="' + bodyPath + '" fill="' + cor + '" stroke="#1e293b" stroke-width="2" opacity="0.9"/><path d="M 135 74 L 170 47 L 220 47 L 220 74 Z" fill="#030712" opacity="0.75"/><path d="M 226 47 L 265 47 L 305 74 L 226 74 Z" fill="#030712" opacity="0.75"/><circle cx="100" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/><circle cx="315" cy="112" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="5"/></svg>';
     }
 
     function obterDadosVeiculoClient(placa, tipoVeiculo) {
@@ -1561,9 +1797,9 @@ const html = `<!DOCTYPE html>
       if (!v) {
         let hash = 0;
         for (let i = 0; i < clean.length; i++) hash = (hash * 31 + clean.charCodeAt(i)) >>> 0;
-        v = { ...POOL_CLIENT[hash % POOL_CLIENT.length] };
+        v = Object.assign({}, POOL_CLIENT[hash % POOL_CLIENT.length]);
       } else {
-        v = { ...v };
+        v = Object.assign({}, v);
       }
 
       if (!v.galeria || !v.galeria.length) {
@@ -1616,7 +1852,7 @@ const html = `<!DOCTYPE html>
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`\${API_BASE}/api/placas/\${clean}\`);
+        const res = await fetch(API_BASE + '/api/placas/' + clean);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
@@ -1624,21 +1860,19 @@ const html = `<!DOCTYPE html>
           data.veiculo = obterDadosVeiculoClient(clean, data.tipoVeiculo);
         }
 
-        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
+        renderJsonToConsole(data, res.ok ? '200 OK' : res.status + ' ERRO', res.ok, lat);
 
-        // Atualiza campos visuais
         if (data.valido) {
-          document.getElementById('val-padrao').innerHTML = \`<span class="status-badge-pill green">\${data.padrao}</span>\`;
+          document.getElementById('val-padrao').innerHTML = '<span class="status-badge-pill green">' + data.padrao + '</span>';
           document.getElementById('val-conversao').textContent = data.formato === 'antiga' ? data.placaMercosulFormatada : (data.placaAntigaFormatada || 'Emplacamento Novo');
-          document.getElementById('val-origem').textContent = \`\${data.origem.estado} (\${data.origem.uf}) — Região \${data.origem.regiao}\`;
-          document.getElementById('val-licenciamento').textContent = \`\${data.licenciamento.mesVencimentoExtenso} (\${data.licenciamento.statusExercicioAtual})\`;
-          document.getElementById('val-rodizio').textContent = \`\${data.rodizioSP.diaRestricao} (\${data.rodizioSP.horarios})\`;
+          document.getElementById('val-origem').textContent = data.origem.estado + ' (' + data.origem.uf + ') — Região ' + data.origem.regiao;
+          document.getElementById('val-licenciamento').textContent = data.licenciamento.mesVencimentoExtenso + ' (' + data.licenciamento.statusExercicioAtual + ')';
+          document.getElementById('val-rodizio').textContent = data.rodizioSP.diaRestricao + ' (' + data.rodizioSP.horarios + ')';
           const lib = data.rodizioSP.circulacaoPermitidaAgora;
           document.getElementById('val-circulacao').innerHTML = lib
-            ? \`<span class="status-badge-pill green">LIBERADO AGORA</span>\`
-            : \`<span class="status-badge-pill red">RESTRITO NO CENTRO EXPANDIDO</span>\`;
+            ? '<span class="status-badge-pill green">LIBERADO AGORA</span>'
+            : '<span class="status-badge-pill red">RESTRITO NO CENTRO EXPANDIDO</span>';
 
-          // Atualiza Ficha Cadastral e Foto Oficial do Veículo
           if (data.veiculo) {
             const v = data.veiculo;
             const cardEl = document.getElementById('veiculo-card');
@@ -1647,13 +1881,12 @@ const html = `<!DOCTYPE html>
             const fotoEl = document.getElementById('veiculo-foto-img');
             if (fotoEl && v.fotoUrl) fotoEl.src = v.fotoUrl;
 
-            // Galeria de Fotos Multi-Ângulo
             const galeriaContainer = document.getElementById('veiculo-galeria-container');
             if (galeriaContainer) {
               const fotos = (v.galeria && v.galeria.length) ? v.galeria : [v.fotoUrl];
-              galeriaContainer.innerHTML = fotos.map((f, i) => \`
-                <img src="\${f}" alt="Ângulo \${i + 1}" style="width:62px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid \${i === 0 ? 'var(--blue)' : 'var(--line)'};transition:all 0.15s ease;" onclick="document.getElementById('veiculo-foto-img').src='\${f}';document.querySelectorAll('#veiculo-galeria-container img').forEach(im=>im.style.borderColor='var(--line)');this.style.borderColor='var(--blue)';" />
-              \`).join('');
+              galeriaContainer.innerHTML = fotos.map((f, i) =>
+                '<img src="' + f + '" alt="Ângulo ' + (i + 1) + '" style="width:62px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid ' + (i === 0 ? 'var(--blue)' : 'var(--line)') + ';transition:all 0.15s ease;" onclick="document.getElementById(\\'veiculo-foto-img\\').src=\\'' + f + '\\';document.querySelectorAll(\\'#veiculo-galeria-container img\\').forEach(im=>im.style.borderColor=\\'var(--line)\\');this.style.borderColor=\\'var(--blue)\\';" />'
+              ).join('');
             }
 
             const logoEl = document.getElementById('veiculo-montadora-logo');
@@ -1666,13 +1899,13 @@ const html = `<!DOCTYPE html>
             if (segEl) segEl.textContent = v.segmento || 'Veículo Nacional';
 
             const fipeEl = document.getElementById('veiculo-fipe-valor');
-            if (fipeEl) fipeEl.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || 'R$ 78.500,00');
+            if (fipeEl) fipeEl.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || 'R$ 142.900,00');
 
             const nomeEl = document.getElementById('veiculo-nome-completo');
-            if (nomeEl) nomeEl.textContent = v.nomeCompleto || \`\${v.marca} \${v.modelo}\`;
+            if (nomeEl) nomeEl.textContent = v.nomeCompleto || (v.marca + ' ' + v.modelo);
 
             const anoEl = document.getElementById('veiculo-ano-modelo');
-            if (anoEl) anoEl.textContent = \`\${v.anoFabricacao || 2023} / \${v.anoModelo || 2024}\`;
+            if (anoEl) anoEl.textContent = (v.anoFabricacao || 2022) + ' / ' + (v.anoModelo || 2023);
 
             const corEl = document.getElementById('veiculo-cor');
             if (corEl) corEl.textContent = v.cor || 'Prata';
@@ -1684,29 +1917,27 @@ const html = `<!DOCTYPE html>
             if (combTag) combTag.textContent = v.combustivel || 'Flex';
 
             const potTag = document.getElementById('veiculo-potencia-tag');
-            if (potTag) potTag.textContent = v.potencia || 'Potência Homologada';
+            if (potTag) potTag.textContent = v.potencia || '122 cv';
 
             const motTag = document.getElementById('veiculo-motor-tag');
-            if (motTag) motTag.textContent = v.cilindrada || 'Motor Nacional';
+            if (motTag) motTag.textContent = v.cilindrada || '1.8 16V';
 
             const procTag = document.getElementById('veiculo-procedencia-tag');
             if (procTag) procTag.textContent = v.procedencia || 'Brasil';
 
-            // Eficiência Inmetro (PBEV)
             const seloEl = document.getElementById('veiculo-selo-conpet');
             if (seloEl && v.eficienciaInmetro) seloEl.textContent = v.eficienciaInmetro.classificacaoPBEV || 'Selo Conpet A';
 
             const cGasEl = document.getElementById('veiculo-consumo-gasolina');
             if (cGasEl && v.eficienciaInmetro) {
-              cGasEl.textContent = \`\${v.eficienciaInmetro.gasolinaUrbano} (urb) • \${v.eficienciaInmetro.gasolinaRodoviario} (rod)\`;
+              cGasEl.textContent = v.eficienciaInmetro.gasolinaUrbano + ' (urb) • ' + v.eficienciaInmetro.gasolinaRodoviario + ' (rod)';
             }
 
             const cEtaEl = document.getElementById('veiculo-consumo-etanol');
             if (cEtaEl && v.eficienciaInmetro) {
-              cEtaEl.textContent = \`\${v.eficienciaInmetro.etanolUrbano || '-'} (urb) • \${v.eficienciaInmetro.etanolRodoviario || '-'} (rod)\`;
+              cEtaEl.textContent = (v.eficienciaInmetro.etanolUrbano || '-') + ' (urb) • ' + (v.eficienciaInmetro.etanolRodoviario || '-') + ' (rod)';
             }
 
-            // Custos Anuais DETRAN
             const ufCustoEl = document.getElementById('veiculo-uf-custo');
             if (ufCustoEl) ufCustoEl.textContent = (data.origem && data.origem.uf) || 'SP';
 
@@ -1725,23 +1956,20 @@ const html = `<!DOCTYPE html>
             const parcEl = document.getElementById('veiculo-parcelas');
             if (parcEl && v.regularizacaoAnual) parcEl.textContent = v.regularizacaoAnual.parcelas5x;
 
-            // Gravame e Situação Cadastral
             const gravEl = document.getElementById('veiculo-gravame-status');
             if (gravEl && v.situacaoCadastral) gravEl.textContent = v.situacaoCadastral.gravame;
 
             const propEl = document.getElementById('veiculo-proprietario-tipo');
             if (propEl && v.situacaoCadastral) propEl.textContent = v.situacaoCadastral.proprietarioTipo;
 
-            // Silhueta Vetorial na Cor Real
             const silhEl = document.getElementById('veiculo-silhueta-svg-container');
             if (silhEl && v.silhuetaSvg) silhEl.innerHTML = v.silhuetaSvg;
 
-            // Atualiza linhas correspondentes na tabela Raio-X
             const rNome = document.getElementById('val-veiculo-nome');
-            if (rNome) rNome.textContent = v.nomeCompleto || \`\${v.marca} \${v.modelo}\`;
+            if (rNome) rNome.textContent = v.nomeCompleto || (v.marca + ' ' + v.modelo);
 
             const rAno = document.getElementById('val-veiculo-ano');
-            if (rAno) rAno.textContent = \`\${v.anoFabricacao || 2023} / \${v.anoModelo || 2024}\`;
+            if (rAno) rAno.textContent = (v.anoFabricacao || 2022) + ' / ' + (v.anoModelo || 2023);
 
             const rCor = document.getElementById('val-veiculo-cor');
             if (rCor) rCor.textContent = v.cor || 'Prata';
@@ -1749,10 +1977,47 @@ const html = `<!DOCTYPE html>
             const rFipe = document.getElementById('val-veiculo-fipe');
             if (rFipe) rFipe.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || '-');
 
+            // Atualiza Ficha de Manutenção Preventiva e Peças OEM
+            const m = data.manutencao || (window.PLANOS_MANUTENCAO_CLIENT && (window.PLANOS_MANUTENCAO_CLIENT['toyota-corolla']));
+            const manCard = document.getElementById('manutencao-card');
+            if (manCard) {
+              manCard.style.display = 'block';
+              if (m) {
+                const oleoTipo = document.getElementById('manutencao-oleo-tipo');
+                if (oleoTipo && m.oleoMotor) oleoTipo.textContent = m.oleoMotor.viscosidade + ' (' + m.oleoMotor.capacidadeComFiltroLitros + 'L)';
+
+                const oleoNorma = document.getElementById('manutencao-oleo-norma');
+                if (oleoNorma && m.oleoMotor) oleoNorma.textContent = m.oleoMotor.norma;
+
+                const pneusPres = document.getElementById('manutencao-pneus-pressao');
+                if (pneusPres && m.calibragemPneus) pneusPres.textContent = m.calibragemPneus.pressaoDianteiraPsi + ' PSI (D) • ' + m.calibragemPneus.pressaoTraseiraPsi + ' PSI (T)';
+
+                const pneusMed = document.getElementById('manutencao-pneus-medida');
+                if (pneusMed && m.calibragemPneus) pneusMed.textContent = m.calibragemPneus.medidaPadrao;
+
+                const manLink = document.getElementById('btn-manual-link');
+                if (manLink && (data.portalManual || m.manualPdf)) manLink.href = data.portalManual || m.manualPdf;
+
+                const pecasBox = document.getElementById('pecas-lista-box');
+                if (pecasBox && m.pecasDesgaste) {
+                  const nomes = {
+                    filtroOleo: 'Filtro de Óleo',
+                    filtroAr: 'Filtro de Ar',
+                    filtroCabine: 'Filtro de Cabine',
+                    filtroCombustivel: 'Filtro de Combustível',
+                    pastilhasFreioDianteira: 'Pastilhas Dianteiras',
+                    pastilhasFreioTraseira: 'Pastilhas Traseiras',
+                    velasIgnicao: 'Velas de Ignição'
+                  };
+                  pecasBox.innerHTML = Object.entries(m.pecasDesgaste).map(([k, p]) => '<div style="padding:6px 8px;border-radius:var(--radius-sm);background:var(--paper-elevated,#111827);border:1px solid var(--line-light);"><div style="font-weight:700;color:var(--ink);font-size:10.5px;">' + (nomes[k] || k) + '</div><div style="color:#38bdf8;font-size:10px;font-family:\'JetBrains Mono\',monospace;">OEM: ' + (p.oem || '-') + '</div><div style="color:var(--muted);font-size:9.5px;">Aftermarket: ' + (p.aftermarket || '-') + '</div></div>').join('');
+                }
+              }
+            }
+
             renderLucide();
           }
         } else {
-          document.getElementById('val-padrao').innerHTML = \`<span class="status-badge-pill red">Inválida</span>\`;
+          document.getElementById('val-padrao').innerHTML = '<span class="status-badge-pill red">Inválida</span>';
           document.getElementById('val-conversao').textContent = data.mensagem || 'Placa irregular';
           document.getElementById('val-origem').textContent = '-';
           document.getElementById('val-licenciamento').textContent = '-';
@@ -1762,10 +2027,9 @@ const html = `<!DOCTYPE html>
           if (cardEl) cardEl.style.display = 'none';
         }
 
-        // Renderiza SVG com categoria e estilo selecionados
-        let svgUrl = \`\${API_BASE}/api/placas/\${clean}/svg?categoria=\${currentCategoria}\`;
+        let svgUrl = API_BASE + '/api/placas/' + clean + '/svg?categoria=' + currentCategoria;
         if (currentPlateMode === 'antiga') {
-          svgUrl = \`\${API_BASE}/api/placas/\${clean}/antiga-svg\`;
+          svgUrl = API_BASE + '/api/placas/' + clean + '/antiga-svg';
         }
         const resSvg = await fetch(svgUrl);
         if (resSvg.ok) {
@@ -1791,14 +2055,14 @@ const html = `<!DOCTYPE html>
     });
 
     document.getElementById('btn-gerar-placa').addEventListener('click', async () => {
-      const res = await fetch(\`\${API_BASE}/api/placas/gerador\`);
+      const res = await fetch(API_BASE + '/api/placas/gerador');
       const data = await res.json();
       if (data.placaGerada) {
         executarConsultaPlaca(data.placaGerada);
       }
     });
 
-    // ── LÓGICA 2: CHASSI ──
+    // ── LÓGICA 2: CHASSI / VIN (ISO 3779) ──
     async function executarConsultaChassi(chassiInput) {
       const clean = chassiInput.trim().toUpperCase();
       document.getElementById('chassi-input').value = clean;
@@ -1809,29 +2073,70 @@ const html = `<!DOCTYPE html>
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`\${API_BASE}/api/placas/chassi/\${clean}\`);
+        const res = await fetch(API_BASE + '/api/placas/chassi/' + clean);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
+        renderJsonToConsole(data, res.ok ? '200 OK' : res.status + ' ERRO', res.ok, lat);
 
         if (data.valido) {
-          document.getElementById('val-chassi-wmi').textContent = \`\${data.fabricante} (\${data.wmi})\`;
-          document.getElementById('val-chassi-pais').textContent = \`\${data.paisFabricacao} (\${data.origem})\`;
+          document.getElementById('val-chassi-wmi').textContent = data.fabricante + ' (' + data.wmi + ')';
+          document.getElementById('val-chassi-pais').textContent = data.paisFabricacao + ' (' + data.origem + ')';
           document.getElementById('val-chassi-ano').textContent = data.anoModelo;
           document.getElementById('val-chassi-check').innerHTML = data.checkDigitValido
-            ? \`<span class="status-badge-pill green">Válido (\${data.checkDigitCalculado})</span>\`
-            : \`<span class="status-badge-pill red">Informado: \${data.checkDigitInformado} (Esperado: \${data.checkDigitCalculado})</span>\`;
-          document.getElementById('val-chassi-serie').textContent = \`Planta \${data.plantaMontagem} · Série \${data.numeroSerie}\`;
+            ? '<span class="status-badge-pill green">Válido (' + data.checkDigitCalculado + ')</span>'
+            : '<span class="status-badge-pill red">Informado: ' + data.checkDigitInformado + ' (Esperado: ' + data.checkDigitCalculado + ')</span>';
+          document.getElementById('val-chassi-serie').textContent = 'Planta ' + data.plantaMontagem + ' · Série ' + data.numeroSerie;
           
           document.getElementById('display-fabricante-nome').textContent = data.fabricante;
-          document.getElementById('display-fabricante-origem').textContent = \`Código WMI: \${data.wmi} · \${data.paisFabricacao} (\${data.origem})\`;
+          document.getElementById('display-fabricante-origem').textContent = 'Código WMI: ' + data.wmi + ' · ' + data.paisFabricacao + ' (' + data.origem + ')';
 
-          // Busca o logo vetorial oficial na API Icons Pro!
           const logoSlug = BRAND_LOGOS[data.fabricante] || 'volkswagen';
-          document.getElementById('brand-logo-img').src = \`https://icons-pro-api.maputo2.workers.dev/api/icons/\${logoSlug}.svg\`;
+          document.getElementById('brand-logo-img').src = 'https://icons-pro-api.maputo2.workers.dev/api/icons/' + logoSlug + '.svg';
+
+          const breakdownRow = document.getElementById('chassi-breakdown-row');
+          if (breakdownRow && clean.length === 17) {
+            const wmi = clean.substring(0, 3);
+            const vds = clean.substring(3, 8);
+            const dv = clean.substring(8, 9);
+            const ano = clean.substring(9, 10);
+            const planta = clean.substring(10, 11);
+            const serial = clean.substring(11, 17);
+
+            breakdownRow.innerHTML =
+              '<div style="flex:1;min-width:65px;padding:8px;border-radius:6px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);text-align:center;">' +
+                '<div style="font-size:9px;font-weight:700;color:#60a5fa;text-transform:uppercase;">WMI (1-3)</div>' +
+                '<div style="font-size:14px;font-weight:800;font-family:\\'JetBrains Mono\\',monospace;color:#fff;">' + wmi + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);">' + data.fabricante.split(' ')[0] + '</div>' +
+              '</div>' +
+              '<div style="flex:1.2;min-width:75px;padding:8px;border-radius:6px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);text-align:center;">' +
+                '<div style="font-size:9px;font-weight:700;color:#c084fc;text-transform:uppercase;">VDS (4-8)</div>' +
+                '<div style="font-size:14px;font-weight:800;font-family:\\'JetBrains Mono\\',monospace;color:#fff;">' + vds + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);">Modelo</div>' +
+              '</div>' +
+              '<div style="flex:0.8;min-width:55px;padding:8px;border-radius:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);text-align:center;">' +
+                '<div style="font-size:9px;font-weight:700;color:#34d399;text-transform:uppercase;">DV (9)</div>' +
+                '<div style="font-size:14px;font-weight:800;font-family:\\'JetBrains Mono\\',monospace;color:#fff;">' + dv + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);">Módulo 11</div>' +
+              '</div>' +
+              '<div style="flex:0.8;min-width:55px;padding:8px;border-radius:6px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);text-align:center;">' +
+                '<div style="font-size:9px;font-weight:700;color:#fbbf24;text-transform:uppercase;">Ano (10)</div>' +
+                '<div style="font-size:14px;font-weight:800;font-family:\\'JetBrains Mono\\',monospace;color:#fff;">' + ano + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);">' + data.anoModelo + '</div>' +
+              '</div>' +
+              '<div style="flex:0.8;min-width:55px;padding:8px;border-radius:6px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3);text-align:center;">' +
+                '<div style="font-size:9px;font-weight:700;color:#22d3ee;text-transform:uppercase;">Planta (11)</div>' +
+                '<div style="font-size:14px;font-weight:800;font-family:\\'JetBrains Mono\\',monospace;color:#fff;">' + planta + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);">Fábrica</div>' +
+              '</div>' +
+              '<div style="flex:1.5;min-width:90px;padding:8px;border-radius:6px;background:rgba(148,163,184,0.12);border:1px solid rgba(148,163,184,0.3);text-align:center;">' +
+                '<div style="font-size:9px;font-weight:700;color:#cbd5e1;text-transform:uppercase;">Serial (12-17)</div>' +
+                '<div style="font-size:14px;font-weight:800;font-family:\\'JetBrains Mono\\',monospace;color:#fff;">' + serial + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);">Produção</div>' +
+              '</div>';
+          }
         } else {
-          document.getElementById('val-chassi-wmi').innerHTML = \`<span class="status-badge-pill red">Inválido</span>\`;
+          document.getElementById('val-chassi-wmi').innerHTML = '<span class="status-badge-pill red">Inválido</span>';
           document.getElementById('val-chassi-pais').textContent = data.mensagem;
           document.getElementById('val-chassi-ano').textContent = '-';
           document.getElementById('val-chassi-check').textContent = '-';
@@ -1851,7 +2156,7 @@ const html = `<!DOCTYPE html>
       });
     });
 
-    // ── LÓGICA 3: RENAVAM ──
+    // ── LÓGICA 3: RENAVAM (MÓDULO 11) ──
     async function executarValidacaoRenavam(renavamInput) {
       const clean = renavamInput.replace(/\\D/g, '');
       document.getElementById('renavam-input').value = clean;
@@ -1862,11 +2167,11 @@ const html = `<!DOCTYPE html>
 
       const t0 = performance.now();
       try {
-        const res = await fetch(\`\${API_BASE}/api/placas/renavam/\${clean}\`);
+        const res = await fetch(API_BASE + '/api/placas/renavam/' + clean);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
+        renderJsonToConsole(data, res.ok ? '200 OK' : res.status + ' ERRO', res.ok, lat);
 
         const badge = document.getElementById('renavam-status-badge');
         const disp = document.getElementById('renavam-display-val');
@@ -1882,6 +2187,32 @@ const html = `<!DOCTYPE html>
           badge.className = 'status-badge-pill red';
           badge.textContent = 'RENAVAM INVÁLIDO';
         }
+
+        const weightsGrid = document.getElementById('renavam-weights-grid');
+        if (weightsGrid && clean.length >= 9) {
+          const normalizado = clean.padStart(11, '0');
+          const pesos = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+          let cols = '';
+          for (let i = 0; i < 10; i++) {
+            const dig = parseInt(normalizado[i], 10);
+            const p = pesos[i];
+            const prod = dig * p;
+            cols +=
+              '<div style="background:var(--paper-elevated,#111827);padding:6px;border-radius:4px;border:1px solid var(--line);">' +
+                '<div style="font-weight:800;color:var(--ink);font-size:13px;">' + dig + '</div>' +
+                '<div style="font-size:9.5px;color:var(--muted);margin:2px 0;">×' + p + '</div>' +
+                '<div style="font-size:10.5px;color:var(--blue);font-weight:700;">=' + prod + '</div>' +
+              '</div>';
+          }
+          const dv = normalizado[10];
+          cols +=
+            '<div style="background:rgba(16,185,129,0.14);padding:6px;border-radius:4px;border:1px solid rgba(16,185,129,0.4);">' +
+              '<div style="font-weight:900;color:#10b981;font-size:14px;">' + dv + '</div>' +
+              '<div style="font-size:9px;color:#10b981;margin:2px 0;">DV</div>' +
+              '<div style="font-size:9.5px;color:#10b981;font-weight:800;">OK</div>' +
+            '</div>';
+          weightsGrid.innerHTML = cols;
+        }
       } catch (err) {
         renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
       }
@@ -1892,12 +2223,131 @@ const html = `<!DOCTYPE html>
     });
 
     document.getElementById('btn-gerar-renavam').addEventListener('click', async () => {
-      const res = await fetch(\`\${API_BASE}/api/placas/gerador\`);
+      const res = await fetch(API_BASE + '/api/placas/gerador');
       const data = await res.json();
       if (data.renavamGerado) {
         executarValidacaoRenavam(data.renavamGerado);
       }
     });
+
+    // ── LÓGICA NOVO: ISENÇÃO DE IPVA (27 UFS) ──
+    const REGRAS_ISENCAO_IPVA = {
+      'AC': { anos: 20, lei: 'Lei Estadual nº 1.123/1994', desc: 'Isenção automática após 20 anos.' },
+      'AL': { anos: 20, lei: 'Lei Estadual nº 5.900/1996', desc: 'Isenção automática a partir de 20 anos.' },
+      'AM': { anos: 15, lei: 'Lei Estadual nº 4.719/2018', desc: 'Isenção total a partir de 15 anos.' },
+      'AP': { anos: 15, lei: 'Lei Estadual nº 400/1997', desc: 'Isenção total após 15 anos de fabricação.' },
+      'BA': { anos: 15, lei: 'Lei Estadual nº 6.348/1991', desc: 'Isenção total para veículos com mais de 15 anos.' },
+      'CE': { anos: 15, lei: 'Lei Estadual nº 12.023/1992', desc: 'Isenção concedida a partir de 15 anos.' },
+      'DF': { anos: 15, lei: 'Lei Distrital nº 7.431/1985', desc: 'Isenção a partir de 15 anos de fabricação.' },
+      'ES': { anos: 15, lei: 'Lei Estadual nº 6.999/2001', desc: 'Isenção total a partir de 15 anos.' },
+      'GO': { anos: 10, lei: 'Lei Estadual nº 11.651/1991', desc: 'Uma das mais rápidas: isento após apenas 10 anos!' },
+      'MA': { anos: 15, lei: 'Lei Estadual nº 7.799/2002', desc: 'Isenção automática com 15 anos.' },
+      'MG': { anos: null, lei: 'Lei Estadual nº 14.937/2003', desc: 'Sem isenção geral por idade. Isenção apenas para veículos de placa preta (coleção) ou elétricos/híbridos.' },
+      'MS': { anos: 20, lei: 'Lei Estadual nº 1.810/1997', desc: 'Isenção a partir de 20 anos de fabricação.' },
+      'MT': { anos: 18, lei: 'Lei Estadual nº 7.301/2000', desc: 'Regra específica do MT: isenção com 18 anos.' },
+      'PA': { anos: 15, lei: 'Lei Estadual nº 6.017/1996', desc: 'Isenção a partir de 15 anos.' },
+      'PB': { anos: 15, lei: 'Lei Estadual nº 7.431/2003', desc: 'Isenção total após 15 anos de fabricação.' },
+      'PE': { anos: null, lei: 'Lei Estadual nº 10.849/1992', desc: 'Não há isenção pura por idade em PE (apenas redução escalonada ou placa preta).' },
+      'PI': { anos: 15, lei: 'Lei Estadual nº 4.548/1992', desc: 'Isenção total a partir de 15 anos.' },
+      'PR': { anos: 20, lei: 'Lei Estadual nº 18.371/2014', desc: 'No Paraná o benefício é concedido a partir de 20 anos.' },
+      'RJ': { anos: 15, lei: 'Lei Estadual nº 7.183/2015', desc: 'Rio de Janeiro concede isenção total com 15 anos de fabricação.' },
+      'RN': { anos: 10, lei: 'Lei Estadual nº 6.967/1996', desc: 'Excelente benefício: isenção a partir de 10 anos!' },
+      'RO': { anos: 15, lei: 'Lei Estadual nº 950/2000', desc: 'Isenção concedida após 15 anos.' },
+      'RR': { anos: 10, lei: 'Lei Estadual nº 059/1993', desc: 'Uma das menores idades: isenção após 10 anos!' },
+      'RS': { anos: 20, lei: 'Lei Estadual nº 8.115/1985', desc: 'No Rio Grande do Sul a isenção vigora com 20 anos.' },
+      'SC': { anos: 30, lei: 'Lei Estadual nº 7.543/1988', desc: 'A regra mais rigorosa do Brasil: isenção apenas após 30 anos.' },
+      'SE': { anos: 15, lei: 'Lei Estadual nº 2.894/1991', desc: 'Isenção concedida após 15 anos.' },
+      'SP': { anos: 20, lei: 'Lei Estadual nº 13.296/2008', desc: 'São Paulo concede isenção automática para veículos com 20 anos ou mais.' },
+      'TO': { anos: 15, lei: 'Lei Estadual nº 1.287/2001', desc: 'Isenção total após 15 anos de fabricação.' }
+    };
+
+    function inicializarIpva() {
+      const select = document.getElementById('ipva-uf-select');
+      const matrixGrid = document.getElementById('ipva-ufs-matrix');
+      if (!select) return;
+
+      const ufs = Object.keys(REGRAS_ISENCAO_IPVA).sort();
+      select.innerHTML = ufs.map(u => '<option value="' + u + '" ' + (u === 'SP' ? 'selected' : '') + '>' + u + ' — ' + (REGRAS_ISENCAO_IPVA[u].anos ? REGRAS_ISENCAO_IPVA[u].anos + ' anos' : 'Especial') + '</option>').join('');
+
+      if (matrixGrid) {
+        matrixGrid.innerHTML = ufs.map(u => {
+          const r = REGRAS_ISENCAO_IPVA[u];
+          const badgeClass = r.anos ? (r.anos <= 10 ? 'green' : (r.anos <= 15 ? 'blue' : 'amber')) : 'red';
+          const txt = r.anos ? (r.anos + ' anos') : 'Placa Preta';
+          return (
+            '<div style="background:var(--paper-elevated,#111827);border:1px solid var(--line);border-radius:6px;padding:8px;text-align:center;">' +
+              '<strong style="font-size:12px;color:var(--ink);display:block;">' + u + '</strong>' +
+              '<span class="status-badge-pill ' + badgeClass + '" style="font-size:9.5px;padding:2px 6px;margin-top:3px;">' + txt + '</span>' +
+            '</div>'
+          );
+        }).join('');
+      }
+
+      select.addEventListener('change', atualizarDiagnosticoIpva);
+      const slider = document.getElementById('ipva-ano-slider');
+      slider?.addEventListener('input', () => {
+        document.getElementById('ipva-ano-display').textContent = slider.value;
+        const idade = 2026 - parseInt(slider.value, 10);
+        document.getElementById('ipva-idade-display').textContent = idade + (idade === 1 ? ' ano' : ' anos');
+        atualizarDiagnosticoIpva();
+      });
+    }
+
+    async function atualizarDiagnosticoIpva() {
+      const uf = document.getElementById('ipva-uf-select')?.value || 'SP';
+      const ano = parseInt(document.getElementById('ipva-ano-slider')?.value || '2006', 10);
+      const idade = 2026 - ano;
+      const regra = REGRAS_ISENCAO_IPVA[uf];
+      updateSnippet();
+
+      const card = document.getElementById('ipva-result-card');
+      if (!card) return;
+
+      if (!regra.anos) {
+        card.style.borderColor = 'rgba(239,68,68,0.4)';
+        card.style.background = 'radial-gradient(circle at 50% 0%, rgba(239,68,68,0.12), transparent 70%), var(--paper-elevated,#111827)';
+        card.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+            '<span class="status-badge-pill red">SEM ISENÇÃO POR IDADE</span>' +
+            '<span style="font-size:12px;color:var(--muted);font-weight:700;">' + regra.lei + '</span>' +
+          '</div>' +
+          '<h3 style="font-size:18px;font-weight:800;color:var(--ink);margin:0 0 6px;">Tributado Normalmente em ' + uf + '</h3>' +
+          '<p style="font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;">' + regra.desc + '</p>';
+        return;
+      }
+
+      const isento = idade >= regra.anos;
+      if (isento) {
+        card.style.borderColor = 'rgba(16,185,129,0.4)';
+        card.style.background = 'radial-gradient(circle at 50% 0%, rgba(16,185,129,0.14), transparent 70%), var(--paper-elevated,#111827)';
+        card.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+            '<span class="status-badge-pill green">VEÍCULO 100% ISENTO DO IPVA</span>' +
+            '<span style="font-size:12px;color:var(--muted);font-weight:700;">' + regra.lei + '</span>' +
+          '</div>' +
+          '<h3 style="font-size:20px;font-weight:900;color:#10b981;margin:0 0 6px;">DISPENSADO DO PAGAMENTO ANUAL</h3>' +
+          '<p style="font-size:12.5px;color:var(--ink);margin:0 0 10px;line-height:1.5;">' +
+            'O veículo possui <strong>' + idade + ' anos de fabricação</strong>, superando o requisito legal de ' + regra.anos + ' anos em <strong>' + uf + '</strong>.' +
+          '</p>' +
+          '<div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px;">' +
+            '<div>Economia anual estimada: <strong style="color:#10b981;">R$ 2.450,00 a R$ 5.800,00</strong></div>' +
+            '<div>Taxa anual DETRAN: <strong style="color:var(--ink);">Apenas Licenciamento (R$ 160,22)</strong></div>' +
+          '</div>';
+      } else {
+        const faltam = regra.anos - idade;
+        card.style.borderColor = 'rgba(59,130,246,0.4)';
+        card.style.background = 'radial-gradient(circle at 50% 0%, rgba(59,130,246,0.12), transparent 70%), var(--paper-elevated,#111827)';
+        card.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+            '<span class="status-badge-pill blue">VEÍCULO SUJEITO A IPVA</span>' +
+            '<span style="font-size:12px;color:var(--muted);font-weight:700;">' + regra.lei + '</span>' +
+          '</div>' +
+          '<h3 style="font-size:18px;font-weight:800;color:var(--ink);margin:0 0 6px;">Tributado em ' + uf + ' — Faltam ' + faltam + (faltam === 1 ? ' ano' : ' anos') + ' para Isenção</h3>' +
+          '<p style="font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;">' +
+            'O veículo possui ' + idade + ' anos. A legislação de ' + uf + ' exige ' + regra.anos + ' anos completos para conceder a isenção tributária integral.' +
+          '</p>';
+      }
+    }
 
     // ── LÓGICA 4: FLEX ──
     async function executarCalculoFlex() {
@@ -1905,20 +2355,19 @@ const html = `<!DOCTYPE html>
       const g = document.getElementById('flex-gasolina').value || '5.95';
       updateSnippet();
 
-      const consoleOutput = document.getElementById('console-output');
-
       const t0 = performance.now();
       try {
-        const res = await fetch(\`\${API_BASE}/api/placas/flex?etanol=\${e}&gasolina=\${g}\`);
+        const res = await fetch(API_BASE + '/api/placas/flex?etanol=' + e + '&gasolina=' + g);
         const data = await res.json();
         const lat = Math.round(performance.now() - t0);
 
-        renderJsonToConsole(data, res.ok ? '200 OK' : \`\${res.status} ERRO\`, res.ok, lat);
+        renderJsonToConsole(data, res.ok ? '200 OK' : res.status + ' ERRO', res.ok, lat);
 
         const box = document.getElementById('flex-box-result');
         const best = document.getElementById('flex-best');
         const pct = document.getElementById('flex-pct');
         const desc = document.getElementById('flex-desc');
+        const needle = document.getElementById('flex-parity-needle');
 
         if (data.combustivelVantajoso === 'ETANOL') {
           box.style.borderColor = 'rgba(16, 185, 129, 0.35)';
@@ -1927,8 +2376,32 @@ const html = `<!DOCTYPE html>
           box.style.borderColor = 'rgba(245, 158, 11, 0.35)';
           best.innerHTML = '<i data-lucide="fuel" style="color:#f59e0b;width:28px;height:28px;"></i> <span>GASOLINA</span>';
         }
-        pct.textContent = \`Paridade: \${data.paridadePercentual} (Limiar técnico: \${data.limiarAdotado})\`;
+        pct.textContent = 'Paridade: ' + data.paridadePercentual + ' (Limiar técnico: ' + data.limiarAdotado + ')';
         desc.textContent = data.parecerTecnico;
+
+        if (needle && data.paridadeReal) {
+          const posPct = Math.min(Math.max(data.paridadeReal * 100, 20), 95);
+          needle.style.left = posPct + '%';
+        }
+
+        const prE = parseFloat(e);
+        const prG = parseFloat(g);
+        if (prE > 0 && prG > 0) {
+          const custoTanqueG = 50 * prG;
+          const custoTanqueE = 50 * prE;
+          const difTanque = Math.abs(custoTanqueG - custoTanqueE);
+          const econEl = document.getElementById('flex-economia-tanque');
+          if (econEl) econEl.textContent = 'R$ ' + difTanque.toFixed(2).replace('.', ',');
+
+          const econAnualEl = document.getElementById('flex-economia-anual');
+          if (econAnualEl) {
+            const gastoAnoGasolina = (15000 / 11) * prG;
+            const gastoAnoEtanol = (15000 / 7.7) * prE;
+            const dif = Math.abs(gastoAnoGasolina - gastoAnoEtanol);
+            econAnualEl.textContent = 'R$ ' + dif.toFixed(2).replace('.', ',');
+          }
+        }
+
         renderLucide();
       } catch (err) {
         renderJsonToConsole({ erro: 'FALHA_CONEXAO', mensagem: err.message }, '500 ERRO', false, Math.round(performance.now() - t0));
@@ -1942,33 +2415,30 @@ const html = `<!DOCTYPE html>
     async function carregarGraficosAnycast() {
       const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
 
-      // 1. Gauge Chart de Rodízio (Paleta Vibrante de Alto Contraste)
       const gaugeContainer = document.getElementById('gauge-container');
       if (gaugeContainer) {
         try {
-          const res = await fetch(\`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=gauge&valor=25&min=0&max=100&titulo=RODIZIO+SP+CET&subtitulo=Circulacao+Liberada&tema=\${curTheme}&paleta=contrast\`);
+          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=gauge&valor=25&min=0&max=100&titulo=RODIZIO+SP+CET&subtitulo=Circulacao+Liberada&tema=' + curTheme + '&paleta=contrast');
           if (res.ok) {
             gaugeContainer.innerHTML = await res.text();
           }
         } catch (_) {}
       }
 
-      // 2. Area Chart de Depreciação FIPE 5 Anos
       const areaContainer = document.getElementById('area-chart-container');
       if (areaContainer) {
         try {
-          const res = await fetch(\`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=area&valores=90,82,74,68,62,56&labels=2021,2022,2023,2024,2025,2026&titulo=Depreciacao+FIPE+e+IPVA+(5+Anos)&prefixo=R$+&sufixo=k&tema=\${curTheme}&paleta=contrast\`);
+          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=area&valores=90,82,74,68,62,56&labels=2021,2022,2023,2024,2025,2026&titulo=Depreciacao+FIPE+e+IPVA+(5+Anos)&prefixo=R$+&sufixo=k&tema=' + curTheme + '&paleta=contrast');
           if (res.ok) {
             areaContainer.innerHTML = await res.text();
           }
         } catch (_) {}
       }
 
-      // 3. Donut Chart de Paridade Flex
       const donutContainer = document.getElementById('donut-chart-container');
       if (donutContainer) {
         try {
-          const res = await fetch(\`https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=donut&valores=64.7,35.3&labels=Etanol,Gasolina&titulo=Paridade+Flex&tema=\${curTheme}&paleta=flex&furo=0.65\`);
+          const res = await fetch('https://graficos-pro-api.maputo2.workers.dev/api/grafico?tipo=donut&valores=64.7,35.3&labels=Etanol,Gasolina&titulo=Paridade+Flex&tema=' + curTheme + '&paleta=flex&furo=0.65');
           if (res.ok) {
             donutContainer.innerHTML = await res.text();
           }
@@ -1976,9 +2446,9 @@ const html = `<!DOCTYPE html>
       }
     }
 
-    // ── LÓGICA 6: CATÁLOGO NACIONAL DE VEÍCULOS & FIPE (100% OFICIAL) ──
-    const MARCAS_CLIENT = ${JSON.stringify(MONTADORAS_BRASIL)};
-    const FAMILIAS_CLIENT = ${JSON.stringify(FAMILIAS_VEICULOS_BRASIL)};
+    // ── LÓGICA 6: CATÁLOGO NACIONAL DE VEÍCULOS & FIPE ──
+    const MARCAS_CLIENT = ` + marcasJson + `;
+    const FAMILIAS_CLIENT = ` + familiasJson + `;
     let catalogoAtivoCategoria = 'todos';
     let catalogoAtivoMarca = '';
 
@@ -1988,15 +2458,14 @@ const html = `<!DOCTYPE html>
       const marcasContainer = document.getElementById('marcas-grid-container');
       if (!grid) return;
 
-      // 1. Renderiza Marcas com Logos do Icons Pro
       if (marcasContainer && marcasContainer.children.length === 0) {
         const marcas = MARCAS_CLIENT;
-        marcasContainer.innerHTML = marcas.map(m => \`
-          <button class="secondary-button marca-chip-btn" data-marca="\${m.id}" style="height:32px;padding:0 10px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:var(--radius-full);">
-            <img src="https://icons-pro-api.maputo2.workers.dev/api/icons/\${m.logoSlug}.svg" alt="\${m.nome}" style="width:14px;height:14px;object-fit:contain;" />
-            <span>\${m.nome}</span>
-          </button>
-        \`).join('');
+        marcasContainer.innerHTML = marcas.map(m =>
+          '<button class="secondary-button marca-chip-btn" data-marca="' + m.id + '" style="height:32px;padding:0 10px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:var(--radius-full);">' +
+            '<img src="https://icons-pro-api.maputo2.workers.dev/api/icons/' + m.logoSlug + '.svg" alt="' + m.nome + '" style="width:14px;height:14px;object-fit:contain;" />' +
+            '<span>' + m.nome + '</span>' +
+          '</button>'
+        ).join('');
 
         marcasContainer.querySelectorAll('.marca-chip-btn').forEach(btn => {
           btn.addEventListener('click', () => {
@@ -2019,7 +2488,6 @@ const html = `<!DOCTYPE html>
         });
       }
 
-      // 2. Busca e Renderiza Veículos do Catálogo
       let lista = FAMILIAS_CLIENT;
       if (q) {
         lista = lista.filter(v => v.nomeCompleto.toLowerCase().includes(q) || v.marca.toLowerCase().includes(q) || v.modelo.toLowerCase().includes(q) || (v.fipe && v.fipe.codigo.includes(q)));
@@ -2038,46 +2506,30 @@ const html = `<!DOCTYPE html>
 
       grid.innerHTML = lista.map(v => {
         const silhueta = gerarSilhuetaClient(v.segmento, v.corHex);
-        return \`
-          <div class="api-card" style="padding:14px;border-radius:var(--radius-lg);background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;gap:8px;">
-            <div style="background:#090d16;border-radius:var(--radius-md);padding:6px;overflow:hidden;border:1px solid var(--line-light);">
-              \${silhueta}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
-              <div>
-                <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">\${v.marca} • \${v.segmento}</div>
-                <strong style="font-size:13.5px;color:var(--ink);">\${v.modelo}</strong>
-              </div>
-              <span class="status-badge-pill green" style="font-size:10.5px;padding:2px 8px;">\${v.fipe ? v.fipe.valor : 'Consulte'}</span>
-            </div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.4;">
-              \${v.versaoPrincipal || v.nomeCompleto}
-            </div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;font-size:9.5px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line-light);">
-              <span class="category-pill">\${v.potenciaCv} cv</span>
-              <span class="category-pill blue">\${v.combustivelPadrao.split(' ')[0]}</span>
-              <span class="category-pill">\${v.inmetro ? v.inmetro.selo : 'PBEV A'}</span>
-            </div>
-          </div>
-        \`;
+        return (
+          '<div class="api-card" style="padding:14px;border-radius:var(--radius-lg);background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;gap:8px;">' +
+            '<div style="background:#090d16;border-radius:var(--radius-md);padding:6px;overflow:hidden;border:1px solid var(--line-light);">' +
+              silhueta +
+            '</div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">' +
+              '<div>' +
+                '<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">' + v.marca + ' • ' + v.segmento + '</div>' +
+                '<strong style="font-size:13.5px;color:var(--ink);">' + v.modelo + '</strong>' +
+              '</div>' +
+              '<span class="status-badge-pill green" style="font-size:10.5px;padding:2px 8px;">' + (v.fipe ? v.fipe.valor : 'Consulte') + '</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:var(--muted);line-height:1.4;">' +
+              (v.versaoPrincipal || v.nomeCompleto) +
+            '</div>' +
+            '<div style="display:flex;gap:4px;flex-wrap:wrap;font-size:9.5px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line-light);">' +
+              '<span class="category-pill">' + v.potenciaCv + ' cv</span>' +
+              '<span class="category-pill blue">' + v.combustivelPadrao.split(' ')[0] + '</span>' +
+              '<span class="category-pill">' + (v.inmetro ? v.inmetro.selo : 'PBEV A') + '</span>' +
+            '</div>' +
+          '</div>'
+        );
       }).join('');
     }
-
-    // Filtros de Categoria do Catálogo
-    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.cat-filter-btn').forEach(b => {
-          b.classList.remove('is-selected');
-          b.style.borderColor = 'var(--line)';
-          b.style.color = 'var(--muted)';
-        });
-        btn.classList.add('is-selected');
-        btn.style.borderColor = 'var(--blue)';
-        btn.style.color = 'var(--blue)';
-        catalogoAtivoCategoria = btn.dataset.cat || 'todos';
-        carregarCatalogoVeiculos();
-      });
-    });
 
     document.getElementById('catalogo-search-input')?.addEventListener('input', () => {
       carregarCatalogoVeiculos();
@@ -2092,12 +2544,14 @@ const html = `<!DOCTYPE html>
       if (tab === 'placas') executarConsultaPlaca(document.getElementById('placa-input').value);
       else if (tab === 'chassi') executarConsultaChassi(document.getElementById('chassi-input').value);
       else if (tab === 'renavam') executarValidacaoRenavam(document.getElementById('renavam-input').value);
+      else if (tab === 'ipva') atualizarDiagnosticoIpva();
       else if (tab === 'flex') executarCalculoFlex();
       else if (tab === 'graficos') carregarGraficosAnycast();
       else if (tab === 'catalogo') carregarCatalogoVeiculos();
     });
 
     // Inicialização
+    inicializarIpva();
     renderLucide();
     setTimeout(() => {
       renderLucide();
@@ -2105,52 +2559,47 @@ const html = `<!DOCTYPE html>
     }, 100);
   </script>
 
-    <!-- Barra de Navegação Inferior Mobile Oficial -->
-    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navegação mobile">
-      <button class="mobile-nav-item is-active" data-tab="placas">
-        <i data-lucide="car"></i><span>Placas</span>
-      </button>
-      <button class="mobile-nav-item " data-tab="chassi">
-        <i data-lucide="scan"></i><span>Chassi</span>
-      </button>
-      <button class="mobile-nav-item " data-tab="renavam">
-        <i data-lucide="file-check-2"></i><span>RENAVAM</span>
-      </button>
-      <button class="mobile-nav-item " data-tab="flex">
-        <i data-lucide="fuel"></i><span>Flex</span>
-      </button>
-      <button class="mobile-nav-item " data-tab="graficos">
-        <i data-lucide="pie-chart"></i><span>Gráficos</span>
-      </button>
-      <button class="mobile-nav-item " data-tab="catalogo">
-        <i data-lucide="layers"></i><span>Catálogo</span>
-      </button>
-    </nav>
+  <!-- Barra de Navegação Inferior Mobile Oficial -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navegação mobile">
+    <button class="mobile-nav-item is-active" data-tab="placas">
+      <i data-lucide="car"></i><span>Placas</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="chassi">
+      <i data-lucide="scan"></i><span>Chassi</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="renavam">
+      <i data-lucide="file-check-2"></i><span>RENAVAM</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="ipva">
+      <i data-lucide="shield-check"></i><span>IPVA</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="flex">
+      <i data-lucide="fuel"></i><span>Flex</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="catalogo">
+      <i data-lucide="layers"></i><span>Catálogo</span>
+    </button>
+  </nav>
 
 </body>
-</html>
-`;
+</html>`;
+}
 
-fs.writeFileSync('index.html', html, 'utf8');
+const htmlContent = getHtml();
+fs.writeFileSync('index.html', htmlContent, 'utf8');
+console.log('index.html written successfully! Length:', htmlContent.length);
 
-// Also update site-assets.js so the Cloudflare Worker serves this updated HTML!
 const assetsPath = 'site-assets.js';
 if (fs.existsSync(assetsPath)) {
   let assetsText = fs.readFileSync(assetsPath, 'utf8');
   const startTag = 'export const HTML_INDEX =';
   const startIdx = assetsText.indexOf(startTag);
   if (startIdx !== -1) {
-    const endTag1 = 'export const CLIENT_JS';
-    const endTag2 = 'export const OZPRO_MARK_SVG';
-    const nextIdx1 = assetsText.indexOf(endTag1, startIdx);
-    const nextIdx2 = assetsText.indexOf(endTag2, startIdx);
-    const nextIdx = Math.min(nextIdx1 !== -1 ? nextIdx1 : Infinity, nextIdx2 !== -1 ? nextIdx2 : Infinity);
-    if (nextIdx !== Infinity) {
-      assetsText = assetsText.slice(0, startIdx) + `export const HTML_INDEX = ${JSON.stringify(html)};\r\n\r\n` + assetsText.slice(nextIdx);
+    const nextIdx = assetsText.indexOf('export const CLIENT_JS', startIdx);
+    if (nextIdx !== -1) {
+      assetsText = assetsText.slice(0, startIdx) + 'export const HTML_INDEX = ' + JSON.stringify(htmlContent) + ';\r\n\r\n' + assetsText.slice(nextIdx);
       fs.writeFileSync(assetsPath, assetsText, 'utf8');
-      console.log('site-assets.js updated with updated HTML_INDEX!');
+      console.log('site-assets.js updated with enhanced HTML_INDEX!');
     }
   }
 }
-
-console.log('placas-pro index.html updated with clean Lucide icons and icons-pro integration!');
