@@ -530,6 +530,9 @@ function getHtml() {
         <button class="nav-link" data-view="catalogo">
           <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
         </button>
+        <button class="nav-link" data-view="obd2">
+          <i data-lucide="wrench"></i> <span>Scanner OBD-II</span>
+        </button>
 
         <div class="nav-section-label">ECOSSISTEMA PONTE</div>
         <a class="nav-link" href="https://ponte-marketplace.maputo2.workers.dev" target="_blank" rel="noopener">
@@ -646,6 +649,9 @@ function getHtml() {
           </button>
           <button class="tab-nav-btn" data-tab="catalogo">
             <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
+          </button>
+          <button class="tab-nav-btn" data-tab="obd2">
+            <i data-lucide="wrench"></i> <span>Scanner OBD-II</span>
           </button>
         </div>
 
@@ -2636,6 +2642,9 @@ function getHtml() {
     </button>
     <button class="mobile-nav-item" data-tab="catalogo">
       <i data-lucide="layers"></i><span>Catálogo</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="obd2">
+      <i data-lucide="wrench"></i><span>OBD-II</span>
     </button>
   </nav>
 
