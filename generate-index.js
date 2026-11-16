@@ -1,11 +1,15 @@
 import fs from 'fs';
 import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL } from './catalogo-veiculos-brasil.js';
+import { PLANOS_MANUTENCAO_VEICULOS } from './manutencao-pecas-pro.js';
+import { CODIGOS_OBD2_DEFEITOS } from './obd2-diagnostico-pro.js';
 
 console.log('Compiling ultra-enhanced Placas & Veículos Pro Console...');
 
 function getHtml() {
   const marcasJson = JSON.stringify(MONTADORAS_BRASIL);
   const familiasJson = JSON.stringify(FAMILIAS_VEICULOS_BRASIL);
+  const manutencaoJson = JSON.stringify(PLANOS_MANUTENCAO_VEICULOS);
+  const obd2Json = JSON.stringify(CODIGOS_OBD2_DEFEITOS);
 
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -832,6 +836,40 @@ function getHtml() {
                   </div>
                 </div>
 
+                <!-- Card Oficial de Manutenção Preventiva & Peças OEM -->
+                <div id="manutencao-card" style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);margin-bottom:18px;box-shadow:var(--shadow-sm);">
+                  <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between;">
+                    <span style="display:flex;align-items:center;gap:7px;">
+                      <i data-lucide="wrench" style="color:var(--blue);"></i>
+                      <span>Guia de Manutenção Preventiva & Peças OEM</span>
+                    </span>
+                    <a id="btn-manual-link" href="https://www.toyota.com.br/manuais" target="_blank" rel="noopener" class="secondary-button" style="height:26px;padding:0 8px;font-size:10.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;text-decoration:none;">
+                      <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+                      <span>Manual Oficial PDF</span>
+                    </a>
+                  </div>
+                  <div style="padding:14px 16px;">
+                    <!-- Óleo e Pneus -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                      <div style="padding:10px;border-radius:var(--radius-md);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                        <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;">Óleo Recomendado</div>
+                        <div id="manutencao-oleo-tipo" style="font-size:13px;font-weight:800;color:var(--ink);margin:2px 0;">SAE 0W-20 (4.2L)</div>
+                        <div id="manutencao-oleo-norma" style="font-size:10.5px;color:var(--muted);">API SP / ILSAC GF-6A</div>
+                      </div>
+                      <div style="padding:10px;border-radius:var(--radius-md);background:var(--paper-elevated,#111827);border:1px solid var(--line);">
+                        <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;">Calibragem de Pneus</div>
+                        <div id="manutencao-pneus-pressao" style="font-size:13px;font-weight:800;color:var(--ink);margin:2px 0;">32 PSI (D) • 30 PSI (T)</div>
+                        <div id="manutencao-pneus-medida" style="font-size:10.5px;color:var(--muted);">215/50 R17 91V</div>
+                      </div>
+                    </div>
+                    <!-- Peças de Desgaste -->
+                    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Códigos de Peças Frequentes (OEM / Aftermarket):</div>
+                    <div id="pecas-lista-box" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;">
+                      <!-- Peças injetadas via JS -->
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Tabela de Especificações do Veículo -->
                 <div style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);">
                   <div style="padding:12px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;">
@@ -1608,6 +1646,9 @@ function getHtml() {
       consoleOutput.innerHTML = highlighted;
     }
 
+    window.PLANOS_MANUTENCAO_CLIENT = ${manutencaoJson};
+    window.OBD2_CLIENT = ${obd2Json};
+
     const VEICULOS_CLIENT = {
       'BRA2E19': {
         marca: 'Toyota',
@@ -1940,6 +1981,43 @@ function getHtml() {
 
             const rFipe = document.getElementById('val-veiculo-fipe');
             if (rFipe) rFipe.textContent = (v.fipe && v.fipe.valor) ? v.fipe.valor : (v.valorFipeFormatado || '-');
+
+            // Atualiza Card de Manutenção Preventiva & Peças OEM
+            const m = data.manutencao || (window.PLANOS_MANUTENCAO_CLIENT && (window.PLANOS_MANUTENCAO_CLIENT[clean] || window.PLANOS_MANUTENCAO_CLIENT['toyota-corolla']));
+            const manCard = document.getElementById('manutencao-card');
+            if (manCard) {
+              manCard.style.display = 'block';
+              if (m) {
+                const oleoTipo = document.getElementById('manutencao-oleo-tipo');
+                if (oleoTipo && m.oleoMotor) oleoTipo.textContent = m.oleoMotor.viscosidade + ' (' + m.oleoMotor.capacidadeComFiltroLitros + 'L)';
+
+                const oleoNorma = document.getElementById('manutencao-oleo-norma');
+                if (oleoNorma && m.oleoMotor) oleoNorma.textContent = m.oleoMotor.norma;
+
+                const pneusPres = document.getElementById('manutencao-pneus-pressao');
+                if (pneusPres && m.calibragemPneus) pneusPres.textContent = m.calibragemPneus.pressaoDianteiraPsi + ' PSI (D) • ' + m.calibragemPneus.pressaoTraseiraPsi + ' PSI (T)';
+
+                const pneusMed = document.getElementById('manutencao-pneus-medida');
+                if (pneusMed && m.calibragemPneus) pneusMed.textContent = m.calibragemPneus.medidaPadrao;
+
+                const manLink = document.getElementById('btn-manual-link');
+                if (manLink && (data.portalManual || m.manualPdf)) manLink.href = data.portalManual || m.manualPdf;
+
+                const pecasBox = document.getElementById('pecas-lista-box');
+                if (pecasBox && m.pecasDesgaste) {
+                  const nomes = {
+                    filtroOleo: 'Filtro de Óleo',
+                    filtroAr: 'Filtro de Ar',
+                    filtroCabine: 'Filtro de Cabine',
+                    filtroCombustivel: 'Filtro de Combustível',
+                    pastilhasFreioDianteira: 'Pastilhas Dianteiras',
+                    pastilhasFreioTraseira: 'Pastilhas Traseiras',
+                    velasIgnicao: 'Velas de Ignição'
+                  };
+                  pecasBox.innerHTML = Object.entries(m.pecasDesgaste).map(([k, p]) => '<div style="padding:6px 8px;border-radius:var(--radius-sm);background:var(--paper-elevated,#111827);border:1px solid var(--line-light);"><div style="font-weight:700;color:var(--ink);font-size:10.5px;">' + (nomes[k] || k) + '</div><div style="color:#38bdf8;font-size:10px;font-family:\'JetBrains Mono\',monospace;">OEM: ' + (p.oem || '-') + '</div><div style="color:var(--muted);font-size:9.5px;">Aftermarket: ' + (p.aftermarket || '-') + '</div></div>').join('');
+                }
+              }
+            }
 
             renderLucide();
           }
@@ -2465,6 +2543,58 @@ function getHtml() {
       carregarCatalogoVeiculos();
     });
 
+    // ── LÓGICA 7: SCANNER DE FALHAS OBD-II & DIAGNÓSTICO MECÂNICO ──
+    function executarDiagnosticoObd2(codigo) {
+      const clean = String(codigo || document.getElementById('obd2-input')?.value || 'P0300').toUpperCase().trim();
+      const inputEl = document.getElementById('obd2-input');
+      if (inputEl) inputEl.value = clean;
+
+      const laudo = window.OBD2_CLIENT?.[clean] || {
+        codigo: clean,
+        sistema: 'Powertrain / Diagnóstico SAE J2012',
+        titulo: clean + ' — Código de Diagnóstico Registrado na Central',
+        severidade: 'MODERADA',
+        sintomas: ['Comportamento irregular detectado pelo módulo ECM', 'Registro de falha gravado na memória de bordo'],
+        causasComuns: ['Sensor ou atuador correspondente com leitura fora da faixa', 'Possível falha de chicote elétrico ou conector'],
+        instrucoesConcerto: ['1. Conecte o scanner e verifique os dados congelados (Freeze Frame).', '2. Teste a continuidade elétrica do chicote.', '3. Consulte o manual de serviço do fabricante.']
+      };
+
+      const sist = document.getElementById('obd2-sistema-badge');
+      if (sist) sist.textContent = laudo.sistema;
+
+      const tit = document.getElementById('obd2-titulo-laudo');
+      if (tit) tit.textContent = laudo.codigo + ' — ' + laudo.titulo;
+
+      const sev = document.getElementById('obd2-severidade-badge');
+      if (sev) {
+        sev.textContent = laudo.severidade;
+        sev.className = 'status-badge-pill ' + (laudo.severidade.includes('CRÍTICA') || laudo.severidade.includes('ALTA') ? 'red' : 'amber');
+      }
+
+      const sintList = document.getElementById('obd2-sintomas-lista');
+      if (sintList) sintList.innerHTML = laudo.sintomas.map(s => '<li>' + s + '</li>').join('');
+
+      const causList = document.getElementById('obd2-causas-lista');
+      if (causList) causList.innerHTML = laudo.causasComuns.map(c => '<li>' + c + '</li>').join('');
+
+      const instList = document.getElementById('obd2-instrucoes-lista');
+      if (instList) instList.innerHTML = laudo.instrucoesConcerto.map(i => '<li>' + i + '</li>').join('');
+
+      renderJsonToConsole(laudo, '200 OK', true, 1);
+    }
+
+    document.getElementById('btn-exec-obd2')?.addEventListener('click', () => {
+      executarDiagnosticoObd2();
+    });
+    document.getElementById('obd2-input')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') executarDiagnosticoObd2(e.target.value);
+    });
+    document.querySelectorAll('.sample-obd2').forEach(btn => {
+      btn.addEventListener('click', () => {
+        executarDiagnosticoObd2(btn.dataset.dtc);
+      });
+    });
+
     // Botão Executar Sandbox
     document.getElementById('btn-run-sandbox').addEventListener('click', () => {
       const tab = getActiveTab();
@@ -2475,6 +2605,7 @@ function getHtml() {
       else if (tab === 'flex') executarCalculoFlex();
       else if (tab === 'graficos') carregarGraficosAnycast();
       else if (tab === 'catalogo') carregarCatalogoVeiculos();
+      else if (tab === 'obd2') executarDiagnosticoObd2();
     });
 
     // Inicialização
