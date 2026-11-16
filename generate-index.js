@@ -626,6 +626,9 @@ const html = `<!DOCTYPE html>
           <button class="tab-nav-btn" data-tab="catalogo">
             <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
           </button>
+          <button class="tab-nav-btn" data-tab="obd2">
+            <i data-lucide="wrench"></i> <span>Scanner OBD-II</span>
+          </button>
         </div>
 
         <!-- PLAYGROUND OFICIAL DA PONTE API (SPLIT-SCREEN DE 2 COLUNAS) -->
