@@ -1242,6 +1242,68 @@
                 </div>
               </div>
             </div>
+
+            <!-- PAINEL 7: SCANNER DE DIAGNÓSTICO OBD-II / DTC (SAE J2012) -->
+            <div id="section-obd2" class="tab-pane" style="display:none;">
+              <div class="card-dashboard">
+                <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                  <span style="display:flex;align-items:center;gap:8px;">
+                    <i data-lucide="wrench" style="color:var(--blue);"></i>
+                    <span>Scanner de Falhas OBD-II & Diagnóstico Mecânico</span>
+                  </span>
+                  <span class="status-badge-pill amber">SAE J2012</span>
+                </div>
+                <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.5;">
+                  Digite o código DTC emitido pelo scanner (ex: <code>P0300</code>, <code>P0420</code>, <code>P0171</code>, <code>U0100</code>) para obter o diagnóstico técnico, causas e procedimento de concerto:
+                </p>
+
+                <!-- Campo de Busca de Código OBD2 -->
+                <div style="display:flex;gap:8px;margin-bottom:12px;">
+                  <input type="text" id="obd2-input" value="P0300" placeholder="Ex: P0300, P0420, P0171, U0100..." maxlength="6" style="flex:1;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-md);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;background:var(--paper);color:var(--ink);outline:none;" />
+                  <button class="primary-button accent" id="btn-exec-obd2" style="height:38px;padding:0 14px;font-size:12px;font-weight:700;">
+                    <i data-lucide="play"></i> <span>Diagnosticar</span>
+                  </button>
+                </div>
+
+                <!-- Presets Rápidos de Defeitos Comuns -->
+                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11px;margin-bottom:16px;">
+                  <span style="color:var(--muted);font-weight:600;">Falhas Comuns:</span>
+                  <button class="secondary-button sample-obd2" data-dtc="P0300" style="padding:3px 8px;font-size:10.5px;">P0300 (Ignição/Misfire)</button>
+                  <button class="secondary-button sample-obd2" data-dtc="P0420" style="padding:3px 8px;font-size:10.5px;">P0420 (Catalisador)</button>
+                  <button class="secondary-button sample-obd2" data-dtc="P0171" style="padding:3px 8px;font-size:10.5px;">P0171 (Mistura Pobre)</button>
+                  <button class="secondary-button sample-obd2" data-dtc="P0128" style="padding:3px 8px;font-size:10.5px;">P0128 (Termostática)</button>
+                  <button class="secondary-button sample-obd2" data-dtc="P0335" style="padding:3px 8px;font-size:10.5px;">P0335 (Sensor Rotação)</button>
+                  <button class="secondary-button sample-obd2" data-dtc="U0100" style="padding:3px 8px;font-size:10.5px;">U0100 (Rede CAN)</button>
+                </div>
+
+                <!-- Laudo Técnico do Defeito -->
+                <div id="obd2-laudo-box" style="border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--paper);box-shadow:var(--shadow-sm);">
+                  <div style="padding:14px 16px;background:var(--paper-elevated,#162032);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                      <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;" id="obd2-sistema-badge">Powertrain</div>
+                      <h3 style="margin:2px 0 0;font-size:15px;font-weight:900;color:var(--ink);font-family:'JetBrains Mono',monospace;" id="obd2-titulo-laudo">
+                        P0300 — Falha de Ignição Aleatória / Múltiplos Cilindros
+                      </h3>
+                    </div>
+                    <span class="status-badge-pill red" id="obd2-severidade-badge">CRÍTICA</span>
+                  </div>
+                  <div style="padding:16px;">
+                    <div style="margin-bottom:12px;">
+                      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Sintomas no Veículo:</div>
+                      <ul id="obd2-sintomas-lista" style="margin:0;padding-left:18px;font-size:12px;color:var(--ink);line-height:1.5;"></ul>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Causas Frequentes na Oficina:</div>
+                      <ul id="obd2-causas-lista" style="margin:0;padding-left:18px;font-size:12px;color:var(--ink);line-height:1.5;"></ul>
+                    </div>
+                    <div style="border-top:1px solid var(--line-light);padding-top:12px;">
+                      <div style="font-size:11px;font-weight:700;color:#10b981;text-transform:uppercase;margin-bottom:6px;">Instruções Técnicas de Reparo & Concerto:</div>
+                      <ol id="obd2-instrucoes-lista" style="margin:0;padding-left:18px;font-size:12px;color:var(--ink);line-height:1.6;"></ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Coluna 2: Terminal Dark Console e Snippets de Integração -->
