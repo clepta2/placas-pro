@@ -2034,7 +2034,7 @@ Console.WriteLine(response);`;
                     pastilhasFreioTraseira: 'Pastilhas Traseiras',
                     velasIgnicao: 'Velas de Ignição'
                   };
-                  pecasBox.innerHTML = Object.entries(m.pecasDesgaste).map(([k, p]) => '<div style="padding:6px 8px;border-radius:var(--radius-sm);background:var(--paper-elevated,#111827);border:1px solid var(--line-light);"><div style="font-weight:700;color:var(--ink);font-size:10.5px;">' + (nomes[k] || k) + '</div><div style="color:#38bdf8;font-size:10px;font-family:'JetBrains Mono',monospace;">OEM: ' + (p.oem || '-') + '</div><div style="color:var(--muted);font-size:9.5px;">Aftermarket: ' + (p.aftermarket || '-') + '</div></div>').join('');
+                  pecasBox.innerHTML = Object.entries(m.pecasDesgaste).map(([k, p]) => '<div style="padding:6px 8px;border-radius:var(--radius-sm);background:var(--paper-elevated,#111827);border:1px solid var(--line-light);"><div style="font-weight:700;color:var(--ink);font-size:10.5px;">' + (nomes[k] || k) + '</div><div style="color:#38bdf8;font-size:10px;font-family:monospace;">OEM: ' + (p.oem || '-') + '</div><div style="color:var(--muted);font-size:9.5px;">Aftermarket: ' + (p.aftermarket || '-') + '</div></div>').join('');
                 }
               }
             }
