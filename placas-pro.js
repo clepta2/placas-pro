@@ -19,8 +19,21 @@
  */
 
 import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL, buscarVeiculosCatalogo, listarMontadorasComMetadados } from './catalogo-veiculos-brasil.js';
+import { PLANOS_MANUTENCAO_VEICULOS, PORTAIS_MANUAIS_MONTADORAS, obterPlanoManutencaoPorModelo } from './manutencao-pecas-pro.js';
+import { CODIGOS_OBD2_DEFEITOS, decodificarCodigoObd2, buscarCodigosObd2 } from './obd2-diagnostico-pro.js';
 
-export { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL, buscarVeiculosCatalogo, listarMontadorasComMetadados };
+export {
+  MONTADORAS_BRASIL,
+  FAMILIAS_VEICULOS_BRASIL,
+  buscarVeiculosCatalogo,
+  listarMontadorasComMetadados,
+  PLANOS_MANUTENCAO_VEICULOS,
+  PORTAIS_MANUAIS_MONTADORAS,
+  obterPlanoManutencaoPorModelo,
+  CODIGOS_OBD2_DEFEITOS,
+  decodificarCodigoObd2,
+  buscarCodigosObd2
+};
 
 // ─── TABELAS DE CONVERSÃO E NORMAS OFICIAIS ───
 
@@ -1022,6 +1035,10 @@ export function analisarPlaca(placaInput) {
   // Dados Cadastrais do Veículo (Modelo, Especificações, FIPE, Foto e Custos)
   const veiculoInfo = obterDadosVeiculoPorPlaca(limpa, tipoVeiculo, ufOrigem);
 
+  // Plano de Manutenção Preventiva e Peças de Reposição
+  const manutencaoInfo = obterPlanoManutencaoPorModelo(veiculoInfo.modelo || limpa);
+  const portalManual = PORTAIS_MANUAIS_MONTADORAS[veiculoInfo.marca.toLowerCase()] || 'https://www.gov.br/transportes/pt-br/assuntos/transito/senatran';
+
   return {
     valido: true,
     placaOriginal: placaInput,
@@ -1034,6 +1051,8 @@ export function analisarPlaca(placaInput) {
     podeConverterParaAntiga: conversivel && Boolean(placaAntiga),
     ultimoDigito,
     veiculo: veiculoInfo,
+    manutencao: manutencaoInfo,
+    portalManual,
     origem: estadoInfo || {
       uf: 'DESCONHECIDO',
       estado: 'Faixa Especial / Em atualização',

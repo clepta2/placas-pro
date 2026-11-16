@@ -509,6 +509,9 @@ const html = `<!DOCTYPE html>
         <button class="nav-link" data-view="catalogo">
           <i data-lucide="layers"></i> <span>Catálogo Nacional FIPE</span>
         </button>
+        <button class="nav-link" data-view="obd2">
+          <i data-lucide="wrench"></i> <span>Scanner OBD-II</span>
+        </button>
 
         <div class="nav-section-label">ECOSSISTEMA PONTE</div>
         <a class="nav-link" href="https://ponte-marketplace.maputo2.workers.dev" target="_blank" rel="noopener">

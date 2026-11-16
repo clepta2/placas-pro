@@ -20,6 +20,8 @@
 
 import { STYLES_CSS, HTML_INDEX, CLIENT_JS, OZPRO_MARK_SVG } from './site-assets.js';
 import { MONTADORAS_BRASIL, FAMILIAS_VEICULOS_BRASIL, buscarVeiculosCatalogo, listarMontadorasComMetadados } from './catalogo-veiculos-brasil.js';
+import { PLANOS_MANUTENCAO_VEICULOS, PORTAIS_MANUAIS_MONTADORAS, obterPlanoManutencaoPorModelo } from './manutencao-pecas-pro.js';
+import { CODIGOS_OBD2_DEFEITOS, decodificarCodigoObd2, buscarCodigosObd2 } from './obd2-diagnostico-pro.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -1014,6 +1016,8 @@ function analisarPlaca(placaInput) {
     podeConverterParaAntiga: conversivel && Boolean(placaAntiga),
     ultimoDigito,
     veiculo: veiculoInfo,
+    manutencao: obterPlanoManutencaoPorModelo(veiculoInfo.modelo || limpa),
+    portalManual: PORTAIS_MANUAIS_MONTADORAS[veiculoInfo.marca.toLowerCase()] || 'https://www.gov.br/transportes/pt-br/assuntos/transito/senatran',
     origem: estadoInfo || {
       uf: 'DESCONHECIDO',
       estado: 'Faixa Especial / Em atualização',
@@ -2070,6 +2074,49 @@ export default {
           }
         });
       }
+    }
+
+    // ── ROTA: SCANNER DE DIAGNÓSTICO OBD-II & FALHAS MECÂNICAS (SAE J2012) ──
+    if (pathname.startsWith('/api/placas/obd2/') || pathname.startsWith('/api/obd2/')) {
+      const cod = (pathname.split('/')[4] || pathname.split('/')[3] || '').toUpperCase().trim();
+      const laudo = decodificarCodigoObd2(cod);
+      return jsonResponse(laudo, laudo.ok ? 200 : 400);
+    }
+
+    if (pathname === '/api/placas/obd2' || pathname === '/api/obd2') {
+      const q = url.searchParams.get('q') || '';
+      const resultados = buscarCodigosObd2(q);
+      return jsonResponse({
+        ok: true,
+        total: resultados.length,
+        codigos: resultados
+      });
+    }
+
+    // ── ROTA: PLANO DE MANUTENÇÃO & PEÇAS POR PLACA ──
+    if (pathname.startsWith('/api/placas/') && pathname.endsWith('/manutencao')) {
+      const partes = pathname.split('/');
+      const placaParam = partes[3] || 'BRA2E19';
+      const analise = analisarPlaca(placaParam);
+      return jsonResponse({
+        ok: true,
+        placa: placaParam,
+        veiculo: analise.veiculo ? analise.veiculo.nomeCompleto : 'Veículo Nacional',
+        manutencao: analise.manutencao,
+        portalManual: analise.portalManual
+      });
+    }
+
+    if (pathname.startsWith('/api/placas/') && pathname.endsWith('/pecas')) {
+      const partes = pathname.split('/');
+      const placaParam = partes[3] || 'BRA2E19';
+      const analise = analisarPlaca(placaParam);
+      return jsonResponse({
+        ok: true,
+        placa: placaParam,
+        veiculo: analise.veiculo ? analise.veiculo.nomeCompleto : 'Veículo Nacional',
+        pecasDesgaste: analise.manutencao ? analise.manutencao.pecasDesgaste : null
+      });
     }
 
     // ── ROTA: CONSULTA E VALIDAÇÃO DE PLACAS ──
